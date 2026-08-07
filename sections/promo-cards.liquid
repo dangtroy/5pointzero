@@ -36,7 +36,7 @@
   #shopify-section-{{ section.id }} .promo-cards__eyebrow {
     grid-area: eyebrow;
     margin: 0;
-    font-size: 1rem;
+    font-size: var(--promo-card-eyebrow-size, 1rem);
     font-weight: 600;
     letter-spacing: 0.13rem;
     text-transform: uppercase;
@@ -65,7 +65,7 @@
 
   #shopify-section-{{ section.id }} .promo-cards__intro {
     margin: 0 0 16px;
-    font-size: 1.1rem;
+    font-size: var(--promo-card-intro-size, 1.1rem);
     font-weight: 600;
     line-height: 1.4;
   }
@@ -84,7 +84,7 @@
     position: relative;
     padding-left: 18px;
     margin-bottom: 10px;
-    font-size: 1.1rem;
+    font-size: var(--promo-card-list-size, 1.1rem);
     line-height: 1.4;
   }
 
@@ -108,7 +108,7 @@
     text-align: center;
     text-decoration: none;
     font-weight: 600;
-    font-size: 1.1rem;
+    font-size: var(--promo-card-button-size, 1.1rem);
     line-height: 1;
     transition: opacity 0.2s ease;
   }
@@ -153,7 +153,7 @@
           {%- if block.type == 'card' -%}
             <div
               class="promo-cards__card"
-              style="background-color: {{ block.settings.background_color }}; color: {{ block.settings.text_color }}; --promo-card-image-width: {{ block.settings.image_width }}%;"
+              style="background-color: {{ block.settings.background_color }}; color: {{ block.settings.text_color }}; --promo-card-image-width: {{ block.settings.image_width }}%; --promo-card-eyebrow-size: {{ block.settings.eyebrow_font_size }}px; --promo-card-intro-size: {{ block.settings.intro_font_size }}px; --promo-card-list-size: {{ block.settings.bullets_font_size }}px; --promo-card-button-size: {{ block.settings.button_font_size }}px;"
               {{ block.shopify_attributes }}
             >
               {%- if block.settings.eyebrow_text != blank -%}
@@ -315,10 +315,30 @@
           "default": "Daily support for*:"
         },
         {
+          "type": "range",
+          "id": "eyebrow_font_size",
+          "min": 12,
+          "max": 48,
+          "step": 1,
+          "unit": "px",
+          "label": "Eyebrow heading font size",
+          "default": 16
+        },
+        {
           "type": "richtext",
           "id": "intro_text",
           "label": "Intro text (optional)",
           "info": "Shown above the bullet list, e.g. for a \"plus\" upgrade card."
+        },
+        {
+          "type": "range",
+          "id": "intro_font_size",
+          "min": 12,
+          "max": 36,
+          "step": 1,
+          "unit": "px",
+          "label": "Intro text font size",
+          "default": 18
         },
         {
           "type": "textarea",
@@ -326,6 +346,16 @@
           "label": "Bullet list",
           "info": "One bullet per line.",
           "default": "Faster recovery*\nSustained energy*\nElectrolyte balance*\nJoint support*\nFocus on court*"
+        },
+        {
+          "type": "range",
+          "id": "bullets_font_size",
+          "min": 12,
+          "max": 36,
+          "step": 1,
+          "unit": "px",
+          "label": "Bullet list font size",
+          "default": 18
         },
         {
           "type": "header",
@@ -355,6 +385,16 @@
           "id": "button_label",
           "label": "Button label",
           "default": "Shop now"
+        },
+        {
+          "type": "range",
+          "id": "button_font_size",
+          "min": 12,
+          "max": 28,
+          "step": 1,
+          "unit": "px",
+          "label": "Button text font size",
+          "default": 18
         },
         {
           "type": "url",
