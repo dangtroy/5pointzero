@@ -93,6 +93,63 @@
         "alignment": "center"
       }
     },
+    "promo_cards_AVxpj8": {
+      "type": "promo-cards",
+      "blocks": {
+        "card_3iUHq3": {
+          "type": "card",
+          "settings": {
+            "background_color": "#000000",
+            "text_color": "#ffffff",
+            "button_background_color": "#ffffff",
+            "button_text_color": "#0b3d38",
+            "eyebrow_text": "BEFORE",
+            "eyebrow_font_size": 40,
+            "intro_text": "<p>PLAY BETTER LONGER</p>",
+            "intro_font_size": 18,
+            "bullets": "Hydration\nEnergy\nEndurance\nFocus\nAnti-Cramping",
+            "bullets_font_size": 18,
+            "image": "shopify://shop_images/a2_2.png",
+            "image_width": 60,
+            "button_label": "SHOP PERFORM",
+            "button_font_size": 18,
+            "button_link": ""
+          }
+        },
+        "card_nQTYjg": {
+          "type": "card",
+          "settings": {
+            "background_color": "#96ff00",
+            "text_color": "#111111",
+            "button_background_color": "#ffffff",
+            "button_text_color": "#111111",
+            "eyebrow_text": "AFTER",
+            "eyebrow_font_size": 40,
+            "intro_text": "<p><strong>RECOVER FASTER</strong></p>",
+            "intro_font_size": 18,
+            "bullets": "Anti-Inflammation\nMuscles\nJoints\nBones\nAntioxidants",
+            "bullets_font_size": 17,
+            "image": "shopify://shop_images/a1_1.png",
+            "image_width": 60,
+            "button_label": "SHOP RECOVER",
+            "button_font_size": 18,
+            "button_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "card_3iUHq3",
+        "card_nQTYjg"
+      ],
+      "name": "Promo Cards",
+      "settings": {
+        "color_scheme": "",
+        "column_gap": 24,
+        "card_radius": 24,
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
     "hero_banner_CQPtcC": {
       "type": "hero-banner",
       "name": "Hero Banner",
@@ -302,63 +359,6 @@
         "content": "<p>Formulated specifically for pickleball players ... these drinks will help you play better, last longer, feel stronger, and recover faster than any other sports nutrition product you've ever tried.</p>",
         "button_style_secondary": true,
         "button_green": true
-      }
-    },
-    "promo_cards_AVxpj8": {
-      "type": "promo-cards",
-      "blocks": {
-        "card_3iUHq3": {
-          "type": "card",
-          "settings": {
-            "background_color": "#000000",
-            "text_color": "#ffffff",
-            "button_background_color": "#ffffff",
-            "button_text_color": "#0b3d38",
-            "eyebrow_text": "BEFORE",
-            "eyebrow_font_size": 40,
-            "intro_text": "<p>PLAY BETTER LONGER</p>",
-            "intro_font_size": 18,
-            "bullets": "Hydration\nEnergy\nEndurance\nFocus\nAnti-Cramping",
-            "bullets_font_size": 18,
-            "image": "shopify://shop_images/a2_2.png",
-            "image_width": 60,
-            "button_label": "SHOP PERFORM",
-            "button_font_size": 18,
-            "button_link": ""
-          }
-        },
-        "card_nQTYjg": {
-          "type": "card",
-          "settings": {
-            "background_color": "#96ff00",
-            "text_color": "#111111",
-            "button_background_color": "#ffffff",
-            "button_text_color": "#111111",
-            "eyebrow_text": "AFTER",
-            "eyebrow_font_size": 40,
-            "intro_text": "<p><strong>RECOVER FASTER</strong></p>",
-            "intro_font_size": 18,
-            "bullets": "Anti-Inflammation\nMuscles\nJoints\nBones\nAntioxidants",
-            "bullets_font_size": 17,
-            "image": "shopify://shop_images/a1_1.png",
-            "image_width": 60,
-            "button_label": "SHOP RECOVER",
-            "button_font_size": 18,
-            "button_link": ""
-          }
-        }
-      },
-      "block_order": [
-        "card_3iUHq3",
-        "card_nQTYjg"
-      ],
-      "name": "Promo Cards",
-      "settings": {
-        "color_scheme": "",
-        "column_gap": 24,
-        "card_radius": 24,
-        "padding_top": 40,
-        "padding_bottom": 40
       }
     },
     "featured_product_kXrJhN": {
@@ -917,12 +917,12 @@
   },
   "order": [
     "banner_image_text_Jdgaym",
+    "promo_cards_AVxpj8",
     "zero_difference_rEYXVX",
     "hero_banner_CQPtcC",
     "rich_text_BjPNQr",
     "multicolumn_JjHwxM",
     "sport_drink_Pydj4N",
-    "promo_cards_AVxpj8",
     "featured_product_kXrJhN",
     "homepage_featured_fmEfLt",
     "discover_4aRdL4",
