@@ -1,0 +1,554 @@
+{%- liquid
+  assign mobile_image = section.settings.image_mobile | default: section.settings.image_desktop
+  assign image_alt = section.settings.image_alt | default: section.settings.eyebrow_text | escape
+
+  case section.settings.content_position
+    when 'bottom-center'
+      assign align_items = 'flex-end'
+      assign justify_content = 'center'
+      assign text_align = 'center'
+    when 'center-left'
+      assign align_items = 'center'
+      assign justify_content = 'flex-start'
+      assign text_align = 'left'
+    when 'center'
+      assign align_items = 'center'
+      assign justify_content = 'center'
+      assign text_align = 'center'
+    when 'top-left'
+      assign align_items = 'flex-start'
+      assign justify_content = 'flex-start'
+      assign text_align = 'left'
+    else
+      assign align_items = 'flex-end'
+      assign justify_content = 'flex-start'
+      assign text_align = 'left'
+  endcase
+-%}
+
+{%- style -%}
+  #shopify-section-{{ section.id }} .hero-banner {
+    position: relative;
+    display: flex;
+    align-items: {{ align_items }};
+    justify-content: {{ justify_content }};
+    width: 100%;
+    overflow: hidden;
+    height: {{ section.settings.height_mobile }}vh;
+  }
+
+  @media screen and (min-width: 750px) {
+    #shopify-section-{{ section.id }} .hero-banner {
+      height: {{ section.settings.height_desktop }}vh;
+    }
+  }
+
+  #shopify-section-{{ section.id }} .hero-banner__media {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+  }
+
+  #shopify-section-{{ section.id }} .hero-banner__image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
+
+  #shopify-section-{{ section.id }} .hero-banner__image--mobile {
+    display: none;
+  }
+
+  @media screen and (max-width: 749px) {
+    #shopify-section-{{ section.id }} .hero-banner__image--desktop {
+      display: none;
+    }
+
+    #shopify-section-{{ section.id }} .hero-banner__image--mobile {
+      display: block;
+    }
+  }
+
+  #shopify-section-{{ section.id }} .hero-banner__overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, {{ section.settings.overlay_opacity | divided_by: 100.0 }});
+  }
+
+  #shopify-section-{{ section.id }} .hero-banner__content {
+    position: relative;
+    z-index: 2;
+    max-width: {{ section.settings.content_max_width }}px;
+    padding: 28px;
+    text-align: {{ text_align }};
+    --eyebrow-size: {{ section.settings.eyebrow_font_size }}px;
+    --headline-size: {{ section.settings.headline_font_size }}px;
+    --quote-size: {{ section.settings.quote_font_size }}px;
+    --accent-size: {{ section.settings.accent_font_size }}px;
+    --product-size: {{ section.settings.product_font_size }}px;
+    --button-size: {{ section.settings.button_font_size }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    #shopify-section-{{ section.id }} .hero-banner__content {
+      padding: 64px;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    #shopify-section-{{ section.id }} .hero-banner__content {
+      --eyebrow-size: calc({{ section.settings.eyebrow_font_size }}px * 0.9);
+      --headline-size: calc({{ section.settings.headline_font_size }}px * 0.55);
+      --quote-size: calc({{ section.settings.quote_font_size }}px * 0.55);
+      --accent-size: calc({{ section.settings.accent_font_size }}px * 0.5);
+      --product-size: calc({{ section.settings.product_font_size }}px * 0.85);
+      --button-size: calc({{ section.settings.button_font_size }}px * 0.9);
+    }
+  }
+
+  #shopify-section-{{ section.id }} .hero-banner__eyebrow {
+    display: flex;
+    align-items: center;
+    justify-content: {{ justify_content }};
+    gap: 10px;
+    margin: 0 0 16px;
+    color: {{ section.settings.eyebrow_color }};
+    font-size: var(--eyebrow-size);
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  #shopify-section-{{ section.id }} .hero-banner__eyebrow-bar {
+    width: 22px;
+    height: 2px;
+    flex-shrink: 0;
+    background: {{ section.settings.accent_color }};
+  }
+
+  #shopify-section-{{ section.id }} .hero-banner__headline {
+    margin: 0 0 20px;
+  }
+
+  #shopify-section-{{ section.id }} .hero-banner__headline-line,
+  #shopify-section-{{ section.id }} .hero-banner__headline-quote,
+  #shopify-section-{{ section.id }} .hero-banner__headline-accent {
+    display: block;
+  }
+
+  #shopify-section-{{ section.id }} .hero-banner__headline-line {
+    color: {{ section.settings.headline_color }};
+    font-size: var(--headline-size);
+    font-weight: 700;
+    line-height: 1.1;
+  }
+
+  #shopify-section-{{ section.id }} .hero-banner__headline-quote {
+    color: {{ section.settings.headline_color }};
+    font-size: var(--quote-size);
+    font-style: italic;
+    font-weight: 600;
+    line-height: 1.15;
+  }
+
+  #shopify-section-{{ section.id }} .hero-banner__headline-quote::before {
+    content: '\201C';
+  }
+
+  #shopify-section-{{ section.id }} .hero-banner__headline-quote::after {
+    content: '\201D';
+  }
+
+  #shopify-section-{{ section.id }} .hero-banner__headline-accent {
+    color: {{ section.settings.accent_color }};
+    font-size: var(--accent-size);
+    font-weight: 800;
+    line-height: 1;
+    text-transform: uppercase;
+    margin-top: 6px;
+  }
+
+  #shopify-section-{{ section.id }} .hero-banner__product {
+    margin: 0 0 24px;
+  }
+
+  #shopify-section-{{ section.id }} .hero-banner__product-line1,
+  #shopify-section-{{ section.id }} .hero-banner__product-line2 {
+    display: block;
+    font-size: var(--product-size);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    line-height: 1.3;
+  }
+
+  #shopify-section-{{ section.id }} .hero-banner__product-line1 {
+    color: {{ section.settings.product_line_1_color }};
+  }
+
+  #shopify-section-{{ section.id }} .hero-banner__product-line2 {
+    color: {{ section.settings.product_line_2_color }};
+  }
+
+  #shopify-section-{{ section.id }} .hero-banner__button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 28px;
+    background: {{ section.settings.button_background_color }};
+    color: {{ section.settings.button_text_color }};
+    font-size: var(--button-size);
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 2px;
+    transition: opacity 0.15s ease, transform 0.15s ease;
+  }
+
+  #shopify-section-{{ section.id }} .hero-banner__button:hover {
+    opacity: 0.88;
+    transform: translateY(-1px);
+  }
+{%- endstyle -%}
+
+<div class="hero-banner">
+  <div class="hero-banner__media">
+    {%- if section.settings.image_desktop != blank -%}
+      <img
+        class="hero-banner__image hero-banner__image--desktop"
+        src="{{ section.settings.image_desktop | image_url: width: 1600 }}"
+        srcset="{{ section.settings.image_desktop | image_url: width: 800 }} 800w, {{ section.settings.image_desktop | image_url: width: 1200 }} 1200w, {{ section.settings.image_desktop | image_url: width: 1600 }} 1600w, {{ section.settings.image_desktop | image_url: width: 2000 }} 2000w"
+        sizes="100vw"
+        alt="{{ image_alt }}"
+        width="{{ section.settings.image_desktop.width }}"
+        height="{{ section.settings.image_desktop.height }}"
+        loading="lazy"
+      >
+    {%- endif -%}
+    {%- if mobile_image != blank -%}
+      <img
+        class="hero-banner__image hero-banner__image--mobile"
+        src="{{ mobile_image | image_url: width: 750 }}"
+        srcset="{{ mobile_image | image_url: width: 500 }} 500w, {{ mobile_image | image_url: width: 750 }} 750w, {{ mobile_image | image_url: width: 1000 }} 1000w"
+        sizes="100vw"
+        alt="{{ image_alt }}"
+        width="{{ mobile_image.width }}"
+        height="{{ mobile_image.height }}"
+        loading="lazy"
+      >
+    {%- endif -%}
+    <div class="hero-banner__overlay" aria-hidden="true"></div>
+  </div>
+
+  <div class="hero-banner__content">
+    {%- if section.settings.eyebrow_text != blank -%}
+      <p class="hero-banner__eyebrow">
+        <span class="hero-banner__eyebrow-bar" aria-hidden="true"></span>
+        {{ section.settings.eyebrow_text | escape }}
+      </p>
+    {%- endif -%}
+
+    {%- if section.settings.headline != blank or section.settings.headline_quote != blank or section.settings.accent_line != blank -%}
+      <div class="hero-banner__headline">
+        {%- if section.settings.headline != blank -%}
+          <span class="hero-banner__headline-line">{{ section.settings.headline | escape }}</span>
+        {%- endif -%}
+        {%- if section.settings.headline_quote != blank -%}
+          <span class="hero-banner__headline-quote">{{ section.settings.headline_quote | escape }}</span>
+        {%- endif -%}
+        {%- if section.settings.accent_line != blank -%}
+          <span class="hero-banner__headline-accent">{{ section.settings.accent_line | escape }}</span>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if section.settings.product_line_1 != blank or section.settings.product_line_2 != blank -%}
+      <div class="hero-banner__product">
+        {%- if section.settings.product_line_1 != blank -%}
+          <span class="hero-banner__product-line1">{{ section.settings.product_line_1 | escape }}</span>
+        {%- endif -%}
+        {%- if section.settings.product_line_2 != blank -%}
+          <span class="hero-banner__product-line2">{{ section.settings.product_line_2 | escape }}</span>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if section.settings.button_label != blank -%}
+      <a
+        {% if section.settings.button_link == blank %}
+          role="link" aria-disabled="true"
+        {% else %}
+          href="{{ section.settings.button_link }}"
+        {% endif %}
+        class="hero-banner__button"
+      >
+        {{- section.settings.button_label | escape -}}
+      </a>
+    {%- endif -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Hero Banner",
+  "tag": "section",
+  "class": "section hero-banner-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Images"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_desktop",
+      "label": "Desktop image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Mobile image",
+      "info": "Uses the desktop image if left blank."
+    },
+    {
+      "type": "text",
+      "id": "image_alt",
+      "label": "Image alt text",
+      "info": "Describes the image for screen readers and SEO."
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "unit": "%",
+      "label": "Dark overlay",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "height_desktop",
+      "min": 40,
+      "max": 100,
+      "step": 5,
+      "unit": "vh",
+      "label": "Section height (desktop)",
+      "default": 90
+    },
+    {
+      "type": "range",
+      "id": "height_mobile",
+      "min": 40,
+      "max": 100,
+      "step": 5,
+      "unit": "vh",
+      "label": "Section height (mobile)",
+      "default": 70
+    },
+    {
+      "type": "select",
+      "id": "content_position",
+      "label": "Content position",
+      "options": [
+        { "value": "bottom-left", "label": "Bottom left" },
+        { "value": "bottom-center", "label": "Bottom center" },
+        { "value": "center-left", "label": "Middle left" },
+        { "value": "center", "label": "Center" },
+        { "value": "top-left", "label": "Top left" }
+      ],
+      "default": "bottom-left"
+    },
+    {
+      "type": "range",
+      "id": "content_max_width",
+      "min": 320,
+      "max": 800,
+      "step": 20,
+      "unit": "px",
+      "label": "Content max width",
+      "default": 560
+    },
+    {
+      "type": "header",
+      "content": "Eyebrow"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow_text",
+      "label": "Eyebrow text",
+      "default": "Hydration, Reinvented"
+    },
+    {
+      "type": "color",
+      "id": "eyebrow_color",
+      "label": "Eyebrow color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "range",
+      "id": "eyebrow_font_size",
+      "min": 10,
+      "max": 22,
+      "step": 1,
+      "unit": "px",
+      "label": "Eyebrow font size",
+      "default": 13
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent color",
+      "info": "Used for the eyebrow bar and the accent headline.",
+      "default": "#c6ff33"
+    },
+    {
+      "type": "header",
+      "content": "Headline"
+    },
+    {
+      "type": "text",
+      "id": "headline",
+      "label": "Headline line",
+      "default": "Most sports drinks are just"
+    },
+    {
+      "type": "range",
+      "id": "headline_font_size",
+      "min": 20,
+      "max": 84,
+      "step": 2,
+      "unit": "px",
+      "label": "Headline font size",
+      "default": 44
+    },
+    {
+      "type": "text",
+      "id": "headline_quote",
+      "label": "Quoted line",
+      "info": "Quotation marks are added automatically.",
+      "default": "flavored salt water."
+    },
+    {
+      "type": "range",
+      "id": "quote_font_size",
+      "min": 18,
+      "max": 72,
+      "step": 2,
+      "unit": "px",
+      "label": "Quoted line font size",
+      "default": 38
+    },
+    {
+      "type": "color",
+      "id": "headline_color",
+      "label": "Headline & quote color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "text",
+      "id": "accent_line",
+      "label": "Accent line",
+      "default": "Mine isn't."
+    },
+    {
+      "type": "range",
+      "id": "accent_font_size",
+      "min": 24,
+      "max": 100,
+      "step": 2,
+      "unit": "px",
+      "label": "Accent line font size",
+      "default": 56
+    },
+    {
+      "type": "header",
+      "content": "Product label"
+    },
+    {
+      "type": "text",
+      "id": "product_line_1",
+      "label": "Product line",
+      "default": "Perform"
+    },
+    {
+      "type": "color",
+      "id": "product_line_1_color",
+      "label": "Product line color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "text",
+      "id": "product_line_2",
+      "label": "Flavor line",
+      "default": "Pink Lemonade"
+    },
+    {
+      "type": "color",
+      "id": "product_line_2_color",
+      "label": "Flavor line color",
+      "default": "#ff3ea5"
+    },
+    {
+      "type": "range",
+      "id": "product_font_size",
+      "min": 12,
+      "max": 36,
+      "step": 1,
+      "unit": "px",
+      "label": "Product label font size",
+      "default": 20
+    },
+    {
+      "type": "header",
+      "content": "Button"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Shop Perform"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "color",
+      "id": "button_background_color",
+      "label": "Button background color",
+      "default": "#c6ff33"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text color",
+      "default": "#111111"
+    },
+    {
+      "type": "range",
+      "id": "button_font_size",
+      "min": 12,
+      "max": 24,
+      "step": 1,
+      "unit": "px",
+      "label": "Button font size",
+      "default": 15
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero Banner"
+    }
+  ]
+}
+{% endschema %}
