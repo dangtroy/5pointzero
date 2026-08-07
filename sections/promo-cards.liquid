@@ -1,0 +1,404 @@
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.padding_top }}px * 0.75);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px * 0.75);
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  #shopify-section-{{ section.id }} .promo-cards {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: {{ section.settings.column_gap }}px;
+  }
+
+  #shopify-section-{{ section.id }} .promo-cards__card {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr var(--promo-card-image-width, 46%);
+    grid-template-rows: auto 1fr auto;
+    grid-template-areas:
+      "eyebrow image"
+      "content image"
+      "button  button";
+    row-gap: 24px;
+    border-radius: {{ section.settings.card_radius }}px;
+    padding: 40px 32px 32px;
+    min-height: 560px;
+    overflow: hidden;
+  }
+
+  #shopify-section-{{ section.id }} .promo-cards__eyebrow {
+    grid-area: eyebrow;
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0.13rem;
+    text-transform: uppercase;
+  }
+
+  #shopify-section-{{ section.id }} .promo-cards__image {
+    grid-area: image;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    height: 100%;
+  }
+
+  #shopify-section-{{ section.id }} .promo-cards__image img {
+    width: 100%;
+    max-width: 260px;
+    height: auto;
+    object-fit: contain;
+    display: block;
+  }
+
+  #shopify-section-{{ section.id }} .promo-cards__content {
+    grid-area: content;
+    align-self: end;
+  }
+
+  #shopify-section-{{ section.id }} .promo-cards__intro {
+    margin: 0 0 16px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  #shopify-section-{{ section.id }} .promo-cards__intro p {
+    margin: 0;
+  }
+
+  #shopify-section-{{ section.id }} .promo-cards__list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  #shopify-section-{{ section.id }} .promo-cards__list li {
+    position: relative;
+    padding-left: 18px;
+    margin-bottom: 10px;
+    font-size: 1.1rem;
+    line-height: 1.4;
+  }
+
+  #shopify-section-{{ section.id }} .promo-cards__list li:last-child {
+    margin-bottom: 0;
+  }
+
+  #shopify-section-{{ section.id }} .promo-cards__list li::before {
+    content: "\2013";
+    position: absolute;
+    left: 0;
+  }
+
+  #shopify-section-{{ section.id }} .promo-cards__button {
+    grid-area: button;
+    display: block;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 18px 24px;
+    border-radius: 999px;
+    text-align: center;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+    line-height: 1;
+    transition: opacity 0.2s ease;
+  }
+
+  #shopify-section-{{ section.id }} .promo-cards__button:hover {
+    opacity: 0.85;
+  }
+
+  @media screen and (max-width: 749px) {
+    #shopify-section-{{ section.id }} .promo-cards {
+      grid-template-columns: 1fr;
+    }
+
+    #shopify-section-{{ section.id }} .promo-cards__card {
+      grid-template-columns: 1fr;
+      grid-template-rows: auto auto auto auto;
+      grid-template-areas:
+        "eyebrow"
+        "image"
+        "content"
+        "button";
+      min-height: 0;
+      padding: 32px 24px 24px;
+    }
+
+    #shopify-section-{{ section.id }} .promo-cards__image img {
+      max-width: 200px;
+      margin: 0 auto;
+    }
+
+    #shopify-section-{{ section.id }} .promo-cards__content {
+      align-self: auto;
+    }
+  }
+{%- endstyle -%}
+
+<div class="color-{{ section.settings.color_scheme }} gradient">
+  <div class="section-{{ section.id }}-padding">
+    <div class="page-width">
+      <div class="promo-cards">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'card' -%}
+            <div
+              class="promo-cards__card"
+              style="background-color: {{ block.settings.background_color }}; color: {{ block.settings.text_color }}; --promo-card-image-width: {{ block.settings.image_width }}%;"
+              {{ block.shopify_attributes }}
+            >
+              {%- if block.settings.eyebrow_text != blank -%}
+                <p class="promo-cards__eyebrow">{{ block.settings.eyebrow_text }}</p>
+              {%- endif -%}
+
+              {%- if block.settings.image != blank -%}
+                <div class="promo-cards__image">
+                  <img
+                    src="{{ block.settings.image | image_url: width: 600 }}"
+                    srcset="{{ block.settings.image | image_url: width: 400 }} 400w, {{ block.settings.image | image_url: width: 600 }} 600w, {{ block.settings.image | image_url: width: 900 }} 900w"
+                    sizes="(min-width: 750px) 30vw, 60vw"
+                    alt="{{ block.settings.image.alt | default: block.settings.button_label | escape }}"
+                    loading="lazy"
+                    width="{{ block.settings.image.width }}"
+                    height="{{ block.settings.image.height }}"
+                  >
+                </div>
+              {%- endif -%}
+
+              {%- if block.settings.intro_text != blank or block.settings.bullets != blank -%}
+                <div class="promo-cards__content">
+                  {%- if block.settings.intro_text != blank -%}
+                    <div class="promo-cards__intro rte">{{ block.settings.intro_text }}</div>
+                  {%- endif -%}
+                  {%- if block.settings.bullets != blank -%}
+                    <ul class="promo-cards__list">
+                      {%- assign bullet_lines = block.settings.bullets | newline_to_br | split: '<br />' -%}
+                      {%- for line in bullet_lines -%}
+                        {%- assign trimmed_line = line | strip -%}
+                        {%- if trimmed_line != blank -%}
+                          <li>{{ trimmed_line }}</li>
+                        {%- endif -%}
+                      {%- endfor -%}
+                    </ul>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+
+              {%- if block.settings.button_label != blank -%}
+                <a
+                  {% if block.settings.button_link == blank %}
+                    role="link" aria-disabled="true"
+                  {% else %}
+                    href="{{ block.settings.button_link }}"
+                  {% endif %}
+                  class="promo-cards__button"
+                  style="background-color: {{ block.settings.button_background_color }}; color: {{ block.settings.button_text_color }};"
+                >
+                  {{ block.settings.button_label | escape }}
+                </a>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Promo Cards",
+  "tag": "section",
+  "class": "section promo-cards-section",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "background-1"
+    },
+    {
+      "type": "range",
+      "id": "column_gap",
+      "min": 0,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "label": "Gap between cards",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "card_radius",
+      "min": 0,
+      "max": 48,
+      "step": 2,
+      "unit": "px",
+      "label": "Card corner radius",
+      "default": 24
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 40
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 40
+    }
+  ],
+  "blocks": [
+    {
+      "type": "card",
+      "name": "Card",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Card colors"
+        },
+        {
+          "type": "color",
+          "id": "background_color",
+          "label": "Background color",
+          "default": "#0b3d38"
+        },
+        {
+          "type": "color",
+          "id": "text_color",
+          "label": "Text color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "button_background_color",
+          "label": "Button background color",
+          "default": "#ffffff"
+        },
+        {
+          "type": "color",
+          "id": "button_text_color",
+          "label": "Button text color",
+          "default": "#0b3d38"
+        },
+        {
+          "type": "header",
+          "content": "Card content"
+        },
+        {
+          "type": "text",
+          "id": "eyebrow_text",
+          "label": "Eyebrow heading",
+          "default": "Daily support for*:"
+        },
+        {
+          "type": "richtext",
+          "id": "intro_text",
+          "label": "Intro text (optional)",
+          "info": "Shown above the bullet list, e.g. for a \"plus\" upgrade card."
+        },
+        {
+          "type": "textarea",
+          "id": "bullets",
+          "label": "Bullet list",
+          "info": "One bullet per line.",
+          "default": "Faster recovery*\nSustained energy*\nElectrolyte balance*\nJoint support*\nFocus on court*"
+        },
+        {
+          "type": "header",
+          "content": "Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Product image"
+        },
+        {
+          "type": "range",
+          "id": "image_width",
+          "min": 30,
+          "max": 65,
+          "step": 1,
+          "unit": "%",
+          "label": "Image column width (desktop)",
+          "default": 46
+        },
+        {
+          "type": "header",
+          "content": "Button"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "label": "Button label",
+          "default": "Shop now"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Promo Cards",
+      "blocks": [
+        {
+          "type": "card",
+          "settings": {
+            "background_color": "#0b3d38",
+            "text_color": "#ffffff",
+            "button_background_color": "#ffffff",
+            "button_text_color": "#0b3d38",
+            "eyebrow_text": "Daily support for*:",
+            "bullets": "Faster recovery*\nSustained energy*\nElectrolyte balance*\nJoint support*\nFocus on court*",
+            "image_width": 46,
+            "button_label": "Shop Next Gen",
+            "button_link": ""
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "background_color": "#96ff00",
+            "text_color": "#111111",
+            "button_background_color": "#ffffff",
+            "button_text_color": "#111111",
+            "eyebrow_text": "Advanced performance & recovery*:",
+            "intro_text": "<p>All the research-backed benefits of Next Gen, plus:</p>",
+            "bullets": "Extra electrolytes for long matches*\nMuscle strength & recovery support*\nFaster recovery between games*",
+            "image_width": 46,
+            "button_label": "Shop Pro",
+            "button_link": ""
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
