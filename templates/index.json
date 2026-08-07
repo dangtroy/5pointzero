@@ -93,6 +93,40 @@
         "alignment": "center"
       }
     },
+    "hero_banner_CQPtcC": {
+      "type": "hero-banner",
+      "name": "Hero Banner",
+      "settings": {
+        "image_desktop": "shopify://shop_images/5pointzero-banner.png",
+        "image_alt": "",
+        "overlay_opacity": 20,
+        "height_desktop": 90,
+        "height_mobile": 70,
+        "content_position": "bottom-left",
+        "content_max_width": 560,
+        "eyebrow_text": "Hydration, Reinvented",
+        "eyebrow_color": "#ffffff",
+        "eyebrow_font_size": 13,
+        "accent_color": "#96FF01",
+        "headline": "Most sports drinks are just",
+        "headline_font_size": 44,
+        "headline_quote": "flavored salt water.",
+        "quote_font_size": 38,
+        "headline_color": "#ffffff",
+        "accent_line": "Mine isn't.",
+        "accent_font_size": 56,
+        "product_line_1": "",
+        "product_line_1_color": "#ffffff",
+        "product_line_2": "",
+        "product_line_2_color": "#ff3ea5",
+        "product_font_size": 20,
+        "button_label": "Shop Perform",
+        "button_link": "",
+        "button_background_color": "#96FF01",
+        "button_text_color": "#111111",
+        "button_font_size": 15
+      }
+    },
     "sport_drink_Pydj4N": {
       "type": "sport_drink",
       "blocks": {
@@ -773,6 +807,7 @@
   "order": [
     "banner_image_text_Jdgaym",
     "zero_difference_rEYXVX",
+    "hero_banner_CQPtcC",
     "sport_drink_Pydj4N",
     "promo_cards_AVxpj8",
     "featured_product_kXrJhN",
