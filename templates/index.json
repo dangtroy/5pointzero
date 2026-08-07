@@ -98,6 +98,7 @@
       "name": "Hero Banner",
       "settings": {
         "image_desktop": "shopify://shop_images/5pointzero-banner.png",
+        "image_mobile": "shopify://shop_images/homepage-banner_1.png",
         "image_alt": "",
         "overlay_opacity": 20,
         "height_desktop": 90,
