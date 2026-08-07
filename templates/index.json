@@ -29,6 +29,63 @@
         "button_green": false
       }
     },
+    "promo_cards_AVxpj8": {
+      "type": "promo-cards",
+      "blocks": {
+        "card_3iUHq3": {
+          "type": "card",
+          "settings": {
+            "background_color": "#000000",
+            "text_color": "#ffffff",
+            "button_background_color": "#ffffff",
+            "button_text_color": "#0b3d38",
+            "eyebrow_text": "BEFORE",
+            "eyebrow_font_size": 40,
+            "intro_text": "<p>PLAY BETTER LONGER</p>",
+            "intro_font_size": 18,
+            "bullets": "Hydration\nEnergy\nEndurance\nFocus\nAnti-Cramping",
+            "bullets_font_size": 18,
+            "image": "shopify://shop_images/a2_2.png",
+            "image_width": 60,
+            "button_label": "SHOP PERFORM",
+            "button_font_size": 18,
+            "button_link": ""
+          }
+        },
+        "card_nQTYjg": {
+          "type": "card",
+          "settings": {
+            "background_color": "#96ff00",
+            "text_color": "#111111",
+            "button_background_color": "#ffffff",
+            "button_text_color": "#111111",
+            "eyebrow_text": "AFTER",
+            "eyebrow_font_size": 40,
+            "intro_text": "<p><strong>RECOVER FASTER</strong></p>",
+            "intro_font_size": 18,
+            "bullets": "Anti-Inflammation\nMuscles\nJoints\nBones\nAntioxidants",
+            "bullets_font_size": 17,
+            "image": "shopify://shop_images/a1_1.png",
+            "image_width": 60,
+            "button_label": "SHOP RECOVER",
+            "button_font_size": 18,
+            "button_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "card_3iUHq3",
+        "card_nQTYjg"
+      ],
+      "name": "Promo Cards",
+      "settings": {
+        "color_scheme": "",
+        "column_gap": 24,
+        "card_radius": 24,
+        "padding_top": 40,
+        "padding_bottom": 40
+      }
+    },
     "zero_difference_rEYXVX": {
       "type": "zero_difference",
       "blocks": {
@@ -93,63 +150,6 @@
         "alignment": "center"
       }
     },
-    "promo_cards_AVxpj8": {
-      "type": "promo-cards",
-      "blocks": {
-        "card_3iUHq3": {
-          "type": "card",
-          "settings": {
-            "background_color": "#000000",
-            "text_color": "#ffffff",
-            "button_background_color": "#ffffff",
-            "button_text_color": "#0b3d38",
-            "eyebrow_text": "BEFORE",
-            "eyebrow_font_size": 40,
-            "intro_text": "<p>PLAY BETTER LONGER</p>",
-            "intro_font_size": 18,
-            "bullets": "Hydration\nEnergy\nEndurance\nFocus\nAnti-Cramping",
-            "bullets_font_size": 18,
-            "image": "shopify://shop_images/a2_2.png",
-            "image_width": 60,
-            "button_label": "SHOP PERFORM",
-            "button_font_size": 18,
-            "button_link": ""
-          }
-        },
-        "card_nQTYjg": {
-          "type": "card",
-          "settings": {
-            "background_color": "#96ff00",
-            "text_color": "#111111",
-            "button_background_color": "#ffffff",
-            "button_text_color": "#111111",
-            "eyebrow_text": "AFTER",
-            "eyebrow_font_size": 40,
-            "intro_text": "<p><strong>RECOVER FASTER</strong></p>",
-            "intro_font_size": 18,
-            "bullets": "Anti-Inflammation\nMuscles\nJoints\nBones\nAntioxidants",
-            "bullets_font_size": 17,
-            "image": "shopify://shop_images/a1_1.png",
-            "image_width": 60,
-            "button_label": "SHOP RECOVER",
-            "button_font_size": 18,
-            "button_link": ""
-          }
-        }
-      },
-      "block_order": [
-        "card_3iUHq3",
-        "card_nQTYjg"
-      ],
-      "name": "Promo Cards",
-      "settings": {
-        "color_scheme": "",
-        "column_gap": 24,
-        "card_radius": 24,
-        "padding_top": 40,
-        "padding_bottom": 40
-      }
-    },
     "hero_banner_CQPtcC": {
       "type": "hero-banner",
       "name": "Hero Banner",
@@ -165,7 +165,7 @@
         "eyebrow_text": "Hydration, Reinvented",
         "eyebrow_color": "#ffffff",
         "eyebrow_font_size": 13,
-        "accent_color": "#96FF01",
+        "accent_color": "#96ff01",
         "headline": "Most sports drinks are just",
         "headline_font_size": 44,
         "headline_quote": "flavored salt water.",
@@ -180,7 +180,7 @@
         "product_font_size": 20,
         "button_label": "Shop Perform",
         "button_link": "",
-        "button_background_color": "#96FF01",
+        "button_background_color": "#96ff01",
         "button_text_color": "#111111",
         "button_font_size": 15
       }
@@ -251,6 +251,7 @@
         },
         "column_AcXmh8": {
           "type": "column",
+          "disabled": true,
           "settings": {
             "image": "shopify://shop_images/homepage-banner_1_ae63b186-ec1d-4386-b68d-365f61c1cd64.png",
             "title": "Miranda Cabieses",
@@ -282,8 +283,8 @@
         "title": "",
         "heading_size": "h1",
         "image_width": "full",
-        "image_ratio": "adapt",
-        "columns_desktop": 5,
+        "image_ratio": "portrait",
+        "columns_desktop": 4,
         "column_alignment": "center",
         "background_style": "none",
         "button_label": "LEARN MORE",
