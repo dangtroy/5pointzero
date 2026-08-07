@@ -23,7 +23,7 @@
         "img2": "shopify://shop_images/New_Project.png",
         "padding_top": 0,
         "padding_bottom": 0,
-        "button_label": "I WANT TO LEVEL UP",
+        "button_label": "LEARN MORE",
         "button_link": "#",
         "button_style_secondary": false,
         "button_green": false
@@ -185,7 +185,7 @@
         "card_nQTYjg": {
           "type": "card",
           "settings": {
-            "background_color": "#96FF01",
+            "background_color": "#96ff00",
             "text_color": "#111111",
             "button_background_color": "#ffffff",
             "button_text_color": "#111111",
