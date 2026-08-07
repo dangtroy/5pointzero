@@ -128,6 +128,116 @@
         "button_font_size": 15
       }
     },
+    "rich_text_BjPNQr": {
+      "type": "rich-text",
+      "blocks": {
+        "text_kigwW3": {
+          "type": "text",
+          "settings": {
+            "text": "<p>TEAM 5 POINT ZERO</p>"
+          }
+        },
+        "heading_N9LVQj": {
+          "type": "heading",
+          "settings": {
+            "heading": "REAL PLAYERS. REAL COMPETITION. REAL FUEL.",
+            "heading_size": "h1"
+          }
+        }
+      },
+      "block_order": [
+        "text_kigwW3",
+        "heading_N9LVQj"
+      ],
+      "name": "t:sections.rich-text.presets.name",
+      "settings": {
+        "desktop_content_position": "center",
+        "content_alignment": "center",
+        "color_scheme": "scheme-3",
+        "full_width": true,
+        "padding_top": 24,
+        "padding_bottom": 0
+      }
+    },
+    "multicolumn_JjHwxM": {
+      "type": "multicolumn",
+      "blocks": {
+        "column_6FdhfB": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/pro.png",
+            "title": "Rick Barry",
+            "text": "",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_JfUFna": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/pickleball_pro.png",
+            "title": "Riley Bohnert",
+            "text": "",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_Un4x6P": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/pickleball.png",
+            "title": "Ryan Torresin",
+            "text": "",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_AcXmh8": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/homepage-banner_1_ae63b186-ec1d-4386-b68d-365f61c1cd64.png",
+            "title": "Miranda Cabieses",
+            "text": "",
+            "link_label": "",
+            "link": ""
+          }
+        },
+        "column_fFNntx": {
+          "type": "column",
+          "settings": {
+            "image": "shopify://shop_images/pickleball-pro-player.png",
+            "title": "Valerie Simon",
+            "text": "",
+            "link_label": "",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "column_6FdhfB",
+        "column_JfUFna",
+        "column_Un4x6P",
+        "column_AcXmh8",
+        "column_fFNntx"
+      ],
+      "name": "t:sections.multicolumn.presets.name",
+      "settings": {
+        "title": "",
+        "heading_size": "h1",
+        "image_width": "full",
+        "image_ratio": "adapt",
+        "columns_desktop": 5,
+        "column_alignment": "center",
+        "background_style": "none",
+        "button_label": "LEARN MORE",
+        "button_link": "",
+        "color_scheme": "scheme-4",
+        "columns_mobile": "2",
+        "swipe_on_mobile": true,
+        "padding_top": 36,
+        "padding_bottom": 36
+      }
+    },
     "sport_drink_Pydj4N": {
       "type": "sport_drink",
       "blocks": {
@@ -809,6 +919,8 @@
     "banner_image_text_Jdgaym",
     "zero_difference_rEYXVX",
     "hero_banner_CQPtcC",
+    "rich_text_BjPNQr",
+    "multicolumn_JjHwxM",
     "sport_drink_Pydj4N",
     "promo_cards_AVxpj8",
     "featured_product_kXrJhN",
