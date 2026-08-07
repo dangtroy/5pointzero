@@ -1,0 +1,225 @@
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.padding_top }}px * 0.75);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px  * 0.75);
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+<div class="color-{{ section.settings.color_scheme }} gradient">
+  <div class="section-{{ section.id }}-padding">
+    <div class="page-width">
+     <div class="sport_drink_cover">
+       <div class="sport_drink_head {{ section.settings.alignemnt }}">
+        <h2 class="rich-text__heading rte inline-richtext {{ section.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+          {{ section.settings.heading }}                         
+        </h2>
+        {% if section.settings.content != blank %} <div class="content">{{ section.settings.content }}</div>{% endif %}
+      </div>
+
+       <div class="sport_drink_body">
+         <ul>
+           {% for block in section.blocks %}
+           <li>
+             <div class="sport_drink_box" {% if block.settings.imgbg != blank %}style="background-image:url({{ block.settings.imgbg | img_url:"master" }})"{% endif %}>
+               <div class="sport_drink_box_inside">
+             {% if block.settings.badge != blank %}<div class="sport_badge" style="{% if block.settings.badge_bg != blank %}background-color:{{ block.settings.badge_bg }};{% endif %} {% if block.settings.badge_color != blank %}color:{{ block.settings.badge_color }};{% endif %} {% unless block.settings.badge_bg != blank %}border-color:{{ block.settings.badge_color }};{% endunless %}"><span>{{ block.settings.badge }}</span></div>{% endif %}
+               {% if block.settings.img != blank %}<div class="sport_drink_image"><img src="{{ block.settings.img | img_url:"master" }}" alt=""/></div>{% endif %}
+               <div class="drink_pd_text">
+                   {% render 'review_star' %}
+                 {% if block.settings.title != blank %}<div class="color-{{ block.settings.color_scheme }} gradient"><h3>{{ block.settings.title }}</h3></div>{% endif %}
+             {% if block.settings.text != blank %}<div class="content">{{ block.settings.text }}</div>{% endif %}
+                 
+                  <a
+                    {% if block.settings.button_link == blank %}
+                      role="link" aria-disabled="true"
+                    {% else %}
+                      href="{{ block.settings.button_link }}"
+                    {% endif %}
+                    class=" {% unless block.settings.button_label != blank %} opacity_zero_point_none {% endunless %}button{% if section.settings.button_style_secondary %} button--secondary{% else %} button--primary{% endif %} {% if section.settings.button_green %}button_arrow_green{% endif %}"
+                  >
+                   {% if block.settings.button_label != blank %} {{- block.settings.button_label | escape -}} {% else %}asdas {% endif %}<svg xmlns="http://www.w3.org/2000/svg" width="53" height="12" viewBox="0 0 53 12" fill="none">
+<path d="M1.57617 5.39648C1.16196 5.39648 0.826172 5.73227 0.826172 6.14648C0.826172 6.5607 1.16196 6.89648 1.57617 6.89648V5.39648ZM52.1065 6.67681C52.3994 6.38392 52.3994 5.90905 52.1065 5.61615L47.3335 0.843184C47.0406 0.55029 46.5658 0.55029 46.2729 0.843184C45.98 1.13608 45.98 1.61095 46.2729 1.90384L50.5155 6.14648L46.2729 10.3891C45.98 10.682 45.98 11.1569 46.2729 11.4498C46.5658 11.7427 47.0406 11.7427 47.3335 11.4498L52.1065 6.67681ZM1.57617 6.89648H51.5762V5.39648H1.57617V6.89648Z" fill="black"/>
+</svg>
+                  </a>
+                
+               </div>
+              </div>
+             </div>
+           </li>
+  {% endfor %}
+         </ul>
+       </div>
+       
+     </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Sport Drink",
+  "tag": "section",
+  "class": "section sport_drink",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 0
+    },
+    {
+      "type": "text_alignment",
+      "id": "alignemnt",
+      "label": "Text Alignment"
+    },
+    {
+      
+          "type": "inline_richtext",
+          "id": "heading",
+          "default": "Image with text",
+          "label": "t:sections.image-with-text.blocks.heading.settings.heading.label"
+        },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "t:sections.all.heading_size.options__1.label"
+        },
+        {
+          "value": "h1",
+          "label": "t:sections.all.heading_size.options__2.label"
+        },
+        {
+          "value": "h0",
+          "label": "t:sections.all.heading_size.options__3.label"
+        },
+        {
+          "value": "hxl",
+          "label": "t:sections.all.heading_size.options__4.label"
+        },
+        {
+          "value": "hxxl",
+          "label": "t:sections.all.heading_size.options__5.label"
+        }
+      ],
+      "default": "h1",
+      "label": "t:sections.all.heading_size.label"
+    },
+     {
+      "type": "richtext",
+      "id": "content",
+      "label": "Content"
+    },
+    {
+      "type": "checkbox",
+      "id": "button_style_secondary",
+      "default": false,
+      "label": "t:sections.rich-text.blocks.buttons.settings.button_style_secondary_1.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "button_green",
+      "default": false,
+      "label": "Button Arrow Green"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "performance",
+      "name": "Sport Image Text",
+      "settings": [
+        {
+          "type": "color_scheme",
+          "id": "color_scheme",
+          "label": "Sport Card Scheme",
+          "default": "scheme-1"
+        },
+        {
+          "type": "text",
+          "id": "badge",
+          "label": "badge"
+        },
+        {
+          "type": "color",
+          "id": "badge_bg",
+          "label": "Badge Backgrouund Color"
+        },
+        {
+          "type": "color",
+          "id": "badge_color",
+          "label": "Badge Text Color"
+        },
+        {
+          "type": "image_picker",
+          "id": "img",
+          "label": "Main Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "imgbg",
+          "label": "Background Image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "button_label",
+          "default": "t:sections.rich-text.blocks.buttons.settings.button_label_1.default",
+          "label": "t:sections.rich-text.blocks.buttons.settings.button_label_1.label",
+          "info": "t:sections.rich-text.blocks.buttons.settings.button_label_1.info"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "t:sections.rich-text.blocks.buttons.settings.button_link_1.label"
+        }
+      ]
+    } 
+  ],
+  "presets": [
+    {
+      "name": "Sport Drink"
+    }
+  ]
+}
+{% endschema %}

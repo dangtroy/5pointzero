@@ -1,0 +1,187 @@
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.padding_top }}px * 0.75);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px  * 0.75);
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+<div class="color-{{ section.settings.color_scheme }} gradient">
+  <div class="section-{{ section.id }}-padding">
+    <div class="page-width">
+      <div class="custom_iwt_cover">
+        <div class="custom_iwt_inner {% if section.settings.image_first %}custom_iwt_image_first{% endif %}">
+         <div class="custom_iwt_text">
+            <div class="custom_iwt_inside">
+           <div class="custom_iwt_header">
+             {% if section.settings.caption != blank %}<span>{{ section.settings.caption }}</span>{% endif %}
+             {% if section.settings.heading != blank %}
+            <h2
+              class="rich-text__heading rte inline-richtext {{ section.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+              {{ section.settings.heading }}
+            </h2>
+         {% endif %}
+         {% if section.settings.hilight != blank %}<h3 style="">{{ section.settings.hilight }}</h3>{% endif %}
+        {% if section.settings.content != blank %} <div class="content">{{ section.settings.content }}</div>{% endif %}
+           </div>
+           <div class="custom_iwt_btn">
+             {%- if section.settings.button_label != blank -%}
+                  <a
+                    {% if section.settings.button_link == blank %}
+                      role="link" aria-disabled="true"
+                    {% else %}
+                      href="{{ section.settings.button_link }}"
+                    {% endif %}
+                    class="button{% if section.settings.button_style_secondary %} button--secondary{% else %} button--primary{% endif %} {% if section.settings.button_green %}button_arrow_green{% endif %}"
+                  >
+                    {{- section.settings.button_label | escape -}} <svg xmlns="http://www.w3.org/2000/svg" width="53" height="12" viewBox="0 0 53 12" fill="none">
+<path d="M1.57617 5.39648C1.16196 5.39648 0.826172 5.73227 0.826172 6.14648C0.826172 6.5607 1.16196 6.89648 1.57617 6.89648V5.39648ZM52.1065 6.67681C52.3994 6.38392 52.3994 5.90905 52.1065 5.61615L47.3335 0.843184C47.0406 0.55029 46.5658 0.55029 46.2729 0.843184C45.98 1.13608 45.98 1.61095 46.2729 1.90384L50.5155 6.14648L46.2729 10.3891C45.98 10.682 45.98 11.1569 46.2729 11.4498C46.5658 11.7427 47.0406 11.7427 47.3335 11.4498L52.1065 6.67681ZM1.57617 6.89648H51.5762V5.39648H1.57617V6.89648Z" fill="black"/>
+</svg>
+                  </a>
+                {%- endif -%}
+           </div>
+</div>
+         </div>
+        {% if section.settings.img != blank %}
+          <div class="custom_iwt_image">
+            <img src="{{ section.settings.img | img_url:"master" }}" alt=""/>
+          </div>
+        {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Custom Image With Text",
+  "tag": "section",
+  "class": "section custom_image_with_text",
+  "settings": [ 
+    {
+      "type": "checkbox",
+      "id": "image_first",
+      "label": "Enable Image First"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 0
+    },
+    {
+      "type": "text",
+      "id": "caption",
+      "label": "Caption"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "default": "t:sections.rich-text.blocks.heading.settings.heading.default",
+      "label": "t:sections.rich-text.blocks.heading.settings.heading.label"
+    },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "t:sections.all.heading_size.options__1.label"
+        },
+        {
+          "value": "h1",
+          "label": "t:sections.all.heading_size.options__2.label"
+        },
+        {
+          "value": "h0",
+          "label": "t:sections.all.heading_size.options__3.label"
+        },
+        {
+          "value": "hxl",
+          "label": "t:sections.all.heading_size.options__4.label"
+        },
+        {
+          "value": "hxxl",
+          "label": "t:sections.all.heading_size.options__5.label"
+        }
+      ],
+      "default": "h1",
+      "label": "t:sections.all.heading_size.label"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "hilight",
+      "label": "Hilighted Text"
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Content"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "default": "t:sections.rich-text.blocks.buttons.settings.button_label_1.default",
+      "label": "t:sections.rich-text.blocks.buttons.settings.button_label_1.label",
+      "info": "t:sections.rich-text.blocks.buttons.settings.button_label_1.info"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "t:sections.rich-text.blocks.buttons.settings.button_link_1.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "button_style_secondary",
+      "default": false,
+      "label": "t:sections.rich-text.blocks.buttons.settings.button_style_secondary_1.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "button_green",
+      "default": false,
+      "label": "Button Arrow Green"
+    },
+    {
+      "type": "image_picker",
+      "id": "img",
+      "label": "Main Image"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Image With Text"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,343 @@
+{% doc %}
+  @prompt
+    center logo with a cart on the right size
+
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-header-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: {{ block.settings.padding_vertical }}px {{ block.settings.padding_horizontal }}px;
+    background-color: {{ block.settings.background_color }};
+    position: relative;
+  }
+
+  .ai-header-logo-{{ ai_gen_id }} {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
+  }
+
+  .ai-header-logo-{{ ai_gen_id }} img {
+    height: {{ block.settings.logo_height }}px;
+    width: auto;
+    max-width: 100%;
+  }
+
+  .ai-header-logo-placeholder-{{ ai_gen_id }} {
+    height: {{ block.settings.logo_height }}px;
+    width: 200px;
+    background-color: #f4f4f4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
+    position: relative;
+  }
+
+  .ai-header-logo-placeholder-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    max-width: 150px;
+    max-height: 40px;
+  }
+
+  .ai-header-empty-state-{{ ai_gen_id }} {
+    position: absolute;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 12px;
+    color: #666;
+    white-space: nowrap;
+  }
+
+  .ai-header-spacer-{{ ai_gen_id }} {
+    flex: 1;
+  }
+
+  .ai-header-cart-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+    z-index: 3;
+    position: relative;
+  }
+
+  .ai-header-cart-link-{{ ai_gen_id }} {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: {{ block.settings.cart_text_color }};
+    text-decoration: none;
+    padding: 8px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+  }
+
+  .ai-header-cart-link-{{ ai_gen_id }}:hover {
+    background-color: {{ block.settings.cart_hover_color }};
+  }
+
+  .ai-header-cart-icon-{{ ai_gen_id }} {
+    position: relative;
+    width: {{ block.settings.cart_icon_size }}px;
+    height: {{ block.settings.cart_icon_size }}px;
+  }
+
+  .ai-header-cart-icon-{{ ai_gen_id }} svg {
+    width: 100%;
+    height: 100%;
+    stroke: currentColor;
+  }
+
+  .ai-header-cart-count-{{ ai_gen_id }} {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background-color: {{ block.settings.cart_badge_color }};
+    color: {{ block.settings.cart_badge_text_color }};
+    border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 600;
+    min-width: 18px;
+  }
+
+  .ai-header-cart-text-{{ ai_gen_id }} {
+    font-size: {{ block.settings.cart_text_size }}px;
+    font-weight: 500;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-header-{{ ai_gen_id }} {
+      padding: {{ block.settings.padding_vertical | times: 0.7 }}px {{ block.settings.padding_horizontal | times: 0.7 }}px;
+    }
+
+    .ai-header-logo-{{ ai_gen_id }} img {
+      height: {{ block.settings.logo_height | times: 0.8 }}px;
+    }
+
+    .ai-header-logo-placeholder-{{ ai_gen_id }} {
+      height: {{ block.settings.logo_height | times: 0.8 }}px;
+      width: 160px;
+    }
+
+    .ai-header-cart-text-{{ ai_gen_id }} {
+      display: none;
+    }
+
+    .ai-header-cart-icon-{{ ai_gen_id }} {
+      width: {{ block.settings.cart_icon_size | times: 0.9 }}px;
+      height: {{ block.settings.cart_icon_size | times: 0.9 }}px;
+    }
+  }
+{% endstyle %}
+
+<header class="ai-header-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <div class="ai-header-spacer-{{ ai_gen_id }}"></div>
+  
+  <div class="ai-header-logo-{{ ai_gen_id }}">
+    {% if block.settings.logo %}
+      <a href="{{ routes.root_url }}">
+        <img
+          src="{{ block.settings.logo | image_url: width: 400 }}"
+          alt="{{ shop.name | escape }}"
+          width="{{ block.settings.logo.width }}"
+          height="{{ block.settings.logo.height }}"
+          loading="lazy"
+        >
+      </a>
+    {% else %}
+      <div class="ai-header-logo-placeholder-{{ ai_gen_id }}">
+        {{ 'image' | placeholder_svg_tag }}
+        <div class="ai-header-empty-state-{{ ai_gen_id }}">
+          Add your logo
+        </div>
+      </div>
+    {% endif %}
+  </div>
+
+  <div class="ai-header-cart-{{ ai_gen_id }}">
+    <a href="{{ routes.cart_url }}" class="ai-header-cart-link-{{ ai_gen_id }}">
+      <div class="ai-header-cart-icon-{{ ai_gen_id }}">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <circle cx="9" cy="21" r="1"></circle>
+          <circle cx="20" cy="21" r="1"></circle>
+          <path d="m1 1 4 4 2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+        {% if cart.item_count > 0 %}
+          <span class="ai-header-cart-count-{{ ai_gen_id }}">{{ cart.item_count }}</span>
+        {% endif %}
+      </div>
+      {% if block.settings.show_cart_text %}
+        <span class="ai-header-cart-text-{{ ai_gen_id }}">
+          {% if cart.item_count == 0 %}
+            {{ block.settings.cart_empty_text }}
+          {% elsif cart.item_count == 1 %}
+            {{ cart.item_count }} {{ block.settings.cart_singular_text }}
+          {% else %}
+            {{ cart.item_count }} {{ block.settings.cart_plural_text }}
+          {% endif %}
+        </span>
+      {% endif %}
+    </a>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "Header with centered logo",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Logo"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo image"
+    },
+    {
+      "type": "range",
+      "id": "logo_height",
+      "min": 30,
+      "max": 100,
+      "step": 5,
+      "unit": "px",
+      "label": "Logo height",
+      "default": 50
+    },
+    {
+      "type": "header",
+      "content": "Cart"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_cart_text",
+      "label": "Show cart text",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "cart_empty_text",
+      "label": "Empty cart text",
+      "default": "Cart"
+    },
+    {
+      "type": "text",
+      "id": "cart_singular_text",
+      "label": "Singular item text",
+      "default": "item"
+    },
+    {
+      "type": "text",
+      "id": "cart_plural_text",
+      "label": "Plural items text",
+      "default": "items"
+    },
+    {
+      "type": "range",
+      "id": "cart_icon_size",
+      "min": 16,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "label": "Cart icon size",
+      "default": 24
+    },
+    {
+      "type": "range",
+      "id": "cart_text_size",
+      "min": 12,
+      "max": 18,
+      "step": 1,
+      "unit": "px",
+      "label": "Cart text size",
+      "default": 14
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "cart_text_color",
+      "label": "Cart text color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "cart_hover_color",
+      "label": "Cart hover background",
+      "default": "#f5f5f5"
+    },
+    {
+      "type": "color",
+      "id": "cart_badge_color",
+      "label": "Cart badge background",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "cart_badge_text_color",
+      "label": "Cart badge text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_vertical",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Vertical padding",
+      "default": 20
+    },
+    {
+      "type": "range",
+      "id": "padding_horizontal",
+      "min": 10,
+      "max": 50,
+      "step": 5,
+      "unit": "px",
+      "label": "Horizontal padding",
+      "default": 20
+    }
+  ],
+  "presets": [
+    {
+      "name": "Header with centered logo"
+    }
+  ],
+  "tag": null
+}
+{% endschema %}

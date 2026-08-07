@@ -1,0 +1,90 @@
+.faq_cover {
+    width: 100%;
+    display: flex;
+}
+
+.faq_left {
+    width: 50%; padding-right:30px;
+}
+
+.faq_right {width: 50%;}
+
+.faq_header {
+    width: 100%;
+}
+
+.acc__title {
+    display: flex;
+    justify-content: space-between;
+}
+.acc__card .acc__title{padding: 27px 60px 27px 29px; cursor:pointer;}
+
+
+.acc__card {
+    border-radius: 10px;
+    background: #FFF;
+    box-shadow: 0px 64px 18px 0px rgba(0, 0, 0, 0.00), 0px 41px 16px 0px rgba(0, 0, 0, 0.01), 0px 23px 14px 0px rgba(0, 0, 0, 0.03), 0px 10px 10px 0px rgba(0, 0, 0, 0.04), 0px 3px 6px 0px rgba(0, 0, 0, 0.05);
+    margin-bottom: 32px;
+    position:relative;
+}
+
+.acc__card .acc__title span svg {
+    width: 30px; transition:all ease 0.3s;
+}
+
+.acc__card .acc__title span {
+   position: absolute;
+    right: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 50%;
+    transform: translateY(-50%);
+}
+ .acc__card .acc__panel {
+    padding: 0 60px 27px 29px;
+    margin-top: -20px;
+   display:none;
+}
+.acc__card .acc__title.active span svg {transform: rotateX(180deg);}
+.acc__card.open {
+    background: #1d1d1d;
+    color: #fff;
+}
+ 
+.faq_header .content {
+    padding-top: 10px;
+}
+.acc__card.open h3 {
+    color: #96FF00;
+}
+
+.acc__card.open  svg path {
+    stroke: #96FF00;
+} 
+
+
+
+@media screen and (max-width:750px){
+  .more_accord_detail_box img {
+    width: 100%;
+    height: 50px;
+}
+
+.faq_left {
+    width: 100%;
+    padding: 0 0 20px;
+}
+
+.faq_cover {
+    flex-wrap: wrap;
+}
+
+.faq_right {
+    width: 100%;
+}
+
+.faq_right .acc__card {
+    margin-bottom: 15px;
+}
+}

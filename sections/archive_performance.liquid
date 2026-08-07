@@ -1,0 +1,226 @@
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.padding_top }}px * 0.75);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px  * 0.75);
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+<div class="color-{{ section.settings.color_scheme }} gradient">
+  <div class="section-{{ section.id }}-padding">
+   <div class="page-width">
+     <div class="archive_performance_cover">
+       
+      <div class="archive_performance_text">
+      <div class="archive_performance_head {{ section.settings.alignemnt }}">
+        <h2 class="rich-text__heading rte inline-richtext {{ section.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+          {{ section.settings.heading }}                         
+        </h2>
+        {% if section.settings.content != blank %} <div class="content">{{ section.settings.content }}</div>{% endif %}
+      </div>
+         <div class="archive_performance_body">
+          <div class="performance_list">
+            {%- assign half = section.blocks.size | divided_by: 2 -%}
+            <ul>
+              {%- for block in section.blocks -%}
+      <li>
+        <div class="performance_text_wrap">
+          <div class="performance_count">0{{ forloop.index }}</div>
+          <div class="performance_text">
+            {%- if block.settings.title != blank -%}
+              <h3>{{ block.settings.title }}</h3>
+            {%- endif -%}
+            {%- if block.settings.text != blank -%}
+              <div class="content">{{ block.settings.text }}</div>
+            {%- endif -%}
+          </div>
+        </div>
+      </li>
+    {%- endfor -%}
+            </ul>
+
+            {% comment %}
+               <ul>
+              {%- for block in section.blocks offset: half -%}
+      <li>
+        <div class="performance_text_wrap">
+          <div class="performance_count">0{{ forloop.index | plus: half }}</div>
+          <div class="performance_text">
+            {%- if block.settings.title != blank -%}
+              <h3>{{ block.settings.title }}</h3>
+            {%- endif -%}
+            {%- if block.settings.text != blank -%}
+              <div class="content">{{ block.settings.text }}</div>
+            {%- endif -%}
+          </div>
+        </div>
+      </li>
+    {%- endfor -%}
+            </ul>
+               {% endcomment %}
+          </div>
+           {%- if section.settings.button_label != blank -%}
+                  <a
+                    {% if section.settings.button_link == blank %}
+                      role="link" aria-disabled="true"
+                    {% else %}
+                      href="{{ section.settings.button_link }}"
+                    {% endif %}
+                    class="button{% if section.settings.button_style_secondary %} button--secondary{% else %} button--primary{% endif %} {% if section.settings.button_green %}button_arrow_green{% endif %}"
+                  >
+                    {{- section.settings.button_label | escape -}} <svg xmlns="http://www.w3.org/2000/svg" width="53" height="12" viewBox="0 0 53 12" fill="none">
+<path d="M1.57617 5.39648C1.16196 5.39648 0.826172 5.73227 0.826172 6.14648C0.826172 6.5607 1.16196 6.89648 1.57617 6.89648V5.39648ZM52.1065 6.67681C52.3994 6.38392 52.3994 5.90905 52.1065 5.61615L47.3335 0.843184C47.0406 0.55029 46.5658 0.55029 46.2729 0.843184C45.98 1.13608 45.98 1.61095 46.2729 1.90384L50.5155 6.14648L46.2729 10.3891C45.98 10.682 45.98 11.1569 46.2729 11.4498C46.5658 11.7427 47.0406 11.7427 47.3335 11.4498L52.1065 6.67681ZM1.57617 6.89648H51.5762V5.39648H1.57617V6.89648Z" fill="black"/>
+</svg>
+                  </a>
+                {%- endif -%}
+         </div>
+        
+      </div>
+       
+      {% if section.settings.img != blank %}<div class="archive_performance_image"><img src="{{ section.settings.img | img_url:"master" }}" alt=""/></div> {% endif %}
+     </div>
+   </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Archive Performance",
+  "tag": "section",
+  "class": "section archive_performance",
+  "settings": [ 
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 0
+    },
+    {
+      "type": "text_alignment",
+      "id": "alignemnt",
+      "label": "Text Alignment"
+    },
+    {
+      
+          "type": "inline_richtext",
+          "id": "heading",
+          "default": "Image with text",
+          "label": "t:sections.image-with-text.blocks.heading.settings.heading.label"
+        },
+    {
+      "type": "select",
+      "id": "heading_size",
+      "options": [
+        {
+          "value": "h2",
+          "label": "t:sections.all.heading_size.options__1.label"
+        },
+        {
+          "value": "h1",
+          "label": "t:sections.all.heading_size.options__2.label"
+        },
+        {
+          "value": "h0",
+          "label": "t:sections.all.heading_size.options__3.label"
+        },
+        {
+          "value": "hxl",
+          "label": "t:sections.all.heading_size.options__4.label"
+        },
+        {
+          "value": "hxxl",
+          "label": "t:sections.all.heading_size.options__5.label"
+        }
+      ],
+      "default": "h1",
+      "label": "t:sections.all.heading_size.label"
+    },
+     {
+      "type": "richtext",
+      "id": "content",
+      "label": "Content"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "default": "t:sections.rich-text.blocks.buttons.settings.button_label_1.default",
+      "label": "t:sections.rich-text.blocks.buttons.settings.button_label_1.label",
+      "info": "t:sections.rich-text.blocks.buttons.settings.button_label_1.info"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "t:sections.rich-text.blocks.buttons.settings.button_link_1.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "button_style_secondary",
+      "default": false,
+      "label": "t:sections.rich-text.blocks.buttons.settings.button_style_secondary_1.label"
+    },
+    {
+      "type": "checkbox",
+      "id": "button_green",
+      "default": false,
+      "label": "Button Arrow Green"
+    },
+    {
+      "type": "image_picker",
+      "label": "Image",
+      "id": "img"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "performance",
+      "name": "Performance",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text"
+        }
+      ]
+    } 
+  ],
+  "presets": [
+    {
+      "name": "Archive Performance"
+    }
+  ]
+}
+{% endschema %}

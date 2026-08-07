@@ -1,0 +1,124 @@
+{% schema %}
+{
+  "name": "Custom Contact Form",
+  "tag": "section",
+  "class": "custom-contact-form",
+  "settings": [
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#AAB8A2"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#1A1A1A"
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Button color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text color",
+      "default": "#A5FF00"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Contact Form"
+    }
+  ]
+}
+{% endschema %}
+
+<div class="contact-wrapper">
+  <form method="post" action="/contact#contact_form" id="contact_form" accept-charset="UTF-8" class="contact-form">
+    <input type="hidden" name="form_type" value="contact" />
+    <input type="hidden" name="utf8" value="✓" />
+
+    <label>First Name</label>
+    <input type="text" name="contact[first_name]" required>
+
+    <label>Last Name</label>
+    <input type="text" name="contact[last_name]" required>
+
+    <label>Position</label>
+    <select name="contact[body]">
+      <option>Owner</option>
+      <option>Manager</option>
+      <option>Buyer</option>
+      <option>Other</option>
+    </select>
+
+    <label>Business Name</label>
+    <input type="text" name="contact[company]">
+
+    <label>Business Email</label>
+    <input type="email" name="contact[email]" required>
+
+    <label>Business Phone</label>
+    <input type="tel" name="contact[phone]">
+
+    <label>Website</label>
+    <input type="url" name="contact[website]">
+
+    <label>Address</label>
+    <input type="text" name="contact[address]">
+
+    <button type="submit">Submit</button>
+  </form>
+</div>
+
+<style>
+  .contact-wrapper {
+    background-color: {{ section.settings.background_color }};
+    color: {{ section.settings.text_color }};
+    padding: 2rem;
+    border-radius: 10px;
+    max-width: 600px;
+    margin: auto;
+    font-family: sans-serif;
+  }
+
+  .contact-form label {
+    font-weight: bold;
+    display: block;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .contact-form input,
+  .contact-form select {
+    width: 100%;
+    padding: 1rem;
+    border: none;
+    background: #c1cfc1;
+    border-radius: 8px;
+    font-size: 1rem;
+      background: #000000;
+    color: #ffffff;
+  }
+
+  .contact-form button {
+    margin-top: 2rem;
+    width: 100%;
+    padding: 1rem;
+    background-color: {{ section.settings.button_color }};
+    color: {{ section.settings.button_text_color }};
+    font-weight: bold;
+    font-size: 1.2rem;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+  }
+
+  .contact-form button:hover {
+    opacity: 0.9;
+  }
+</style>

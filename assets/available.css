@@ -1,0 +1,96 @@
+
+  .available_cover {
+    text-align: center; 
+    margin: 0 auto;
+    padding: 100px 0;
+}
+
+.available_cover h3 {
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 700;
+    line-height: 120%;
+    display: block;
+    background-color: #96ff00;
+    padding: 6px 0 0; 
+    margin: 0px auto 32px;
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.available_cover span {
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 120%;
+    text-transform: uppercase;
+    padding: 0px 0 0;
+    max-width: 310px;
+    margin: 0 auto;
+    text-align: center;
+    color: #fff;
+   margin-bottom: 32px;
+}
+
+ .available_cover_wrap {
+    border-radius: 15px;
+    margin: 70px 0;
+}
+ 
+.available_cover h3 {
+    display: table;
+    margin: 0 auto 30px;
+    padding: 10px 20px 5px;
+    color: #000;
+}
+
+.available_cover {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.available_cover span {
+    max-width: 100%;
+    margin: 0 0 25px;
+}
+
+
+
+
+
+
+@media screen and (max-width:798px){
+  .available_cover {
+    padding: 50px 10px;
+}
+
+.available_cover h3 {
+    font-size: 30px;
+    margin-bottom: 15px;
+}
+
+.available_cover span {
+    font-size: 30px;
+    margin-bottom: 15px;
+}
+}
+
+
+@media screen and (max-width:750px){
+    .available_cover h3, .available_cover span {
+        font-size: 20px;
+        margin-bottom: 15px;
+    }
+.available_cover span{
+  margin-bottom:0;
+}
+  .available_cover .button {
+    margin-top: 10px;
+}
+      .available_cover {
+        padding: 20px 10px;
+    }
+  
+}

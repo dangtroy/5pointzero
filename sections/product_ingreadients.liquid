@@ -1,0 +1,158 @@
+{%- style -%}
+  .section-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.padding_top }}px * 0.75);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px  * 0.75);
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+{%- endstyle -%}
+<div class="color-{{ section.settings.color_scheme }} gradient">
+  <div class="section-{{ section.id }}-padding">
+    <div class="page-width">
+       <div class="product_ingreadients_cover" {% if section.settings.imgbg != blank %}style="background-image:url({{ section.settings.imgbg | img_url:"master" }})"{% endif %}>
+         {% if section.settings.img != blank %}
+         <div class="product_ingreadients_img">
+           <div class="product_ingreadients_img_inner">
+             <img src="{{ section.settings.img | img_url:"master" }}" alt=""/>
+           </div>
+         </div>
+           {% endif %}
+         <div class="product_ingreadients_right_content">
+           <div class="product_ingreadients_right_content_inner">
+               <div class="product_main_inner_detail">
+         <div class="acc">
+ 
+
+           {% assign metafielddetailProducts = product.metafields.custom.product_accordion_details.value %}
+{% unless metafielddetailProducts == blank %}
+
+               {% for metadetailProduct in metafielddetailProducts %}
+               
+            <div class="acc__card {% if forloop.first == true %}open{% endif %}">
+              <div class="acc__title {% if forloop.first == true %}active{% endif %}"><h3>{{ metadetailProduct.heading.value }}</h3><span class="plus_minus_icons"></span></div>
+              <div class="acc__panel" {% if forloop.first == true %}style="display:block;"{% endif %}>
+                {% if metadetailProduct.main_image != blank %}<div class="main_img_details">
+                  <a data-fancybox data-src="{{ metadetailProduct.main_image | img_url:"master" }}">
+                  <img src="{{ metadetailProduct.main_image | img_url:"master" }}" alt=""/>
+                  </a>
+                  </div>{% endif %}
+             <ul>
+               {% if metadetailProduct.text_1 != blank or metadetailProduct.content_1 != blank or metadetailProduct.icon_1 != blank %}
+               <li>
+                 <div class="more_accord_detail_box">
+                   {% if metadetailProduct.text_1 != blank %}<h4><span>01</span><p>{{ metadetailProduct.text_1 }}</p></h4>{% endif %}
+                   {% if metadetailProduct.content_1 != blank %}<div class="content">{{ metadetailProduct.content_1 | metafield_tag }}</div>{% endif %}
+                   {% if metadetailProduct.icon_1 != blank %}<img src="{{ metadetailProduct.icon_1 | img_url:"master" }}" alt=""/>{% endif %}
+                 </div>
+               </li>
+               {% endif %}
+               {% if metadetailProduct.text_2 != blank or metadetailProduct.content_2 != blank or metadetailProduct.icon_2 != blank %}
+               <li>
+                 <div class="more_accord_detail_box">
+                   {% if metadetailProduct.text_2 != blank %}<h4><span>02</span><p>{{ metadetailProduct.text_2 }}</p></h4>{% endif %}
+                   {% if metadetailProduct.content_2 != blank %}<div class="content">{{ metadetailProduct.content_2 | metafield_tag }}</div>{% endif %}
+                   {% if metadetailProduct.icon_2 != blank %}<img src="{{ metadetailProduct.icon_2 | img_url:"master" }}" alt=""/>{% endif %}
+                 </div>
+               </li>
+               {% endif %}
+               {% if metadetailProduct.text_3 != blank or metadetailProduct.content_3 != blank or metadetailProduct.icon_3 != blank %}
+               <li>
+                 <div class="more_accord_detail_box">
+                   {% if metadetailProduct.text_3 != blank %}<h4><span>03</span><p>{{ metadetailProduct.text_3 }}</p></h4>{% endif %}
+                   {% if metadetailProduct.content_3 != blank %}<div class="content">{{ metadetailProduct.content_3 | metafield_tag }}</div>{% endif %}
+                   {% if metadetailProduct.icon_3 != blank %}<img src="{{ metadetailProduct.icon_3 | img_url:"master" }}" alt=""/>{% endif %}
+                 </div>
+               </li>
+               {% endif %}
+               {% if metadetailProduct.text_4 != blank or metadetailProduct.content_4 != blank or metadetailProduct.icon_4 != blank %}
+               <li>
+                 <div class="more_accord_detail_box">
+                   {% if metadetailProduct.text_4 != blank %}<h4><span>04</span><p>{{ metadetailProduct.text_4 }}</p></h4>{% endif %}
+                   {% if metadetailProduct.content_4 != blank %}<div class="content">{{ metadetailProduct.content_4 | metafield_tag }}</div>{% endif %}
+                   {% if metadetailProduct.icon_4 != blank %}<img src="{{ metadetailProduct.icon_4 | img_url:"master" }}" alt=""/>{% endif %}
+                 </div>
+               </li>
+               {% endif %}
+               {% if metadetailProduct.text_5 != blank or metadetailProduct.content_5 != blank or metadetailProduct.icon_5 != blank %}
+               <li>
+                 <div class="more_accord_detail_box">
+                   {% if metadetailProduct.text_5 != blank %}<h4><span>05</span><p>{{ metadetailProduct.text_5 }}</p></h4>{% endif %}
+                   {% if metadetailProduct.content_5 != blank %}<div class="content">{{ metadetailProduct.content_5 | metafield_tag }}</div>{% endif %}
+                   {% if metadetailProduct.icon_5 != blank %}<img src="{{ metadetailProduct.icon_5 | img_url:"master" }}" alt=""/>{% endif %}
+                 </div>
+               </li>
+               {% endif %}
+             </ul>
+              </div>
+            </div> 
+                
+              {% endfor %}
+            {% endunless %}
+          </div>
+         </div>
+           </div>
+         </div>
+       </div>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Product Ingreadients",
+  "tag": "section",
+  "class": "section product_ingreadients",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 0
+    },
+    {
+      "type": "image_picker",
+      "id": "imgbg",
+      "label": "Background Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "img",
+      "label": "Image"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Ingreadients"
+    }
+  ]
+}
+{% endschema %}

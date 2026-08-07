@@ -1,0 +1,289 @@
+<style>
+  .section-{{ section.id }}-padding {
+    padding-top: calc({{ section.settings.padding_top }}px * 0.75);
+    padding-bottom: calc({{ section.settings.padding_bottom }}px  * 0.75);
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  .section-{{ section.id }} .acc__title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer !important;
+    position: relative;
+    width: 100%;
+  }
+
+  .section-{{ section.id }} .acc__title:hover {
+    cursor: pointer !important;
+  }
+
+  .section-{{ section.id }} .acc__title h3 {
+    margin: 0;
+    flex: 1;
+    padding-right: 20px;
+  }
+
+  .section-{{ section.id }} .plus_minus_icons {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer !important;
+    z-index: 10;
+  }
+
+  .section-{{ section.id }} .plus_minus_icons:hover {
+    cursor: pointer !important;
+  }
+  .acc__panel {
+  display: none;
+}
+</style>
+
+<div class="color-{{ section.settings.color_scheme }} gradient">
+  <div class="section-{{ section.id }}-padding">
+    <div class="page-width">
+       <div class="product_ingreadients_cover" {% if section.settings.imgbg != blank %}style="background-image:url({{ section.settings.imgbg | img_url:"master" }})"{% endif %}>
+         {% if section.settings.img != blank %}
+         <div class="product_ingreadients_img">
+           <div class="product_ingreadients_img_inner">
+             <img src="{{ section.settings.img | img_url:"master" }}" alt=""/>
+           </div>
+         </div>
+         {% endif %}
+         <div class="product_ingreadients_right_content">
+           <div class="product_ingreadients_right_content_inner">
+               <div class="product_main_inner_detail">
+         <div class="acc">
+           {% for block in section.blocks %}
+            <div class="acc__card">
+              <div class="acc__title"><h3>{{ block.settings.heading }}</h3><span class="plus_minus_icons"></span></div>
+              <div class="acc__panel">
+                {% if block.settings.main_image != blank %}
+                <div class="main_img_details">
+                  <a data-fancybox data-src="{{ block.settings.main_image | img_url:"master" }}">
+                  <img src="{{ block.settings.main_image | img_url:"master" }}" alt=""/>
+                  </a>
+                </div>
+                {% endif %}
+             <ul>
+               {% if block.settings.text_1 != blank or block.settings.content_1 != blank or block.settings.icon_1 != blank %}
+               <li>
+                 <div class="more_accord_detail_box">
+                   {% if block.settings.text_1 != blank %}<h4><span>01</span><p>{{ block.settings.text_1 }}</p></h4>{% endif %}
+                   {% if block.settings.content_1 != blank %}<div class="content">{{ block.settings.content_1 }}</div>{% endif %}
+                   {% if block.settings.icon_1 != blank %}<img src="{{ block.settings.icon_1 | img_url:"master" }}" alt=""/>{% endif %}
+                 </div>
+               </li>
+               {% endif %}
+               {% if block.settings.text_2 != blank or block.settings.content_2 != blank or block.settings.icon_2 != blank %}
+               <li>
+                 <div class="more_accord_detail_box">
+                   {% if block.settings.text_2 != blank %}<h4><span>02</span><p>{{ block.settings.text_2 }}</p></h4>{% endif %}
+                   {% if block.settings.content_2 != blank %}<div class="content">{{ block.settings.content_2 }}</div>{% endif %}
+                   {% if block.settings.icon_2 != blank %}<img src="{{ block.settings.icon_2 | img_url:"master" }}" alt=""/>{% endif %}
+                 </div>
+               </li>
+               {% endif %}
+               {% if block.settings.text_3 != blank or block.settings.content_3 != blank or block.settings.icon_3 != blank %}
+               <li>
+                 <div class="more_accord_detail_box">
+                   {% if block.settings.text_3 != blank %}<h4><span>03</span><p>{{ block.settings.text_3 }}</p></h4>{% endif %}
+                   {% if block.settings.content_3 != blank %}<div class="content">{{ block.settings.content_3 }}</div>{% endif %}
+                   {% if block.settings.icon_3 != blank %}<img src="{{ block.settings.icon_3 | img_url:"master" }}" alt=""/>{% endif %}
+                 </div>
+               </li>
+               {% endif %}
+               {% if block.settings.text_4 != blank or block.settings.content_4 != blank or block.settings.icon_4 != blank %}
+               <li>
+                 <div class="more_accord_detail_box">
+                   {% if block.settings.text_4 != blank %}<h4><span>04</span><p>{{ block.settings.text_4 }}</p></h4>{% endif %}
+                   {% if block.settings.content_4 != blank %}<div class="content">{{ block.settings.content_4 }}</div>{% endif %}
+                   {% if block.settings.icon_4 != blank %}<img src="{{ block.settings.icon_4 | img_url:"master" }}" alt=""/>{% endif %}
+                 </div>
+               </li>
+               {% endif %}
+               {% if block.settings.text_5 != blank or block.settings.content_5 != blank or block.settings.icon_5 != blank %}
+               <li>
+                 <div class="more_accord_detail_box">
+                   {% if block.settings.text_5 != blank %}<h4><span>05</span><p>{{ block.settings.text_5 }}</p></h4>{% endif %}
+                   {% if block.settings.content_5 != blank %}<div class="content">{{ block.settings.content_5 }}</div>{% endif %}
+                   {% if block.settings.icon_5 != blank %}<img src="{{ block.settings.icon_5 | img_url:"master" }}" alt=""/>{% endif %}
+                 </div>
+               </li>
+               {% endif %}
+             </ul>
+              </div>
+            </div> 
+           {% endfor %}
+          </div>
+         </div>
+           </div>
+         </div>
+       </div>
+    </div>
+  </div>
+</div>
+
+
+
+{% schema %}
+{
+  "name": "Product Ingreadients",
+  "tag": "section",
+  "class": "section product_ingreadients",
+  "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.all.padding.section_padding_heading"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_top",
+      "default": 0
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 100,
+      "step": 4,
+      "unit": "px",
+      "label": "t:sections.all.padding.padding_bottom",
+      "default": 0
+    },
+    {
+      "type": "image_picker",
+      "id": "imgbg",
+      "label": "Background Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "img",
+      "label": "Image"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "accordion_item",
+      "name": "Accordion Item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Accordion Title"
+        },
+        {
+          "type": "image_picker",
+          "id": "main_image",
+          "label": "Main Image"
+        },
+        {
+          "type": "text",
+          "id": "text_1",
+          "label": "Text 1"
+        },
+        {
+          "type": "richtext",
+          "id": "content_1",
+          "label": "Content 1"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon_1",
+          "label": "Icon 1"
+        },
+        {
+          "type": "text",
+          "id": "text_2",
+          "label": "Text 2"
+        },
+        {
+          "type": "richtext",
+          "id": "content_2",
+          "label": "Content 2"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon_2",
+          "label": "Icon 2"
+        },
+        {
+          "type": "text",
+          "id": "text_3",
+          "label": "Text 3"
+        },
+        {
+          "type": "richtext",
+          "id": "content_3",
+          "label": "Content 3"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon_3",
+          "label": "Icon 3"
+        },
+        {
+          "type": "text",
+          "id": "text_4",
+          "label": "Text 4"
+        },
+        {
+          "type": "richtext",
+          "id": "content_4",
+          "label": "Content 4"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon_4",
+          "label": "Icon 4"
+        },
+        {
+          "type": "text",
+          "id": "text_5",
+          "label": "Text 5"
+        },
+        {
+          "type": "richtext",
+          "id": "content_5",
+          "label": "Content 5"
+        },
+        {
+          "type": "image_picker",
+          "id": "icon_5",
+          "label": "Icon 5"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Ingreadients",
+      "blocks": [
+        {
+          "type": "accordion_item"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
