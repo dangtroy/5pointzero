@@ -176,7 +176,7 @@
             "bullets": "Hydration\nEnergy\nEndurance\nFocus\nAnti-Cramping",
             "bullets_font_size": 18,
             "image": "shopify://shop_images/a2_2.png",
-            "image_width": 65,
+            "image_width": 60,
             "button_label": "SHOP PERFORM",
             "button_font_size": 18,
             "button_link": ""
@@ -194,9 +194,9 @@
             "intro_text": "<p><strong>RECOVER FASTER</strong></p>",
             "intro_font_size": 18,
             "bullets": "Anti-Inflammation\nMuscles\nJoints\nBones\nAntioxidants",
-            "bullets_font_size": 18,
+            "bullets_font_size": 17,
             "image": "shopify://shop_images/a1_1.png",
-            "image_width": 65,
+            "image_width": 60,
             "button_label": "SHOP RECOVER",
             "button_font_size": 18,
             "button_link": ""
