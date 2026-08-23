@@ -1,0 +1,305 @@
+{% comment %}
+  PZ Product Hero — gallery + buy box, AG1-style pack/variant picker with
+  savings badges, trust list, and a sticky mobile add-to-cart bar.
+{% endcomment %}
+<section class="pz-hero pz-hero-{{ section.id }}" data-section-id="{{ section.id }}">
+  {% style %}
+    .pz-hero-{{ section.id }} {
+      --pz-accent: {{ section.settings.accent_color }};
+      --pz-ink: {{ section.settings.text_color }};
+      --pz-bg: {{ section.settings.background }};
+      background: var(--pz-bg);
+      color: var(--pz-ink);
+      padding: 32px 0 48px;
+    }
+    .pz-hero-{{ section.id }} .pz-hero-grid {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 24px;
+      display: grid;
+      grid-template-columns: 1.1fr 1fr;
+      gap: 48px;
+      align-items: start;
+    }
+    @media (max-width: 900px) {
+      .pz-hero-{{ section.id }} .pz-hero-grid { grid-template-columns: 1fr; gap: 24px; }
+    }
+    .pz-hero-{{ section.id }} .pz-gallery-main {
+      position: sticky;
+      top: 24px;
+      border-radius: 16px;
+      overflow: hidden;
+      background: #f4f4f4;
+      aspect-ratio: 1 / 1;
+    }
+    .pz-hero-{{ section.id }} .pz-gallery-main img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+    .pz-hero-{{ section.id }} .pz-gallery-thumbs {
+      display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap;
+    }
+    .pz-hero-{{ section.id }} .pz-gallery-thumbs button {
+      width: 64px; height: 64px; border-radius: 8px; overflow: hidden;
+      border: 2px solid transparent; padding: 0; cursor: pointer; background: #f4f4f4;
+    }
+    .pz-hero-{{ section.id }} .pz-gallery-thumbs button.is-active { border-color: var(--pz-accent); }
+    .pz-hero-{{ section.id }} .pz-gallery-thumbs img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    .pz-hero-{{ section.id }} .pz-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: var(--pz-accent); color: #fff;
+      font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
+      padding: 6px 12px; border-radius: 999px; margin-bottom: 12px;
+    }
+    .pz-hero-{{ section.id }} h1 {
+      font-size: clamp(28px, 3.4vw, 40px); line-height: 1.1; margin: 0 0 8px; font-weight: 800;
+    }
+    .pz-hero-{{ section.id }} .pz-subhead {
+      font-size: 16px; line-height: 1.5; opacity: .85; margin: 0 0 20px; max-width: 52ch;
+    }
+    .pz-hero-{{ section.id }} .pz-reviews-line {
+      display: flex; align-items: center; gap: 8px; font-size: 14px; margin-bottom: 20px;
+    }
+    .pz-hero-{{ section.id }} .pz-stars { color: #f5a623; letter-spacing: 1px; }
+
+    .pz-hero-{{ section.id }} .pz-variant-list {
+      display: grid; gap: 10px; margin-bottom: 20px;
+    }
+    .pz-hero-{{ section.id }} .pz-variant-option {
+      display: flex; align-items: center; justify-content: space-between;
+      border: 2px solid #e3e3e3; border-radius: 12px; padding: 14px 16px;
+      cursor: pointer; position: relative; transition: border-color .15s ease;
+    }
+    .pz-hero-{{ section.id }} .pz-variant-option:hover { border-color: #c9c9c9; }
+    .pz-hero-{{ section.id }} .pz-variant-option.is-selected {
+      border-color: var(--pz-accent);
+      box-shadow: 0 0 0 1px var(--pz-accent);
+    }
+    .pz-hero-{{ section.id }} .pz-variant-option input { position: absolute; opacity: 0; pointer-events: none; }
+    .pz-hero-{{ section.id }} .pz-variant-best {
+      position: absolute; top: -10px; left: 16px; background: var(--pz-accent); color: #fff;
+      font-size: 10px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
+      padding: 3px 8px; border-radius: 999px;
+    }
+    .pz-hero-{{ section.id }} .pz-variant-title { font-weight: 700; font-size: 15px; }
+    .pz-hero-{{ section.id }} .pz-variant-sub { font-size: 13px; opacity: .7; margin-top: 2px; }
+    .pz-hero-{{ section.id }} .pz-variant-price { text-align: right; }
+    .pz-hero-{{ section.id }} .pz-variant-price .pz-was { text-decoration: line-through; opacity: .5; font-size: 13px; margin-right: 6px; }
+    .pz-hero-{{ section.id }} .pz-variant-price .pz-now { font-weight: 800; font-size: 18px; }
+    .pz-hero-{{ section.id }} .pz-variant-save { font-size: 12px; font-weight: 700; color: var(--pz-accent); margin-top: 2px; }
+
+    .pz-hero-{{ section.id }} .pz-atc {
+      width: 100%; padding: 16px; border-radius: 999px; border: none;
+      background: var(--pz-accent); color: #fff; font-weight: 800; font-size: 16px;
+      letter-spacing: .02em; cursor: pointer; margin-bottom: 12px;
+    }
+    .pz-hero-{{ section.id }} .pz-atc:disabled { opacity: .5; cursor: not-allowed; }
+    .pz-hero-{{ section.id }} .pz-guarantee {
+      display: flex; align-items: center; gap: 8px; font-size: 13px; opacity: .8; justify-content: center; margin-bottom: 20px;
+    }
+    .pz-hero-{{ section.id }} .pz-trust-list {
+      list-style: none; margin: 0; padding: 16px 0 0; border-top: 1px solid #e8e8e8;
+      display: grid; gap: 8px;
+    }
+    .pz-hero-{{ section.id }} .pz-trust-list li {
+      display: flex; align-items: center; gap: 8px; font-size: 14px;
+    }
+    .pz-hero-{{ section.id }} .pz-trust-list svg { flex: none; color: var(--pz-accent); }
+
+    .pz-hero-{{ section.id }} .pz-sticky-bar {
+      position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
+      background: #fff; border-top: 1px solid #e5e5e5;
+      padding: 10px 16px; display: none; align-items: center; justify-content: space-between; gap: 12px;
+      box-shadow: 0 -4px 16px rgba(0,0,0,.06);
+    }
+    .pz-hero-{{ section.id }} .pz-sticky-bar.is-visible { display: flex; }
+    .pz-hero-{{ section.id }} .pz-sticky-bar .pz-atc { margin: 0; width: auto; padding: 12px 24px; font-size: 14px; }
+    .pz-hero-{{ section.id }} .pz-sticky-title { font-size: 14px; font-weight: 700; }
+    .pz-hero-{{ section.id }} .pz-sticky-price { font-size: 13px; opacity: .7; }
+  {% endstyle %}
+
+  <div class="pz-hero-grid">
+    <div class="pz-gallery">
+      <div class="pz-gallery-main">
+        {% if product.featured_media %}
+          <img id="pz-main-image-{{ section.id }}" src="{{ product.featured_media | image_url: width: 1200 }}" alt="{{ product.featured_media.alt | escape }}" width="1200" height="1200">
+        {% else %}
+          {{ 'product-1' | placeholder_svg_tag }}
+        {% endif %}
+      </div>
+      {% if product.media.size > 1 %}
+        <div class="pz-gallery-thumbs">
+          {% for media in product.media limit: 6 %}
+            <button type="button" class="pz-thumb {% if forloop.first %}is-active{% endif %}" data-full="{{ media | image_url: width: 1200 }}">
+              <img src="{{ media | image_url: width: 120 }}" alt="{{ media.alt | escape }}" loading="lazy">
+            </button>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="pz-buybox">
+      {% if section.settings.badge_text != blank %}
+        <span class="pz-badge">{{ section.settings.badge_text }}</span>
+      {% endif %}
+      <h1>{{ product.title }}</h1>
+      {% if section.settings.subheadline != blank %}
+        <p class="pz-subhead">{{ section.settings.subheadline }}</p>
+      {% endif %}
+      {% if section.settings.show_reviews_line %}
+        <div class="pz-reviews-line">
+          <span class="pz-stars" aria-hidden="true">★★★★★</span>
+          <span>{{ section.settings.reviews_line_text }}</span>
+        </div>
+      {% endif %}
+
+      {% form 'product', product, id: 'pz-product-form', class: 'pz-buy-form' %}
+        <input type="hidden" name="id" id="pz-selected-variant-{{ section.id }}" value="{{ product.selected_or_first_available_variant.id }}">
+
+        <div class="pz-variant-list" role="radiogroup" aria-label="Purchase option">
+          {% for variant in product.variants %}
+            {% assign save_amount = 0 %}
+            {% if variant.compare_at_price > variant.price %}
+              {% assign save_amount = variant.compare_at_price | minus: variant.price %}
+            {% endif %}
+            <label class="pz-variant-option {% if forloop.first %}is-selected{% endif %}" data-variant-id="{{ variant.id }}">
+              {% if forloop.index == 2 %}<span class="pz-variant-best">Best Value</span>{% endif %}
+              <input type="radio" name="pz-variant-radio" value="{{ variant.id }}" {% if forloop.first %}checked{% endif %}>
+              <span class="pz-variant-copy">
+                <span class="pz-variant-title">{{ variant.title }}</span>
+                {% if variant.metafields.custom.subtitle != blank %}
+                  <span class="pz-variant-sub">{{ variant.metafields.custom.subtitle }}</span>
+                {% endif %}
+              </span>
+              <span class="pz-variant-price">
+                <span>
+                  {% if variant.compare_at_price > variant.price %}
+                    <span class="pz-was">{{ variant.compare_at_price | money_without_trailing_zeros }}</span>
+                  {% endif %}
+                  <span class="pz-now">{{ variant.price | money_without_trailing_zeros }}</span>
+                </span>
+                {% if save_amount > 0 %}
+                  <span class="pz-variant-save">Save {{ save_amount | money_without_trailing_zeros }}</span>
+                {% endif %}
+              </span>
+            </label>
+          {% endfor %}
+        </div>
+
+        <button type="submit" class="pz-atc" id="pz-atc-{{ section.id }}" {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}>
+          {% if product.selected_or_first_available_variant.available %}
+            {{ section.settings.atc_label | default: 'Add to Cart' }}
+          {% else %}
+            Sold Out
+          {% endif %}
+        </button>
+      {% endform %}
+
+      {% if section.settings.guarantee_text != blank %}
+        <div class="pz-guarantee">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10Z"/></svg>
+          {{ section.settings.guarantee_text }}
+        </div>
+      {% endif %}
+
+      {% if section.blocks.size > 0 %}
+        <ul class="pz-trust-list">
+          {% for block in section.blocks %}
+            {% if block.type == 'trust_item' %}
+              <li {{ block.shopify_attributes }}>
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>
+                {{ block.settings.text }}
+              </li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+  </div>
+
+  <div class="pz-sticky-bar" id="pz-sticky-bar-{{ section.id }}">
+    <div>
+      <div class="pz-sticky-title">{{ product.title }}</div>
+      <div class="pz-sticky-price">{{ product.selected_or_first_available_variant.price | money }}</div>
+    </div>
+    <button type="submit" form="pz-product-form" class="pz-atc">{{ section.settings.atc_label | default: 'Add to Cart' }}</button>
+  </div>
+</section>
+
+<script>
+(function () {
+  var root = document.querySelector('.pz-hero-{{ section.id }}');
+  if (!root) return;
+
+  var options = root.querySelectorAll('.pz-variant-option');
+  var hiddenInput = root.querySelector('#pz-selected-variant-{{ section.id }}');
+  options.forEach(function (opt) {
+    opt.addEventListener('click', function () {
+      options.forEach(function (o) { o.classList.remove('is-selected'); });
+      opt.classList.add('is-selected');
+      var radio = opt.querySelector('input[type="radio"]');
+      radio.checked = true;
+      hiddenInput.value = opt.getAttribute('data-variant-id');
+    });
+  });
+
+  var thumbs = root.querySelectorAll('.pz-thumb');
+  var mainImg = root.querySelector('#pz-main-image-{{ section.id }}');
+  thumbs.forEach(function (t) {
+    t.addEventListener('click', function () {
+      thumbs.forEach(function (o) { o.classList.remove('is-active'); });
+      t.classList.add('is-active');
+      if (mainImg) mainImg.src = t.getAttribute('data-full');
+    });
+  });
+
+  var heroAtc = root.querySelector('#pz-atc-{{ section.id }}');
+  var stickyBar = root.querySelector('#pz-sticky-bar-{{ section.id }}');
+  if (heroAtc && stickyBar && 'IntersectionObserver' in window) {
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        stickyBar.classList.toggle('is-visible', !entry.isIntersecting);
+      });
+    }, { threshold: 0 });
+    observer.observe(heroAtc);
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "PZ Product Hero",
+  "tag": "section",
+  "class": "pz-section",
+  "settings": [
+    { "type": "text", "id": "badge_text", "label": "Badge text", "default": "NEW: Best Sports Performance Drink" },
+    { "type": "textarea", "id": "subheadline", "label": "Subheadline", "default": "Hydration. Endurance. Anti-cramping. Focus. Everything you need, nothing you don't." },
+    { "type": "checkbox", "id": "show_reviews_line", "label": "Show reviews line", "default": true },
+    { "type": "text", "id": "reviews_line_text", "label": "Reviews line text", "default": "Loved by pickleball players nationwide" },
+    { "type": "text", "id": "atc_label", "label": "Add to cart button label", "default": "Add to Cart" },
+    { "type": "text", "id": "guarantee_text", "label": "Guarantee text", "default": "100% money back guarantee" },
+    { "type": "color", "id": "accent_color", "label": "Accent color", "default": "#E8447C" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#141414" },
+    { "type": "color", "id": "background", "label": "Background", "default": "#ffffff" }
+  ],
+  "blocks": [
+    {
+      "type": "trust_item",
+      "name": "Trust list item",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Text", "default": "Free shipping always" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "PZ Product Hero",
+      "blocks": [
+        { "type": "trust_item", "settings": { "text": "Free shipping on subscriptions" } },
+        { "type": "trust_item", "settings": { "text": "Pause or cancel anytime" } },
+        { "type": "trust_item", "settings": { "text": "100% money back guarantee" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

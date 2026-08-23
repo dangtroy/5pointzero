@@ -1,0 +1,32 @@
+{% comment %}
+  PZ Stat Callout — bold single-claim banner under the hero, e.g. AG1's
+  "92% of participants reported feeling more confident..." line.
+{% endcomment %}
+<section class="pz-stat-callout pz-stat-callout-{{ section.id }}">
+  {% style %}
+    .pz-stat-callout-{{ section.id }} {
+      background: {{ section.settings.background }};
+      color: {{ section.settings.text_color }};
+      padding: 20px 24px;
+      text-align: center;
+    }
+    .pz-stat-callout-{{ section.id }} p {
+      max-width: 900px; margin: 0 auto; font-size: 15px; font-weight: 600; line-height: 1.5;
+    }
+  {% endstyle %}
+  <p>{{ section.settings.text }}</p>
+</section>
+
+{% schema %}
+{
+  "name": "PZ Stat Callout",
+  "tag": "section",
+  "class": "pz-section",
+  "settings": [
+    { "type": "textarea", "id": "text", "label": "Callout text", "default": "9 out of 10 players reported less cramping and better focus in the third game after switching to PERFORM.*" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#141414" },
+    { "type": "color", "id": "background", "label": "Background", "default": "#fdeef3" }
+  ],
+  "presets": [{ "name": "PZ Stat Callout" }]
+}
+{% endschema %}

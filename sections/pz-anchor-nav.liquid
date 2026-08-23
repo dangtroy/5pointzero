@@ -1,0 +1,105 @@
+{% comment %}
+  PZ Anchor Nav — sticky in-page nav linking to other sections by anchor id.
+{% endcomment %}
+<section class="pz-anchor-nav pz-anchor-nav-{{ section.id }}">
+  {% style %}
+    .pz-anchor-nav-{{ section.id }} {
+      position: sticky; top: 0; z-index: 20;
+      background: {{ section.settings.background }};
+      border-bottom: 1px solid #ececec;
+    }
+    .pz-anchor-nav-{{ section.id }} .pz-anchor-scroll {
+      max-width: 1280px; margin: 0 auto; padding: 0 24px;
+      display: flex; gap: 28px; overflow-x: auto; -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .pz-anchor-nav-{{ section.id }} .pz-anchor-scroll::-webkit-scrollbar { display: none; }
+    .pz-anchor-nav-{{ section.id }} a {
+      display: inline-block; padding: 14px 2px; white-space: nowrap;
+      font-size: 14px; font-weight: 700; text-decoration: none;
+      color: {{ section.settings.text_color }}; opacity: .6;
+      border-bottom: 2px solid transparent;
+    }
+    .pz-anchor-nav-{{ section.id }} a.is-active,
+    .pz-anchor-nav-{{ section.id }} a:hover {
+      opacity: 1; border-color: {{ section.settings.accent_color }};
+    }
+  {% endstyle %}
+  <nav class="pz-anchor-scroll">
+    {% for block in section.blocks %}
+      <a href="#{{ block.settings.target_id }}" data-pz-anchor-link {{ block.shopify_attributes }}>{{ block.settings.label }}</a>
+    {% endfor %}
+  </nav>
+</section>
+
+<script>
+(function () {
+  var root = document.querySelector('.pz-anchor-nav-{{ section.id }}');
+  if (!root) return;
+  var links = root.querySelectorAll('[data-pz-anchor-link]');
+  links.forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      var id = link.getAttribute('href').slice(1);
+      var target = document.getElementById(id);
+      if (target) {
+        e.preventDefault();
+        var offset = root.offsetHeight + 12;
+        var top = target.getBoundingClientRect().top + window.pageYOffset - offset;
+        window.scrollTo({ top: top, behavior: 'smooth' });
+      }
+    });
+  });
+
+  var targets = Array.from(links).map(function (l) {
+    return document.getElementById(l.getAttribute('href').slice(1));
+  }).filter(Boolean);
+
+  if ('IntersectionObserver' in window && targets.length) {
+    var observer = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (entry.isIntersecting) {
+          links.forEach(function (l) { l.classList.remove('is-active'); });
+          var match = root.querySelector('[href="#' + entry.target.id + '"]');
+          if (match) match.classList.add('is-active');
+        }
+      });
+    }, { rootMargin: '-40% 0px -50% 0px' });
+    targets.forEach(function (t) { observer.observe(t); });
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "PZ Anchor Nav",
+  "tag": "section",
+  "class": "pz-section",
+  "settings": [
+    { "type": "color", "id": "accent_color", "label": "Accent color", "default": "#E8447C" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#141414" },
+    { "type": "color", "id": "background", "label": "Background", "default": "#ffffff" }
+  ],
+  "blocks": [
+    {
+      "type": "link",
+      "name": "Nav link",
+      "settings": [
+        { "type": "text", "id": "label", "label": "Label", "default": "Benefits" },
+        { "type": "text", "id": "target_id", "label": "Target section anchor id", "default": "pz-benefits" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "PZ Anchor Nav",
+      "blocks": [
+        { "type": "link", "settings": { "label": "How It Works", "target_id": "pz-how-it-works" } },
+        { "type": "link", "settings": { "label": "Ingredients", "target_id": "pz-ingredients" } },
+        { "type": "link", "settings": { "label": "Benefits", "target_id": "pz-benefits" } },
+        { "type": "link", "settings": { "label": "Reviews", "target_id": "pz-reviews" } },
+        { "type": "link", "settings": { "label": "FAQ", "target_id": "pz-faq" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
