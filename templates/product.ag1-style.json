@@ -74,6 +74,20 @@
       },
       "block_order": ["row-1", "row-2", "row-3", "row-4", "row-5"]
     },
+    "pz_compare_slider": {
+      "type": "pz-comparison-slider",
+      "settings": {
+        "anchor_id": "pz-compare-slider",
+        "heading": "Dare to Compare",
+        "subheading": "Swipe through and see how 5 Point Zero stacks up against the competition, ingredient by ingredient."
+      },
+      "blocks": {
+        "slide-1": { "type": "slide", "settings": { "fallback_filename": "pz-compare-gatorade.png", "alt_text": "5 Point Zero vs Gatorade ingredient comparison" } },
+        "slide-2": { "type": "slide", "settings": { "fallback_filename": "pz-compare-lmnt.png", "alt_text": "5 Point Zero vs LMNT ingredient comparison" } },
+        "slide-3": { "type": "slide", "settings": { "fallback_filename": "pz-compare-liquid-iv.png", "alt_text": "5 Point Zero vs Liquid IV ingredient comparison" } }
+      },
+      "block_order": ["slide-1", "slide-2", "slide-3"]
+    },
     "pz_nutrition": {
       "type": "pz-nutrition-strip",
       "settings": {
@@ -174,6 +188,7 @@
     "pz_nav",
     "pz_how",
     "pz_compare",
+    "pz_compare_slider",
     "pz_nutrition",
     "pz_ingredients",
     "pz_lifestyle",
