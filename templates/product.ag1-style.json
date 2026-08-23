@@ -14,11 +14,13 @@
         "background": "#ffffff"
       },
       "blocks": {
+        "variant-picker": { "type": "variant_picker", "settings": { "picker_type": "button", "swatch_shape": "circle" } },
+        "buy-buttons": { "type": "buy_buttons", "settings": { "show_dynamic_checkout": true } },
         "trust-1": { "type": "trust_item", "settings": { "text": "Free shipping on subscriptions" } },
         "trust-2": { "type": "trust_item", "settings": { "text": "Pause or cancel anytime" } },
         "trust-3": { "type": "trust_item", "settings": { "text": "100% money back guarantee" } }
       },
-      "block_order": ["trust-1", "trust-2", "trust-3"]
+      "block_order": ["variant-picker", "buy-buttons", "trust-1", "trust-2", "trust-3"]
     },
     "pz_stat": {
       "type": "pz-stat-callout",

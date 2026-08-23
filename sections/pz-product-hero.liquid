@@ -113,32 +113,14 @@
     }
     .pz-hero-{{ section.id }} .pz-stars { color: {{ section.settings.star_color }}; letter-spacing: 1px; }
 
-    .pz-hero-{{ section.id }} .pz-variant-list {
-      display: grid; gap: 10px; margin-bottom: 20px;
-    }
-    .pz-hero-{{ section.id }} .pz-variant-option {
-      display: flex; align-items: center; justify-content: space-between;
-      border: 2px solid var(--pz-border); border-radius: 12px; padding: 14px 16px;
-      cursor: pointer; position: relative; transition: border-color .15s ease;
-      background: var(--pz-card-bg); min-height: 44px;
-    }
-    .pz-hero-{{ section.id }} .pz-variant-option:hover { border-color: var(--pz-accent); }
-    .pz-hero-{{ section.id }} .pz-variant-option.is-selected {
-      border-color: var(--pz-accent);
-      box-shadow: 0 0 0 1px var(--pz-accent);
-    }
-    .pz-hero-{{ section.id }} .pz-variant-option input { position: absolute; opacity: 0; pointer-events: none; }
-    .pz-hero-{{ section.id }} .pz-variant-best {
-      position: absolute; top: -10px; left: 16px; background: var(--pz-accent); color: var(--pz-accent-text);
-      font-size: 10px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
-      padding: 3px 8px; border-radius: 999px;
-    }
-    .pz-hero-{{ section.id }} .pz-variant-title { font-weight: 700; font-size: 15px; }
-    .pz-hero-{{ section.id }} .pz-variant-sub { font-size: 13px; opacity: .7; margin-top: 2px; }
-    .pz-hero-{{ section.id }} .pz-variant-price { text-align: right; }
-    .pz-hero-{{ section.id }} .pz-variant-price .pz-was { text-decoration: line-through; opacity: .5; font-size: 13px; margin-right: 6px; }
-    .pz-hero-{{ section.id }} .pz-variant-price .pz-now { font-weight: 800; font-size: 18px; }
-    .pz-hero-{{ section.id }} .pz-variant-save { font-size: 12px; font-weight: 700; color: var(--pz-accent); margin-top: 2px; }
+    /* Native price / variant-picker / buy-buttons — these reuse the theme's
+       own components so they inherit its button, pill, and swatch styling
+       (colors above only theme the surrounding hero, not these components). */
+    .pz-hero-{{ section.id }} product-info { display: block; }
+    .pz-hero-{{ section.id }} #price-{{ section.id }} { margin-bottom: 16px; font-size: 18px; }
+    .pz-hero-{{ section.id }} .product-form__input { margin-bottom: 16px; }
+    .pz-hero-{{ section.id }} .product-form__buttons { margin-bottom: 12px; }
+    .pz-hero-{{ section.id }} .product-form__submit { min-height: 44px; }
 
     .pz-hero-{{ section.id }} .pz-atc {
       width: 100%; padding: 16px; border-radius: 999px; border: none;
@@ -225,7 +207,30 @@
       {% endif %}
     </div>
 
-    <div class="pz-buybox">
+    {%- liquid
+      assign product_form_id = 'product-form-' | append: section.id
+      assign variant_picker_block = nil
+      assign buy_buttons_block = nil
+      for block in section.blocks
+        case block.type
+          when 'variant_picker'
+            assign variant_picker_block = block
+          when 'buy_buttons'
+            assign buy_buttons_block = block
+        endcase
+      endfor
+    -%}
+    <product-info
+      class="pz-buybox"
+      id="ProductInfo-{{ section.id }}"
+      data-section="{{ section.id }}"
+      data-product-id="{{ product.id }}"
+      data-update-url="false"
+      data-url="{{ product.url }}"
+    >
+      {{ 'component-product-variant-picker.css' | asset_url | stylesheet_tag }}
+      {{ 'component-price.css' | asset_url | stylesheet_tag }}
+
       {% if section.settings.badge_text != blank %}
         <span class="pz-badge">{{ section.settings.badge_text }}</span>
       {% endif %}
@@ -240,47 +245,19 @@
         </div>
       {% endif %}
 
-      {% form 'product', product, id: 'pz-product-form', class: 'pz-buy-form' %}
-        <input type="hidden" name="id" id="pz-selected-variant-{{ section.id }}" value="{{ product.selected_or_first_available_variant.id }}">
+      <div id="price-{{ section.id }}" role="status">
+        {%- render 'price', product: product, use_variant: true, show_badges: true, price_class: 'price--large' -%}
+      </div>
 
-        <div class="pz-variant-list" role="radiogroup" aria-label="Purchase option">
-          {% for variant in product.variants %}
-            {% assign save_amount = 0 %}
-            {% if variant.compare_at_price > variant.price %}
-              {% assign save_amount = variant.compare_at_price | minus: variant.price %}
-            {% endif %}
-            <label class="pz-variant-option {% if forloop.first %}is-selected{% endif %}" data-variant-id="{{ variant.id }}">
-              {% if forloop.index == 2 %}<span class="pz-variant-best">Best Value</span>{% endif %}
-              <input type="radio" name="pz-variant-radio" value="{{ variant.id }}" {% if forloop.first %}checked{% endif %}>
-              <span class="pz-variant-copy">
-                <span class="pz-variant-title">{{ variant.title }}</span>
-                {% if variant.metafields.custom.subtitle != blank %}
-                  <span class="pz-variant-sub">{{ variant.metafields.custom.subtitle }}</span>
-                {% endif %}
-              </span>
-              <span class="pz-variant-price">
-                <span>
-                  {% if variant.compare_at_price > variant.price %}
-                    <span class="pz-was">{{ variant.compare_at_price | money_without_trailing_zeros }}</span>
-                  {% endif %}
-                  <span class="pz-now">{{ variant.price | money_without_trailing_zeros }}</span>
-                </span>
-                {% if save_amount > 0 %}
-                  <span class="pz-variant-save">Save {{ save_amount | money_without_trailing_zeros }}</span>
-                {% endif %}
-              </span>
-            </label>
-          {% endfor %}
-        </div>
+      {% render 'product-variant-picker', product: product, block: variant_picker_block, product_form_id: product_form_id %}
 
-        <button type="submit" class="pz-atc" id="pz-atc-{{ section.id }}" {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}>
-          {% if product.selected_or_first_available_variant.available %}
-            {{ section.settings.atc_label | default: 'Add to Cart' }}
-          {% else %}
-            Sold Out
-          {% endif %}
-        </button>
-      {% endform %}
+      {% render 'buy-buttons',
+        block: buy_buttons_block,
+        product: product,
+        product_form_id: product_form_id,
+        section_id: section.id,
+        show_pickup_availability: false
+      %}
 
       {% if section.settings.guarantee_text != blank %}
         <div class="pz-guarantee">
@@ -289,46 +266,70 @@
         </div>
       {% endif %}
 
-      {% if section.blocks.size > 0 %}
+      {% assign trust_items = section.blocks | where: 'type', 'trust_item' %}
+      {% if trust_items.size > 0 %}
         <ul class="pz-trust-list">
-          {% for block in section.blocks %}
-            {% if block.type == 'trust_item' %}
-              <li {{ block.shopify_attributes }}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>
-                {{ block.settings.text }}
-              </li>
-            {% endif %}
+          {% for block in trust_items %}
+            <li {{ block.shopify_attributes }}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>
+              {{ block.settings.text }}
+            </li>
           {% endfor %}
         </ul>
       {% endif %}
-    </div>
+    </product-info>
   </div>
 
   <div class="pz-sticky-bar" id="pz-sticky-bar-{{ section.id }}">
     <div>
       <div class="pz-sticky-title">{{ product.title }}</div>
-      <div class="pz-sticky-price">{{ product.selected_or_first_available_variant.price | money }}</div>
+      <div class="pz-sticky-price" id="pz-sticky-price-{{ section.id }}">{{ product.selected_or_first_available_variant.price | money }}</div>
     </div>
-    <button type="submit" form="pz-product-form" class="pz-atc">{{ section.settings.atc_label | default: 'Add to Cart' }}</button>
+    <button
+      type="submit"
+      form="{{ product_form_id }}"
+      class="pz-atc"
+      id="pz-sticky-atc-{{ section.id }}"
+      {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}
+    >
+      {% if product.selected_or_first_available_variant.available %}
+        {{ section.settings.atc_label | default: 'Add to Cart' }}
+      {% else %}
+        Sold Out
+      {% endif %}
+    </button>
   </div>
 </section>
+
+{{ 'product-form.js' | asset_url | script_tag }}
+{{ 'product-info.js' | asset_url | script_tag }}
 
 <script>
 (function () {
   var root = document.querySelector('.pz-hero-{{ section.id }}');
   if (!root) return;
 
-  var options = root.querySelectorAll('.pz-variant-option');
-  var hiddenInput = root.querySelector('#pz-selected-variant-{{ section.id }}');
-  options.forEach(function (opt) {
-    opt.addEventListener('click', function () {
-      options.forEach(function (o) { o.classList.remove('is-selected'); });
-      opt.classList.add('is-selected');
-      var radio = opt.querySelector('input[type="radio"]');
-      radio.checked = true;
-      hiddenInput.value = opt.getAttribute('data-variant-id');
+  /* Keep the sticky mobile add-to-cart bar in sync with the native
+     product-info variant swap (price + availability), which fires
+     PUB_SUB_EVENTS.variantChange after it updates #price-{{ section.id }}. */
+  if (window.subscribe && window.PUB_SUB_EVENTS) {
+    subscribe(PUB_SUB_EVENTS.variantChange, function (event) {
+      if (!event.data || event.data.sectionId !== '{{ section.id }}') return;
+      var variant = event.data.variant;
+      var stickyPrice = root.querySelector('#pz-sticky-price-{{ section.id }}');
+      var stickyAtc = root.querySelector('#pz-sticky-atc-{{ section.id }}');
+      var priceWrap = document.getElementById('price-{{ section.id }}');
+      if (stickyPrice && priceWrap) {
+        stickyPrice.textContent = priceWrap.textContent.replace(/\s+/g, ' ').trim();
+      }
+      if (stickyAtc) {
+        stickyAtc.disabled = !(variant && variant.available);
+        stickyAtc.textContent = variant && variant.available
+          ? '{{ section.settings.atc_label | default: "Add to Cart" }}'
+          : 'Sold Out';
+      }
     });
-  });
+  }
 
   /* Slider */
   var slides = root.querySelector('#pz-slides-{{ section.id }}');
@@ -379,7 +380,7 @@
     setActive(0);
   }
 
-  var heroAtc = root.querySelector('#pz-atc-{{ section.id }}');
+  var heroAtc = root.querySelector('#ProductSubmitButton-{{ section.id }}');
   var stickyBar = root.querySelector('#pz-sticky-bar-{{ section.id }}');
   if (heroAtc && stickyBar && 'IntersectionObserver' in window) {
     var observer = new IntersectionObserver(function (entries) {
@@ -402,7 +403,7 @@
     { "type": "textarea", "id": "subheadline", "label": "Subheadline", "default": "Hydration. Endurance. Anti-cramping. Focus. Everything you need, nothing you don't." },
     { "type": "checkbox", "id": "show_reviews_line", "label": "Show reviews line", "default": true },
     { "type": "text", "id": "reviews_line_text", "label": "Reviews line text", "default": "Loved by pickleball players nationwide" },
-    { "type": "text", "id": "atc_label", "label": "Add to cart button label", "default": "Add to Cart" },
+    { "type": "text", "id": "atc_label", "label": "Sticky bar add to cart label", "info": "Only used by the mobile sticky bar; the main button uses the theme's own 'Add to cart' translation", "default": "Add to Cart" },
     { "type": "text", "id": "guarantee_text", "label": "Guarantee text", "default": "100% money back guarantee" },
     {
       "type": "header",
@@ -419,6 +420,44 @@
   ],
   "blocks": [
     {
+      "type": "variant_picker",
+      "name": "Variant picker",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "select",
+          "id": "picker_type",
+          "label": "Picker type",
+          "options": [
+            { "value": "dropdown", "label": "Dropdown" },
+            { "value": "button", "label": "Pills / cards" }
+          ],
+          "default": "button"
+        },
+        {
+          "type": "select",
+          "id": "swatch_shape",
+          "label": "Swatch shape",
+          "info": "Only applies to options with swatches configured (e.g. Flavor). Set to None to always use pills/cards.",
+          "options": [
+            { "value": "circle", "label": "Circle" },
+            { "value": "square", "label": "Square" },
+            { "value": "none", "label": "None" }
+          ],
+          "default": "circle"
+        }
+      ]
+    },
+    {
+      "type": "buy_buttons",
+      "name": "Buy buttons",
+      "limit": 1,
+      "settings": [
+        { "type": "checkbox", "id": "show_dynamic_checkout", "label": "Show dynamic checkout buttons", "info": "Shop Pay, Apple Pay, etc., rendered by Shopify", "default": true },
+        { "type": "checkbox", "id": "show_gift_card_recipient", "label": "Show gift card recipient form", "default": false }
+      ]
+    },
+    {
       "type": "trust_item",
       "name": "Trust list item",
       "settings": [
@@ -430,6 +469,8 @@
     {
       "name": "PZ Product Hero",
       "blocks": [
+        { "type": "variant_picker", "settings": { "picker_type": "button", "swatch_shape": "circle" } },
+        { "type": "buy_buttons", "settings": { "show_dynamic_checkout": true } },
         { "type": "trust_item", "settings": { "text": "Free shipping on subscriptions" } },
         { "type": "trust_item", "settings": { "text": "Pause or cancel anytime" } },
         { "type": "trust_item", "settings": { "text": "100% money back guarantee" } }
