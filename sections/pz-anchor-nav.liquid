@@ -4,7 +4,7 @@
 <section class="pz-anchor-nav pz-anchor-nav-{{ section.id }}">
   {% style %}
     .pz-anchor-nav-{{ section.id }} {
-      position: sticky; top: 0; z-index: 20;
+      position: sticky; top: 0; z-index: 2;
       background: {{ section.settings.background }};
       border-bottom: 1px solid #ececec;
     }
@@ -36,6 +36,21 @@
 (function () {
   var root = document.querySelector('.pz-anchor-nav-{{ section.id }}');
   if (!root) return;
+
+  var siteHeader = document.querySelector('sticky-header') || document.querySelector('.header-wrapper');
+  var headerHeight = 0;
+
+  function updateOffset() {
+    headerHeight = siteHeader ? siteHeader.offsetHeight : 0;
+    root.style.top = headerHeight + 'px';
+  }
+  updateOffset();
+  window.addEventListener('resize', updateOffset);
+  window.addEventListener('load', updateOffset);
+  if (siteHeader && 'ResizeObserver' in window) {
+    new ResizeObserver(updateOffset).observe(siteHeader);
+  }
+
   var links = root.querySelectorAll('[data-pz-anchor-link]');
   links.forEach(function (link) {
     link.addEventListener('click', function (e) {
@@ -43,7 +58,7 @@
       var target = document.getElementById(id);
       if (target) {
         e.preventDefault();
-        var offset = root.offsetHeight + 12;
+        var offset = headerHeight + root.offsetHeight + 12;
         var top = target.getBoundingClientRect().top + window.pageYOffset - offset;
         window.scrollTo({ top: top, behavior: 'smooth' });
       }
