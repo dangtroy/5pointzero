@@ -37,7 +37,10 @@
   var root = document.querySelector('.pz-anchor-nav-{{ section.id }}');
   if (!root) return;
 
-  var siteHeader = document.querySelector('sticky-header') || document.querySelector('.header-wrapper');
+  // Only offset for a real <sticky-header> element (theme's sticky_header_type
+  // != 'none'). A plain .header-wrapper div scrolls away with the page, so it
+  // must not reserve permanent top space once this nav becomes stuck.
+  var siteHeader = document.querySelector('sticky-header');
   var headerHeight = 0;
 
   function updateOffset() {
