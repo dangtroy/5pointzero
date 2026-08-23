@@ -13,12 +13,13 @@
       max-width: 1080px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center;
     }
     @media (max-width: 800px) { .pz-freeof-{{ section.id }} .pz-freeof-inner { grid-template-columns: 1fr; } }
-    .pz-freeof-{{ section.id }} h2 { font-size: clamp(24px, 3vw, 32px); font-weight: 800; margin: 0 0 12px; }
+    .pz-freeof-{{ section.id }} h2 { font-size: clamp(24px, 3vw, 32px); font-weight: 800; margin: 0 0 12px; color: {{ section.settings.heading_color }}; }
     .pz-freeof-{{ section.id }} .pz-freeof-copy { opacity: .85; line-height: 1.6; }
     .pz-freeof-{{ section.id }} .pz-freeof-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; }
     .pz-freeof-{{ section.id }} .pz-freeof-list li {
       display: flex; align-items: center; gap: 10px; font-weight: 700; font-size: 15px;
-      border: 1px solid #ececec; border-radius: 10px; padding: 12px 16px;
+      border: 1px solid {{ section.settings.border_color }}; border-radius: 10px; padding: 12px 16px;
+      background: {{ section.settings.card_background }};
     }
     .pz-freeof-{{ section.id }} .pz-freeof-list svg { flex: none; color: {{ section.settings.accent_color }}; }
   {% endstyle %}
@@ -48,9 +49,13 @@
   "settings": [
     { "type": "text", "id": "heading", "label": "Heading", "default": "Discover the Difference of \"Zero\"" },
     { "type": "richtext", "id": "body", "label": "Body", "default": "<p>We're just as proud of what we DON'T put into 5 Point Zero as the ingredients we do include. Compare our label to your current sports drink.</p>" },
-    { "type": "color", "id": "accent_color", "label": "Accent color", "default": "#E8447C" },
-    { "type": "color", "id": "text_color", "label": "Text color", "default": "#141414" },
-    { "type": "color", "id": "background", "label": "Background", "default": "#ffffff" }
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "accent_color", "label": "Accent color", "info": "Checkmark icon color", "default": "#E8447C" },
+    { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#141414" },
+    { "type": "color", "id": "text_color", "label": "Body text color", "default": "#141414" },
+    { "type": "color", "id": "card_background", "label": "List item background", "default": "#ffffff" },
+    { "type": "color", "id": "border_color", "label": "List item border", "default": "#ececec" },
+    { "type": "color", "id": "background", "label": "Section background", "default": "#ffffff" }
   ],
   "blocks": [
     {

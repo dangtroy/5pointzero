@@ -6,7 +6,7 @@
     .pz-anchor-nav-{{ section.id }} {
       position: sticky; top: 0; z-index: 2;
       background: {{ section.settings.background }};
-      border-bottom: 1px solid #ececec;
+      border-bottom: 1px solid {{ section.settings.border_color }};
     }
     .pz-anchor-nav-{{ section.id }} .pz-anchor-scroll {
       max-width: 1280px; margin: 0 auto; padding: 0 24px;
@@ -95,7 +95,8 @@
   "settings": [
     { "type": "color", "id": "accent_color", "label": "Accent color", "default": "#E8447C" },
     { "type": "color", "id": "text_color", "label": "Text color", "default": "#141414" },
-    { "type": "color", "id": "background", "label": "Background", "default": "#ffffff" }
+    { "type": "color", "id": "background", "label": "Background", "default": "#ffffff" },
+    { "type": "color", "id": "border_color", "label": "Bottom border color", "default": "#ececec" }
   ],
   "blocks": [
     {

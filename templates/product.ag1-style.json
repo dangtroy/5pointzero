@@ -103,6 +103,23 @@
       },
       "block_order": ["ing-1", "ing-2", "ing-3", "ing-4"]
     },
+    "pz_lifestyle": {
+      "type": "pz-lifestyle-media",
+      "settings": {
+        "anchor_id": "pz-lifestyle",
+        "heading": "On the Court",
+        "subheading": "Real players, real matches. Add your own photos or clips here.",
+        "columns": 3,
+        "gap": 16,
+        "corner_radius": 16
+      },
+      "blocks": {
+        "media-1": { "type": "media_item", "settings": { "media_type": "image", "aspect_ratio": "portrait", "caption": "Game day ready", "caption_style": "overlay" } },
+        "media-2": { "type": "media_item", "settings": { "media_type": "image", "aspect_ratio": "portrait", "caption": "Between points", "caption_style": "overlay" } },
+        "media-3": { "type": "media_item", "settings": { "media_type": "image", "aspect_ratio": "portrait", "caption": "Post-match recovery", "caption_style": "overlay" } }
+      },
+      "block_order": ["media-1", "media-2", "media-3"]
+    },
     "pz_freeof": {
       "type": "pz-free-of",
       "settings": {
@@ -157,6 +174,7 @@
     "pz_compare",
     "pz_nutrition",
     "pz_ingredients",
+    "pz_lifestyle",
     "pz_freeof",
     "pz_reviews",
     "pz_faq"
