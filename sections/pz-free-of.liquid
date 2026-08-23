@@ -7,7 +7,10 @@
     .pz-freeof-{{ section.id }} {
       background: {{ section.settings.background }};
       color: {{ section.settings.text_color }};
-      padding: 64px 24px;
+      padding: 48px 16px;
+    }
+    @media (min-width: 600px) {
+      .pz-freeof-{{ section.id }} { padding: 64px 24px; }
     }
     .pz-freeof-{{ section.id }} .pz-freeof-inner {
       max-width: 1080px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center;

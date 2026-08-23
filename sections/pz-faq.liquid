@@ -6,8 +6,11 @@
     .pz-faq-{{ section.id }} {
       background: {{ section.settings.background }};
       color: {{ section.settings.text_color }};
-      padding: 64px 24px;
+      padding: 48px 16px;
       scroll-margin-top: 80px;
+    }
+    @media (min-width: 600px) {
+      .pz-faq-{{ section.id }} { padding: 64px 24px; }
     }
     .pz-faq-{{ section.id }} .pz-faq-inner { max-width: 800px; margin: 0 auto; }
     .pz-faq-{{ section.id }} h2 { font-size: clamp(24px, 3vw, 34px); font-weight: 800; margin: 0 0 8px; text-align: center; color: {{ section.settings.heading_color }}; }

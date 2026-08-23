@@ -6,8 +6,11 @@
   {% style %}
     .pz-compare-{{ section.id }} {
       background: {{ section.settings.background }};
-      padding: 64px 24px;
+      padding: 48px 16px;
       scroll-margin-top: 80px;
+    }
+    @media (min-width: 600px) {
+      .pz-compare-{{ section.id }} { padding: 64px 24px; }
     }
     .pz-compare-{{ section.id }} .pz-compare-inner { max-width: 960px; margin: 0 auto; text-align: center; color: {{ section.settings.text_color }}; }
     .pz-compare-{{ section.id }} h2 { font-size: clamp(24px, 3vw, 34px); font-weight: 800; margin: 0 0 12px; color: {{ section.settings.heading_color }}; }

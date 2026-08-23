@@ -9,8 +9,11 @@
     .pz-lifestyle-{{ section.id }} {
       background: {{ section.settings.background }};
       color: {{ section.settings.text_color }};
-      padding: {{ section.settings.padding_top }}px 24px {{ section.settings.padding_bottom }}px;
+      padding: {{ section.settings.padding_top }}px 16px {{ section.settings.padding_bottom }}px;
       scroll-margin-top: 80px;
+    }
+    @media (min-width: 700px) {
+      .pz-lifestyle-{{ section.id }} { padding-left: 24px; padding-right: 24px; }
     }
     .pz-lifestyle-{{ section.id }} .pz-lifestyle-head {
       max-width: 1280px; margin: 0 auto 32px; text-align: center;
@@ -32,6 +35,7 @@
     @media (max-width: 600px) {
       .pz-lifestyle-{{ section.id }} .pz-lifestyle-grid { grid-template-columns: 1fr; }
     }
+    .pz-lifestyle-{{ section.id }} .pz-media-wrap { min-width: 0; }
     .pz-lifestyle-{{ section.id }} .pz-media-item {
       position: relative; overflow: hidden; border-radius: {{ section.settings.corner_radius }}px;
       background: #eee;

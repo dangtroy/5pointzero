@@ -10,16 +10,19 @@
       scroll-margin-top: 80px;
     }
     .pz-reviews-{{ section.id }} .pz-reviews-head {
-      max-width: 1280px; margin: 0 auto 32px; padding: 0 24px; text-align: center;
+      max-width: 1280px; margin: 0 auto 32px; padding: 0 16px; text-align: center;
+    }
+    @media (min-width: 600px) {
+      .pz-reviews-{{ section.id }} .pz-reviews-head { padding: 0 24px; }
     }
     .pz-reviews-{{ section.id }} h2 { font-size: clamp(24px, 3vw, 34px); font-weight: 800; margin: 0 0 8px; color: {{ section.settings.heading_color }}; }
     .pz-reviews-{{ section.id }} .pz-reviews-sub { opacity: .75; max-width: 60ch; margin: 0 auto; color: {{ section.settings.text_color }}; }
     .pz-reviews-{{ section.id }} .pz-review-row {
-      display: flex; gap: 16px; overflow-x: auto; padding: 4px 24px 12px;
+      display: flex; gap: 16px; overflow-x: auto; padding: 4px 16px 12px;
       scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
     }
     .pz-reviews-{{ section.id }} .pz-review-card {
-      flex: 0 0 300px; scroll-snap-align: start;
+      flex: 0 0 300px; min-width: 0; scroll-snap-align: start;
       border: 1px solid {{ section.settings.border_color }}; border-radius: 16px; padding: 20px;
       background: {{ section.settings.card_background }}; color: {{ section.settings.text_color }};
     }

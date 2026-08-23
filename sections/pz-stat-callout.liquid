@@ -7,8 +7,11 @@
     .pz-stat-callout-{{ section.id }} {
       background: {{ section.settings.background }};
       color: {{ section.settings.text_color }};
-      padding: 20px 24px;
+      padding: 16px;
       text-align: center;
+    }
+    @media (min-width: 600px) {
+      .pz-stat-callout-{{ section.id }} { padding: 20px 24px; }
     }
     .pz-stat-callout-{{ section.id }} p {
       max-width: 900px; margin: 0 auto; font-size: 15px; font-weight: 600; line-height: 1.5;

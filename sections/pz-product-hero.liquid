@@ -27,7 +27,15 @@
       align-items: start;
     }
     @media (max-width: 900px) {
-      .pz-hero-{{ section.id }} .pz-hero-grid { grid-template-columns: 1fr; gap: 20px; padding: 0 16px; }
+      .pz-hero-{{ section.id }} .pz-hero-grid { grid-template-columns: 1fr; gap: 20px; padding: 0; }
+    }
+
+    /* Grid items default to min-width: auto, which lets a wide intrinsic
+       image size expand the track and overflow the viewport. Force them to
+       shrink to their track instead. */
+    .pz-hero-{{ section.id }} .pz-gallery,
+    .pz-hero-{{ section.id }} product-info {
+      min-width: 0;
     }
 
     /* Slider */
@@ -35,11 +43,17 @@
     @media (max-width: 900px) {
       .pz-hero-{{ section.id }} .pz-gallery { position: static; }
     }
+    .pz-hero-{{ section.id }} product-info { padding: 0 16px; }
+    @media (min-width: 901px) {
+      .pz-hero-{{ section.id }} product-info { padding: 0; }
+    }
     .pz-hero-{{ section.id }} .pz-slider {
       position: relative;
-      border-radius: 16px;
       overflow: hidden;
       background: var(--pz-card-bg);
+    }
+    @media (min-width: 901px) {
+      .pz-hero-{{ section.id }} .pz-slider { border-radius: 16px; }
     }
     .pz-hero-{{ section.id }} .pz-slides {
       display: flex;
@@ -82,6 +96,10 @@
     .pz-hero-{{ section.id }} .pz-gallery-thumbs {
       display: flex; gap: 8px; margin-top: 12px; overflow-x: auto;
       -webkit-overflow-scrolling: touch; scrollbar-width: none; padding-bottom: 2px;
+      padding-left: 16px; padding-right: 16px;
+    }
+    @media (min-width: 901px) {
+      .pz-hero-{{ section.id }} .pz-gallery-thumbs { padding-left: 0; padding-right: 0; }
     }
     .pz-hero-{{ section.id }} .pz-gallery-thumbs::-webkit-scrollbar { display: none; }
     .pz-hero-{{ section.id }} .pz-gallery-thumbs button {

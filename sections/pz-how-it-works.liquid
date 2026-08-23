@@ -7,8 +7,11 @@
     .pz-how-{{ section.id }} {
       background: {{ section.settings.background }};
       color: {{ section.settings.text_color }};
-      padding: 64px 24px;
+      padding: 48px 16px;
       scroll-margin-top: 80px;
+    }
+    @media (min-width: 600px) {
+      .pz-how-{{ section.id }} { padding: 64px 24px; }
     }
     .pz-how-{{ section.id }} .pz-how-inner { max-width: 900px; margin: 0 auto; text-align: center; }
     .pz-how-{{ section.id }} .pz-how-eyebrow {
