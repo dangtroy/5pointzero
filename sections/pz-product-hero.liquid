@@ -159,6 +159,12 @@
         <div class="pz-slides" id="pz-slides-{{ section.id }}">
           {% if product.media.size > 0 %}
             {% for media in product.media %}
+              {% liquid
+                assign img_loading = 'lazy'
+                if forloop.first
+                  assign img_loading = 'eager'
+                endif
+              %}
               <div class="pz-slide" data-index="{{ forloop.index0 }}">
                 {% case media.media_type %}
                   {% when 'video' %}
@@ -168,13 +174,7 @@
                   {% when 'model' %}
                     {{ media | model_viewer_tag }}
                   {% else %}
-                    <img
-                      src="{{ media | image_url: width: 1200 }}"
-                      srcset="{{ media | image_url: width: 600 }} 600w, {{ media | image_url: width: 1200 }} 1200w"
-                      sizes="(max-width: 900px) 100vw, 600px"
-                      alt="{{ media.alt | escape }}"
-                      loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
-                      width="1200" height="1200">
+                    {{ media | image_url: width: 1200 | image_tag: widths: '600, 900, 1200', sizes: '(max-width: 900px) 100vw, 600px', alt: media.alt, loading: img_loading }}
                 {% endcase %}
               </div>
             {% endfor %}
@@ -200,7 +200,7 @@
         <div class="pz-gallery-thumbs" id="pz-gallery-thumbs-{{ section.id }}">
           {% for media in product.media %}
             <button type="button" class="pz-thumb {% if forloop.first %}is-active{% endif %}" data-index="{{ forloop.index0 }}">
-              <img src="{{ media.preview_image | image_url: width: 160 }}" alt="{{ media.alt | escape }}" loading="lazy">
+              {{ media.preview_image | image_url: width: 160 | image_tag: alt: media.alt, loading: 'lazy' }}
             </button>
           {% endfor %}
         </div>
@@ -301,8 +301,8 @@
   </div>
 </section>
 
-{{ 'product-form.js' | asset_url | script_tag }}
-{{ 'product-info.js' | asset_url | script_tag }}
+<script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'product-info.js' | asset_url }}" defer="defer"></script>
 
 <script>
 (function () {

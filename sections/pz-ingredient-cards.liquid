@@ -50,7 +50,7 @@
         <div class="pz-card" {{ block.shopify_attributes }}>
           {% if block.settings.image %}
             <div class="pz-card-img">
-              <img src="{{ block.settings.image | image_url: width: 520 }}" alt="{{ block.settings.name | escape }}" loading="lazy">
+              {{ block.settings.image | image_url: width: 520 | image_tag: alt: block.settings.name, loading: 'lazy' }}
             </div>
           {% endif %}
           <div class="pz-card-body">
