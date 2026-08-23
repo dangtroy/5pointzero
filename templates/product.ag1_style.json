@@ -14,11 +14,13 @@
         "background": "#ffffff"
       },
       "blocks": {
+        "variant-picker": { "type": "variant_picker", "settings": { "picker_type": "button", "swatch_shape": "circle" } },
+        "buy-buttons": { "type": "buy_buttons", "settings": { "show_dynamic_checkout": true } },
         "trust-1": { "type": "trust_item", "settings": { "text": "Free shipping on subscriptions" } },
         "trust-2": { "type": "trust_item", "settings": { "text": "Pause or cancel anytime" } },
         "trust-3": { "type": "trust_item", "settings": { "text": "100% money back guarantee" } }
       },
-      "block_order": ["trust-1", "trust-2", "trust-3"]
+      "block_order": ["variant-picker", "buy-buttons", "trust-1", "trust-2", "trust-3"]
     },
     "pz_stat": {
       "type": "pz-stat-callout",
@@ -72,6 +74,20 @@
       },
       "block_order": ["row-1", "row-2", "row-3", "row-4", "row-5"]
     },
+    "pz_compare_slider": {
+      "type": "pz-comparison-slider",
+      "settings": {
+        "anchor_id": "pz-compare-slider",
+        "heading": "Dare to Compare",
+        "subheading": "Swipe through and see how 5 Point Zero stacks up against the competition, ingredient by ingredient."
+      },
+      "blocks": {
+        "slide-1": { "type": "slide", "settings": { "fallback_filename": "pz-compare-gatorade.png", "alt_text": "5 Point Zero vs Gatorade ingredient comparison" } },
+        "slide-2": { "type": "slide", "settings": { "fallback_filename": "pz-compare-lmnt.png", "alt_text": "5 Point Zero vs LMNT ingredient comparison" } },
+        "slide-3": { "type": "slide", "settings": { "fallback_filename": "pz-compare-liquid-iv.png", "alt_text": "5 Point Zero vs Liquid IV ingredient comparison" } }
+      },
+      "block_order": ["slide-1", "slide-2", "slide-3"]
+    },
     "pz_nutrition": {
       "type": "pz-nutrition-strip",
       "settings": {
@@ -102,6 +118,23 @@
         "ing-4": { "type": "ingredient", "settings": { "eyebrow": "Hydration", "name": "Coconut Water", "description": "Organic coconut water for real, whole-food hydration." } }
       },
       "block_order": ["ing-1", "ing-2", "ing-3", "ing-4"]
+    },
+    "pz_lifestyle": {
+      "type": "pz-lifestyle-media",
+      "settings": {
+        "anchor_id": "pz-lifestyle",
+        "heading": "On the Court",
+        "subheading": "Real players, real matches. Add your own photos or clips here.",
+        "columns": 3,
+        "gap": 16,
+        "corner_radius": 16
+      },
+      "blocks": {
+        "media-1": { "type": "media_item", "settings": { "media_type": "image", "aspect_ratio": "portrait", "caption": "Game day ready", "caption_style": "overlay" } },
+        "media-2": { "type": "media_item", "settings": { "media_type": "image", "aspect_ratio": "portrait", "caption": "Between points", "caption_style": "overlay" } },
+        "media-3": { "type": "media_item", "settings": { "media_type": "image", "aspect_ratio": "portrait", "caption": "Post-match recovery", "caption_style": "overlay" } }
+      },
+      "block_order": ["media-1", "media-2", "media-3"]
     },
     "pz_freeof": {
       "type": "pz-free-of",
@@ -155,8 +188,10 @@
     "pz_nav",
     "pz_how",
     "pz_compare",
+    "pz_compare_slider",
     "pz_nutrition",
     "pz_ingredients",
+    "pz_lifestyle",
     "pz_freeof",
     "pz_reviews",
     "pz_faq"

@@ -1,13 +1,18 @@
 {% comment %}
-  PZ Product Hero — gallery + buy box, AG1-style pack/variant picker with
-  savings badges, trust list, and a sticky mobile add-to-cart bar.
+  PZ Product Hero — swipeable image slider + thumbnails, AG1-style pack/variant
+  picker with savings badges, trust list, and a sticky mobile add-to-cart bar.
+  Fully color-customizable, touch-friendly slider on mobile and desktop.
 {% endcomment %}
 <section class="pz-hero pz-hero-{{ section.id }}" data-section-id="{{ section.id }}">
   {% style %}
     .pz-hero-{{ section.id }} {
       --pz-accent: {{ section.settings.accent_color }};
+      --pz-accent-text: {{ section.settings.accent_text_color }};
       --pz-ink: {{ section.settings.text_color }};
+      --pz-heading: {{ section.settings.heading_color }};
       --pz-bg: {{ section.settings.background }};
+      --pz-card-bg: {{ section.settings.card_background }};
+      --pz-border: {{ section.settings.border_color }};
       background: var(--pz-bg);
       color: var(--pz-ink);
       padding: 32px 0 48px;
@@ -22,83 +27,112 @@
       align-items: start;
     }
     @media (max-width: 900px) {
-      .pz-hero-{{ section.id }} .pz-hero-grid { grid-template-columns: 1fr; gap: 24px; }
+      .pz-hero-{{ section.id }} .pz-hero-grid { grid-template-columns: 1fr; gap: 20px; padding: 0 16px; }
     }
-    .pz-hero-{{ section.id }} .pz-gallery-main {
-      position: sticky;
-      top: 24px;
+
+    /* Slider */
+    .pz-hero-{{ section.id }} .pz-gallery { position: sticky; top: 24px; }
+    @media (max-width: 900px) {
+      .pz-hero-{{ section.id }} .pz-gallery { position: static; }
+    }
+    .pz-hero-{{ section.id }} .pz-slider {
+      position: relative;
       border-radius: 16px;
       overflow: hidden;
-      background: #f4f4f4;
+      background: var(--pz-card-bg);
+    }
+    .pz-hero-{{ section.id }} .pz-slides {
+      display: flex;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
       aspect-ratio: 1 / 1;
     }
-    .pz-hero-{{ section.id }} .pz-gallery-main img {
+    .pz-hero-{{ section.id }} .pz-slides::-webkit-scrollbar { display: none; }
+    .pz-hero-{{ section.id }} .pz-slide {
+      flex: 0 0 100%; scroll-snap-align: start; scroll-snap-stop: always;
+      width: 100%; height: 100%; position: relative;
+    }
+    .pz-hero-{{ section.id }} .pz-slide img,
+    .pz-hero-{{ section.id }} .pz-slide video {
       width: 100%; height: 100%; object-fit: cover; display: block;
     }
-    .pz-hero-{{ section.id }} .pz-gallery-thumbs {
-      display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap;
+    .pz-hero-{{ section.id }} .pz-arrow {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 40px; height: 40px; border-radius: 50%; border: none;
+      background: rgba(255,255,255,.9); color: var(--pz-ink);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; z-index: 2; box-shadow: 0 2px 8px rgba(0,0,0,.15);
     }
+    .pz-hero-{{ section.id }} .pz-arrow-prev { left: 12px; }
+    .pz-hero-{{ section.id }} .pz-arrow-next { right: 12px; }
+    .pz-hero-{{ section.id }} .pz-arrow:disabled { opacity: 0; pointer-events: none; }
+    .pz-hero-{{ section.id }} .pz-dots {
+      position: absolute; bottom: 12px; left: 50%; transform: translateX(-50%);
+      display: flex; gap: 6px; z-index: 2;
+    }
+    .pz-hero-{{ section.id }} .pz-dot {
+      width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,.6);
+      border: none; padding: 0; cursor: pointer;
+    }
+    .pz-hero-{{ section.id }} .pz-dot.is-active { background: #fff; width: 16px; border-radius: 4px; }
+
+    .pz-hero-{{ section.id }} .pz-gallery-thumbs {
+      display: flex; gap: 8px; margin-top: 12px; overflow-x: auto;
+      -webkit-overflow-scrolling: touch; scrollbar-width: none; padding-bottom: 2px;
+    }
+    .pz-hero-{{ section.id }} .pz-gallery-thumbs::-webkit-scrollbar { display: none; }
     .pz-hero-{{ section.id }} .pz-gallery-thumbs button {
-      width: 64px; height: 64px; border-radius: 8px; overflow: hidden;
-      border: 2px solid transparent; padding: 0; cursor: pointer; background: #f4f4f4;
+      flex: 0 0 64px; width: 64px; height: 64px; border-radius: 8px; overflow: hidden;
+      border: 2px solid transparent; padding: 0; cursor: pointer; background: var(--pz-card-bg);
     }
     .pz-hero-{{ section.id }} .pz-gallery-thumbs button.is-active { border-color: var(--pz-accent); }
     .pz-hero-{{ section.id }} .pz-gallery-thumbs img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    @media (min-width: 700px) {
+      .pz-hero-{{ section.id }} .pz-arrow { width: 44px; height: 44px; }
+      .pz-hero-{{ section.id }} .pz-dots { display: none; }
+    }
 
     .pz-hero-{{ section.id }} .pz-badge {
       display: inline-flex; align-items: center; gap: 6px;
-      background: var(--pz-accent); color: #fff;
+      background: var(--pz-accent); color: var(--pz-accent-text);
       font-size: 12px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
       padding: 6px 12px; border-radius: 999px; margin-bottom: 12px;
     }
     .pz-hero-{{ section.id }} h1 {
       font-size: clamp(28px, 3.4vw, 40px); line-height: 1.1; margin: 0 0 8px; font-weight: 800;
+      color: var(--pz-heading);
     }
     .pz-hero-{{ section.id }} .pz-subhead {
       font-size: 16px; line-height: 1.5; opacity: .85; margin: 0 0 20px; max-width: 52ch;
     }
     .pz-hero-{{ section.id }} .pz-reviews-line {
-      display: flex; align-items: center; gap: 8px; font-size: 14px; margin-bottom: 20px;
+      display: flex; align-items: center; gap: 8px; font-size: 14px; margin-bottom: 20px; flex-wrap: wrap;
     }
-    .pz-hero-{{ section.id }} .pz-stars { color: #f5a623; letter-spacing: 1px; }
+    .pz-hero-{{ section.id }} .pz-stars { color: {{ section.settings.star_color }}; letter-spacing: 1px; }
 
-    .pz-hero-{{ section.id }} .pz-variant-list {
-      display: grid; gap: 10px; margin-bottom: 20px;
-    }
-    .pz-hero-{{ section.id }} .pz-variant-option {
-      display: flex; align-items: center; justify-content: space-between;
-      border: 2px solid #e3e3e3; border-radius: 12px; padding: 14px 16px;
-      cursor: pointer; position: relative; transition: border-color .15s ease;
-    }
-    .pz-hero-{{ section.id }} .pz-variant-option:hover { border-color: #c9c9c9; }
-    .pz-hero-{{ section.id }} .pz-variant-option.is-selected {
-      border-color: var(--pz-accent);
-      box-shadow: 0 0 0 1px var(--pz-accent);
-    }
-    .pz-hero-{{ section.id }} .pz-variant-option input { position: absolute; opacity: 0; pointer-events: none; }
-    .pz-hero-{{ section.id }} .pz-variant-best {
-      position: absolute; top: -10px; left: 16px; background: var(--pz-accent); color: #fff;
-      font-size: 10px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
-      padding: 3px 8px; border-radius: 999px;
-    }
-    .pz-hero-{{ section.id }} .pz-variant-title { font-weight: 700; font-size: 15px; }
-    .pz-hero-{{ section.id }} .pz-variant-sub { font-size: 13px; opacity: .7; margin-top: 2px; }
-    .pz-hero-{{ section.id }} .pz-variant-price { text-align: right; }
-    .pz-hero-{{ section.id }} .pz-variant-price .pz-was { text-decoration: line-through; opacity: .5; font-size: 13px; margin-right: 6px; }
-    .pz-hero-{{ section.id }} .pz-variant-price .pz-now { font-weight: 800; font-size: 18px; }
-    .pz-hero-{{ section.id }} .pz-variant-save { font-size: 12px; font-weight: 700; color: var(--pz-accent); margin-top: 2px; }
+    /* Native price / variant-picker / buy-buttons — these reuse the theme's
+       own components so they inherit its button, pill, and swatch styling
+       (colors above only theme the surrounding hero, not these components). */
+    .pz-hero-{{ section.id }} product-info { display: block; }
+    .pz-hero-{{ section.id }} #price-{{ section.id }} { margin-bottom: 16px; font-size: 18px; }
+    .pz-hero-{{ section.id }} .product-form__input { margin-bottom: 16px; }
+    .pz-hero-{{ section.id }} .product-form__buttons { margin-bottom: 12px; }
+    .pz-hero-{{ section.id }} .product-form__submit { min-height: 44px; }
 
     .pz-hero-{{ section.id }} .pz-atc {
       width: 100%; padding: 16px; border-radius: 999px; border: none;
-      background: var(--pz-accent); color: #fff; font-weight: 800; font-size: 16px;
-      letter-spacing: .02em; cursor: pointer; margin-bottom: 12px;
+      background: var(--pz-accent); color: var(--pz-accent-text); font-weight: 800; font-size: 16px;
+      letter-spacing: .02em; cursor: pointer; margin-bottom: 12px; min-height: 44px;
     }
     .pz-hero-{{ section.id }} .pz-atc:disabled { opacity: .5; cursor: not-allowed; }
     .pz-hero-{{ section.id }} .pz-guarantee {
       display: flex; align-items: center; gap: 8px; font-size: 13px; opacity: .8; justify-content: center; margin-bottom: 20px;
     }
     .pz-hero-{{ section.id }} .pz-trust-list {
-      list-style: none; margin: 0; padding: 16px 0 0; border-top: 1px solid #e8e8e8;
+      list-style: none; margin: 0; padding: 16px 0 0; border-top: 1px solid var(--pz-border);
       display: grid; gap: 8px;
     }
     .pz-hero-{{ section.id }} .pz-trust-list li {
@@ -108,9 +142,10 @@
 
     .pz-hero-{{ section.id }} .pz-sticky-bar {
       position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
-      background: #fff; border-top: 1px solid #e5e5e5;
+      background: var(--pz-card-bg); border-top: 1px solid var(--pz-border);
       padding: 10px 16px; display: none; align-items: center; justify-content: space-between; gap: 12px;
       box-shadow: 0 -4px 16px rgba(0,0,0,.06);
+      padding-bottom: max(10px, env(safe-area-inset-bottom));
     }
     .pz-hero-{{ section.id }} .pz-sticky-bar.is-visible { display: flex; }
     .pz-hero-{{ section.id }} .pz-sticky-bar .pz-atc { margin: 0; width: auto; padding: 12px 24px; font-size: 14px; }
@@ -120,25 +155,82 @@
 
   <div class="pz-hero-grid">
     <div class="pz-gallery">
-      <div class="pz-gallery-main">
-        {% if product.featured_media %}
-          <img id="pz-main-image-{{ section.id }}" src="{{ product.featured_media | image_url: width: 1200 }}" alt="{{ product.featured_media.alt | escape }}" width="1200" height="1200">
-        {% else %}
-          {{ 'product-1' | placeholder_svg_tag }}
+      <div class="pz-slider">
+        <div class="pz-slides" id="pz-slides-{{ section.id }}">
+          {% if product.media.size > 0 %}
+            {% for media in product.media %}
+              {% liquid
+                assign img_loading = 'lazy'
+                if forloop.first
+                  assign img_loading = 'eager'
+                endif
+              %}
+              <div class="pz-slide" data-index="{{ forloop.index0 }}">
+                {% case media.media_type %}
+                  {% when 'video' %}
+                    {{ media | video_tag: image_size: '1200x', controls: true }}
+                  {% when 'external_video' %}
+                    {{ media | external_video_tag }}
+                  {% when 'model' %}
+                    {{ media | model_viewer_tag }}
+                  {% else %}
+                    {{ media | image_url: width: 1200 | image_tag: widths: '600, 900, 1200', sizes: '(max-width: 900px) 100vw, 600px', alt: media.alt, loading: img_loading }}
+                {% endcase %}
+              </div>
+            {% endfor %}
+          {% else %}
+            <div class="pz-slide">{{ 'product-1' | placeholder_svg_tag }}</div>
+          {% endif %}
+        </div>
+        {% if product.media.size > 1 %}
+          <button type="button" class="pz-arrow pz-arrow-prev" id="pz-prev-{{ section.id }}" aria-label="Previous image">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <button type="button" class="pz-arrow pz-arrow-next" id="pz-next-{{ section.id }}" aria-label="Next image">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
+          </button>
+          <div class="pz-dots" id="pz-dots-{{ section.id }}">
+            {% for media in product.media %}
+              <button type="button" class="pz-dot {% if forloop.first %}is-active{% endif %}" data-index="{{ forloop.index0 }}" aria-label="Go to image {{ forloop.index }}"></button>
+            {% endfor %}
+          </div>
         {% endif %}
       </div>
       {% if product.media.size > 1 %}
-        <div class="pz-gallery-thumbs">
-          {% for media in product.media limit: 6 %}
-            <button type="button" class="pz-thumb {% if forloop.first %}is-active{% endif %}" data-full="{{ media | image_url: width: 1200 }}">
-              <img src="{{ media | image_url: width: 120 }}" alt="{{ media.alt | escape }}" loading="lazy">
+        <div class="pz-gallery-thumbs" id="pz-gallery-thumbs-{{ section.id }}">
+          {% for media in product.media %}
+            <button type="button" class="pz-thumb {% if forloop.first %}is-active{% endif %}" data-index="{{ forloop.index0 }}">
+              {{ media.preview_image | image_url: width: 160 | image_tag: alt: media.alt, loading: 'lazy' }}
             </button>
           {% endfor %}
         </div>
       {% endif %}
     </div>
 
-    <div class="pz-buybox">
+    {%- liquid
+      assign product_form_id = 'product-form-' | append: section.id
+      assign variant_picker_block = nil
+      assign buy_buttons_block = nil
+      for block in section.blocks
+        case block.type
+          when 'variant_picker'
+            assign variant_picker_block = block
+          when 'buy_buttons'
+            assign buy_buttons_block = block
+        endcase
+      endfor
+    -%}
+    <product-info
+      class="pz-buybox"
+      id="ProductInfo-{{ section.id }}"
+      data-section="{{ section.id }}"
+      data-product-id="{{ product.id }}"
+      data-update-url="false"
+      data-url="{{ product.url }}"
+    >
+      {{ 'component-product-variant-picker.css' | asset_url | stylesheet_tag }}
+      {{ 'component-price.css' | asset_url | stylesheet_tag }}
+
       {% if section.settings.badge_text != blank %}
         <span class="pz-badge">{{ section.settings.badge_text }}</span>
       {% endif %}
@@ -153,47 +245,19 @@
         </div>
       {% endif %}
 
-      {% form 'product', product, id: 'pz-product-form', class: 'pz-buy-form' %}
-        <input type="hidden" name="id" id="pz-selected-variant-{{ section.id }}" value="{{ product.selected_or_first_available_variant.id }}">
+      <div id="price-{{ section.id }}" role="status">
+        {%- render 'price', product: product, use_variant: true, show_badges: true, price_class: 'price--large' -%}
+      </div>
 
-        <div class="pz-variant-list" role="radiogroup" aria-label="Purchase option">
-          {% for variant in product.variants %}
-            {% assign save_amount = 0 %}
-            {% if variant.compare_at_price > variant.price %}
-              {% assign save_amount = variant.compare_at_price | minus: variant.price %}
-            {% endif %}
-            <label class="pz-variant-option {% if forloop.first %}is-selected{% endif %}" data-variant-id="{{ variant.id }}">
-              {% if forloop.index == 2 %}<span class="pz-variant-best">Best Value</span>{% endif %}
-              <input type="radio" name="pz-variant-radio" value="{{ variant.id }}" {% if forloop.first %}checked{% endif %}>
-              <span class="pz-variant-copy">
-                <span class="pz-variant-title">{{ variant.title }}</span>
-                {% if variant.metafields.custom.subtitle != blank %}
-                  <span class="pz-variant-sub">{{ variant.metafields.custom.subtitle }}</span>
-                {% endif %}
-              </span>
-              <span class="pz-variant-price">
-                <span>
-                  {% if variant.compare_at_price > variant.price %}
-                    <span class="pz-was">{{ variant.compare_at_price | money_without_trailing_zeros }}</span>
-                  {% endif %}
-                  <span class="pz-now">{{ variant.price | money_without_trailing_zeros }}</span>
-                </span>
-                {% if save_amount > 0 %}
-                  <span class="pz-variant-save">Save {{ save_amount | money_without_trailing_zeros }}</span>
-                {% endif %}
-              </span>
-            </label>
-          {% endfor %}
-        </div>
+      {% render 'product-variant-picker', product: product, block: variant_picker_block, product_form_id: product_form_id %}
 
-        <button type="submit" class="pz-atc" id="pz-atc-{{ section.id }}" {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}>
-          {% if product.selected_or_first_available_variant.available %}
-            {{ section.settings.atc_label | default: 'Add to Cart' }}
-          {% else %}
-            Sold Out
-          {% endif %}
-        </button>
-      {% endform %}
+      {% render 'buy-buttons',
+        block: buy_buttons_block,
+        product: product,
+        product_form_id: product_form_id,
+        section_id: section.id,
+        show_pickup_availability: false
+      %}
 
       {% if section.settings.guarantee_text != blank %}
         <div class="pz-guarantee">
@@ -202,58 +266,121 @@
         </div>
       {% endif %}
 
-      {% if section.blocks.size > 0 %}
+      {% assign trust_items = section.blocks | where: 'type', 'trust_item' %}
+      {% if trust_items.size > 0 %}
         <ul class="pz-trust-list">
-          {% for block in section.blocks %}
-            {% if block.type == 'trust_item' %}
-              <li {{ block.shopify_attributes }}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>
-                {{ block.settings.text }}
-              </li>
-            {% endif %}
+          {% for block in trust_items %}
+            <li {{ block.shopify_attributes }}>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>
+              {{ block.settings.text }}
+            </li>
           {% endfor %}
         </ul>
       {% endif %}
-    </div>
+    </product-info>
   </div>
 
   <div class="pz-sticky-bar" id="pz-sticky-bar-{{ section.id }}">
     <div>
       <div class="pz-sticky-title">{{ product.title }}</div>
-      <div class="pz-sticky-price">{{ product.selected_or_first_available_variant.price | money }}</div>
+      <div class="pz-sticky-price" id="pz-sticky-price-{{ section.id }}">{{ product.selected_or_first_available_variant.price | money }}</div>
     </div>
-    <button type="submit" form="pz-product-form" class="pz-atc">{{ section.settings.atc_label | default: 'Add to Cart' }}</button>
+    <button
+      type="submit"
+      form="{{ product_form_id }}"
+      class="pz-atc"
+      id="pz-sticky-atc-{{ section.id }}"
+      {% unless product.selected_or_first_available_variant.available %}disabled{% endunless %}
+    >
+      {% if product.selected_or_first_available_variant.available %}
+        {{ section.settings.atc_label | default: 'Add to Cart' }}
+      {% else %}
+        Sold Out
+      {% endif %}
+    </button>
   </div>
 </section>
+
+<script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'product-info.js' | asset_url }}" defer="defer"></script>
 
 <script>
 (function () {
   var root = document.querySelector('.pz-hero-{{ section.id }}');
   if (!root) return;
 
-  var options = root.querySelectorAll('.pz-variant-option');
-  var hiddenInput = root.querySelector('#pz-selected-variant-{{ section.id }}');
-  options.forEach(function (opt) {
-    opt.addEventListener('click', function () {
-      options.forEach(function (o) { o.classList.remove('is-selected'); });
-      opt.classList.add('is-selected');
-      var radio = opt.querySelector('input[type="radio"]');
-      radio.checked = true;
-      hiddenInput.value = opt.getAttribute('data-variant-id');
+  /* Keep the sticky mobile add-to-cart bar in sync with the native
+     product-info variant swap (price + availability), which fires
+     PUB_SUB_EVENTS.variantChange after it updates #price-{{ section.id }}. */
+  if (window.subscribe && window.PUB_SUB_EVENTS) {
+    subscribe(PUB_SUB_EVENTS.variantChange, function (event) {
+      if (!event.data || event.data.sectionId !== '{{ section.id }}') return;
+      var variant = event.data.variant;
+      var stickyPrice = root.querySelector('#pz-sticky-price-{{ section.id }}');
+      var stickyAtc = root.querySelector('#pz-sticky-atc-{{ section.id }}');
+      var priceWrap = document.getElementById('price-{{ section.id }}');
+      if (stickyPrice && priceWrap) {
+        stickyPrice.textContent = priceWrap.textContent.replace(/\s+/g, ' ').trim();
+      }
+      if (stickyAtc) {
+        stickyAtc.disabled = !(variant && variant.available);
+        stickyAtc.textContent = variant && variant.available
+          ? '{{ section.settings.atc_label | default: "Add to Cart" }}'
+          : 'Sold Out';
+      }
     });
-  });
+  }
 
-  var thumbs = root.querySelectorAll('.pz-thumb');
-  var mainImg = root.querySelector('#pz-main-image-{{ section.id }}');
-  thumbs.forEach(function (t) {
-    t.addEventListener('click', function () {
-      thumbs.forEach(function (o) { o.classList.remove('is-active'); });
-      t.classList.add('is-active');
-      if (mainImg) mainImg.src = t.getAttribute('data-full');
+  /* Slider */
+  var slides = root.querySelector('#pz-slides-{{ section.id }}');
+  var thumbs = root.querySelectorAll('#pz-gallery-thumbs-{{ section.id }} .pz-thumb');
+  var dots = root.querySelectorAll('#pz-dots-{{ section.id }} .pz-dot');
+  var prevBtn = root.querySelector('#pz-prev-{{ section.id }}');
+  var nextBtn = root.querySelector('#pz-next-{{ section.id }}');
+
+  if (slides) {
+    var slideEls = Array.prototype.slice.call(slides.querySelectorAll('.pz-slide'));
+
+    function goTo(index) {
+      index = Math.max(0, Math.min(index, slideEls.length - 1));
+      slides.scrollTo({ left: slideEls[index].offsetLeft, behavior: 'smooth' });
+    }
+
+    function setActive(index) {
+      thumbs.forEach(function (t) { t.classList.toggle('is-active', +t.dataset.index === index); });
+      dots.forEach(function (d) { d.classList.toggle('is-active', +d.dataset.index === index); });
+      if (prevBtn) prevBtn.disabled = index === 0;
+      if (nextBtn) nextBtn.disabled = index === slideEls.length - 1;
+    }
+
+    thumbs.forEach(function (t) {
+      t.addEventListener('click', function () { goTo(+t.dataset.index); });
     });
-  });
+    dots.forEach(function (d) {
+      d.addEventListener('click', function () { goTo(+d.dataset.index); });
+    });
+    if (prevBtn) prevBtn.addEventListener('click', function () {
+      goTo(Math.round(slides.scrollLeft / slides.clientWidth) - 1);
+    });
+    if (nextBtn) nextBtn.addEventListener('click', function () {
+      goTo(Math.round(slides.scrollLeft / slides.clientWidth) + 1);
+    });
 
-  var heroAtc = root.querySelector('#pz-atc-{{ section.id }}');
+    if ('IntersectionObserver' in window) {
+      var slideObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting && entry.intersectionRatio > 0.6) {
+            setActive(+entry.target.dataset.index);
+          }
+        });
+      }, { root: slides, threshold: [0.6] });
+      slideEls.forEach(function (s) { slideObserver.observe(s); });
+    }
+
+    setActive(0);
+  }
+
+  var heroAtc = root.querySelector('#ProductSubmitButton-{{ section.id }}');
   var stickyBar = root.querySelector('#pz-sticky-bar-{{ section.id }}');
   if (heroAtc && stickyBar && 'IntersectionObserver' in window) {
     var observer = new IntersectionObserver(function (entries) {
@@ -276,13 +403,60 @@
     { "type": "textarea", "id": "subheadline", "label": "Subheadline", "default": "Hydration. Endurance. Anti-cramping. Focus. Everything you need, nothing you don't." },
     { "type": "checkbox", "id": "show_reviews_line", "label": "Show reviews line", "default": true },
     { "type": "text", "id": "reviews_line_text", "label": "Reviews line text", "default": "Loved by pickleball players nationwide" },
-    { "type": "text", "id": "atc_label", "label": "Add to cart button label", "default": "Add to Cart" },
+    { "type": "text", "id": "atc_label", "label": "Sticky bar add to cart label", "info": "Only used by the mobile sticky bar; the main button uses the theme's own 'Add to cart' translation", "default": "Add to Cart" },
     { "type": "text", "id": "guarantee_text", "label": "Guarantee text", "default": "100% money back guarantee" },
-    { "type": "color", "id": "accent_color", "label": "Accent color", "default": "#E8447C" },
-    { "type": "color", "id": "text_color", "label": "Text color", "default": "#141414" },
-    { "type": "color", "id": "background", "label": "Background", "default": "#ffffff" }
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    { "type": "color", "id": "accent_color", "label": "Accent color", "info": "Used for the badge, button, and best-value tag backgrounds", "default": "#E8447C" },
+    { "type": "color", "id": "accent_text_color", "label": "Text on accent color", "info": "Text/icon color shown on top of the accent color above", "default": "#ffffff" },
+    { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#141414" },
+    { "type": "color", "id": "text_color", "label": "Body text color", "default": "#141414" },
+    { "type": "color", "id": "star_color", "label": "Star rating color", "default": "#f5a623" },
+    { "type": "color", "id": "background", "label": "Section background", "default": "#ffffff" },
+    { "type": "color", "id": "card_background", "label": "Card / option background", "default": "#ffffff" },
+    { "type": "color", "id": "border_color", "label": "Border color", "default": "#e3e3e3" }
   ],
   "blocks": [
+    {
+      "type": "variant_picker",
+      "name": "Variant picker",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "select",
+          "id": "picker_type",
+          "label": "Picker type",
+          "options": [
+            { "value": "dropdown", "label": "Dropdown" },
+            { "value": "button", "label": "Pills / cards" }
+          ],
+          "default": "button"
+        },
+        {
+          "type": "select",
+          "id": "swatch_shape",
+          "label": "Swatch shape",
+          "info": "Only applies to options with swatches configured (e.g. Flavor). Set to None to always use pills/cards.",
+          "options": [
+            { "value": "circle", "label": "Circle" },
+            { "value": "square", "label": "Square" },
+            { "value": "none", "label": "None" }
+          ],
+          "default": "circle"
+        }
+      ]
+    },
+    {
+      "type": "buy_buttons",
+      "name": "Buy buttons",
+      "limit": 1,
+      "settings": [
+        { "type": "checkbox", "id": "show_dynamic_checkout", "label": "Show dynamic checkout buttons", "info": "Shop Pay, Apple Pay, etc., rendered by Shopify", "default": true },
+        { "type": "checkbox", "id": "show_gift_card_recipient", "label": "Show gift card recipient form", "default": false }
+      ]
+    },
     {
       "type": "trust_item",
       "name": "Trust list item",
@@ -295,6 +469,8 @@
     {
       "name": "PZ Product Hero",
       "blocks": [
+        { "type": "variant_picker", "settings": { "picker_type": "button", "swatch_shape": "circle" } },
+        { "type": "buy_buttons", "settings": { "show_dynamic_checkout": true } },
         { "type": "trust_item", "settings": { "text": "Free shipping on subscriptions" } },
         { "type": "trust_item", "settings": { "text": "Pause or cancel anytime" } },
         { "type": "trust_item", "settings": { "text": "100% money back guarantee" } }
