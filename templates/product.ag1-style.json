@@ -1,0 +1,164 @@
+{
+  "sections": {
+    "pz_hero": {
+      "type": "pz-product-hero",
+      "settings": {
+        "badge_text": "NEW: 2024 Best Sports Performance Drink Innovation",
+        "subheadline": "Hydration. Endurance. Anti-cramping. Focus. Everything you need. Nothing you don't.",
+        "show_reviews_line": true,
+        "reviews_line_text": "Loved by pickleball players nationwide",
+        "atc_label": "Add to Cart",
+        "guarantee_text": "100% money back guarantee",
+        "accent_color": "#E8447C",
+        "text_color": "#141414",
+        "background": "#ffffff"
+      },
+      "blocks": {
+        "trust-1": { "type": "trust_item", "settings": { "text": "Free shipping on subscriptions" } },
+        "trust-2": { "type": "trust_item", "settings": { "text": "Pause or cancel anytime" } },
+        "trust-3": { "type": "trust_item", "settings": { "text": "100% money back guarantee" } }
+      },
+      "block_order": ["trust-1", "trust-2", "trust-3"]
+    },
+    "pz_stat": {
+      "type": "pz-stat-callout",
+      "settings": {
+        "text": "Made BY pickleball players, FOR pickleball players — formulated for hydration, endurance, and focus that lasts a full session.",
+        "text_color": "#141414",
+        "background": "#fdeef3"
+      }
+    },
+    "pz_nav": {
+      "type": "pz-anchor-nav",
+      "blocks": {
+        "link-1": { "type": "link", "settings": { "label": "How It Works", "target_id": "pz-how-it-works" } },
+        "link-2": { "type": "link", "settings": { "label": "Ingredients", "target_id": "pz-ingredients" } },
+        "link-3": { "type": "link", "settings": { "label": "Benefits", "target_id": "pz-benefits" } },
+        "link-4": { "type": "link", "settings": { "label": "Reviews", "target_id": "pz-reviews" } },
+        "link-5": { "type": "link", "settings": { "label": "FAQ", "target_id": "pz-faq" } }
+      },
+      "block_order": ["link-1", "link-2", "link-3", "link-4", "link-5"]
+    },
+    "pz_how": {
+      "type": "pz-how-it-works",
+      "settings": {
+        "anchor_id": "pz-how-it-works",
+        "eyebrow": "Our Approach",
+        "heading": "How PERFORM Works",
+        "body": "<p>At 5 Point Zero, we focus on creating high-quality sports drinks that enhance performance, boost focus, and improve hydration — so pickleball players can play their best, longer.</p>"
+      },
+      "blocks": {
+        "step-1": { "type": "step", "settings": { "title": "Mix", "description": "Add one scoop to 16oz of water, 15-30 minutes before you play." } },
+        "step-2": { "type": "step", "settings": { "title": "Sip", "description": "Keep sipping between points and during breaks to stay hydrated." } },
+        "step-3": { "type": "step", "settings": { "title": "Perform", "description": "Stay sharp, avoid cramps, and finish strong through the last point." } }
+      },
+      "block_order": ["step-1", "step-2", "step-3"]
+    },
+    "pz_compare": {
+      "type": "pz-comparison-grid",
+      "settings": {
+        "anchor_id": "pz-benefits",
+        "heading": "Why 5 Point Zero Stands Out",
+        "subheading": "See how we outshine the competition in fueling your performance and achieving your goals.",
+        "us_label": "5 Point Zero",
+        "them_label": "Others"
+      },
+      "blocks": {
+        "row-1": { "type": "row", "settings": { "feature": "5 electrolytes", "us_value": true, "them_value": false } },
+        "row-2": { "type": "row", "settings": { "feature": "Crash-free energy", "us_value": true, "them_value": false } },
+        "row-3": { "type": "row", "settings": { "feature": "Enhanced focus", "us_value": true, "them_value": false } },
+        "row-4": { "type": "row", "settings": { "feature": "No artificial colors", "us_value": true, "them_value": false } },
+        "row-5": { "type": "row", "settings": { "feature": "No artificial flavors", "us_value": true, "them_value": false } }
+      },
+      "block_order": ["row-1", "row-2", "row-3", "row-4", "row-5"]
+    },
+    "pz_nutrition": {
+      "type": "pz-nutrition-strip",
+      "settings": {
+        "anchor_id": "pz-nutrition",
+        "heading": "In Every Serving of PERFORM",
+        "subheading": "Built to fuel a full session on the court — nothing wasted, nothing extra."
+      },
+      "blocks": {
+        "fact-1": { "type": "fact", "settings": { "value": "10", "label": "Calories" } },
+        "fact-2": { "type": "fact", "settings": { "value": "0g", "label": "Sugar" } },
+        "fact-3": { "type": "fact", "settings": { "value": "0g", "label": "Carbs" } },
+        "fact-4": { "type": "fact", "settings": { "value": "5", "label": "Electrolytes" } },
+        "fact-5": { "type": "fact", "settings": { "value": "100mg", "label": "Caffeine" } }
+      },
+      "block_order": ["fact-1", "fact-2", "fact-3", "fact-4", "fact-5"]
+    },
+    "pz_ingredients": {
+      "type": "pz-ingredient-cards",
+      "settings": {
+        "anchor_id": "pz-ingredients",
+        "heading": "What's Inside PERFORM",
+        "subheading": "Every ingredient is chosen for one job: keeping you sharp for all five points."
+      },
+      "blocks": {
+        "ing-1": { "type": "ingredient", "settings": { "eyebrow": "Electrolytes", "name": "Sodium & Potassium", "description": "Replaces what you sweat out on the court to prevent cramping." } },
+        "ing-2": { "type": "ingredient", "settings": { "eyebrow": "Focus", "name": "L-Theanine", "description": "Smooth, jitter-free focus for long rallies and tournament days." } },
+        "ing-3": { "type": "ingredient", "settings": { "eyebrow": "Energy", "name": "Natural Caffeine", "description": "Crash-free energy sourced from green tea, not synthetic stimulants." } },
+        "ing-4": { "type": "ingredient", "settings": { "eyebrow": "Hydration", "name": "Coconut Water", "description": "Organic coconut water for real, whole-food hydration." } }
+      },
+      "block_order": ["ing-1", "ing-2", "ing-3", "ing-4"]
+    },
+    "pz_freeof": {
+      "type": "pz-free-of",
+      "settings": {
+        "heading": "Discover the Difference of \"Zero\"",
+        "body": "<p>We're just as proud of what we DON'T put into 5 Point Zero as the ingredients we do include. Compare our label to your current sports drink.</p>"
+      },
+      "blocks": {
+        "z-1": { "type": "item", "settings": { "text": "Zero artificial colors" } },
+        "z-2": { "type": "item", "settings": { "text": "Zero artificial flavors" } },
+        "z-3": { "type": "item", "settings": { "text": "Zero artificial sweeteners" } },
+        "z-4": { "type": "item", "settings": { "text": "Zero GMOs" } },
+        "z-5": { "type": "item", "settings": { "text": "Zero irradiated ingredients" } }
+      },
+      "block_order": ["z-1", "z-2", "z-3", "z-4", "z-5"]
+    },
+    "pz_reviews": {
+      "type": "pz-reviews",
+      "settings": {
+        "anchor_id": "pz-reviews",
+        "heading": "Straight From Our Customers",
+        "subheading": "5 Point Zero is a game changer. Try it, feel the difference, join the community."
+      },
+      "blocks": {
+        "rev-1": { "type": "review", "settings": { "rating": 5, "title": "Unstoppable energy!", "quote": "I played four hours straight and never crashed. This is my new pre-match ritual.", "author": "Shay" } },
+        "rev-2": { "type": "review", "settings": { "rating": 5, "title": "Real difference on court", "quote": "My endurance during matches has noticeably improved. I can push harder and last longer.", "author": "Mathi" } },
+        "rev-3": { "type": "review", "settings": { "rating": 5, "title": "Tastes great!", "quote": "Delightful drink with all the nutrients to boost energy and focus, made with natural ingredients.", "author": "Michelle" } }
+      },
+      "block_order": ["rev-1", "rev-2", "rev-3"]
+    },
+    "pz_faq": {
+      "type": "pz-faq",
+      "settings": {
+        "anchor_id": "pz-faq",
+        "heading": "Frequently Asked Questions",
+        "subheading": "We're here to address any concerns or queries you may have to help you make an informed decision."
+      },
+      "blocks": {
+        "faq-1": { "type": "faq", "settings": { "question": "How do I use PERFORM sports drink?", "answer": "<p>Take PERFORM 15-30 minutes before you start playing, then continue to sip during play to maintain hydration, energy, endurance, and focus.</p>" } },
+        "faq-2": { "type": "faq", "settings": { "question": "Are 5 Point sports drinks suitable for all athletes?", "answer": "<p>Yes — PERFORM is formulated for anyone looking for clean hydration and focus during activity.</p>" } },
+        "faq-3": { "type": "faq", "settings": { "question": "What makes 5 Point sports drinks different from others on the market?", "answer": "<p>No artificial colors, flavors, or sweeteners — just electrolytes, clean energy, and focus support.</p>" } },
+        "faq-4": { "type": "faq", "settings": { "question": "Can I consume 5 Point Zero sports drinks if I have dietary restrictions?", "answer": "<p>PERFORM is gluten-free, sugar-free, and carb-free. Check the ingredient list for any personal allergens.</p>" } },
+        "faq-5": { "type": "faq", "settings": { "question": "How much caffeine is in PERFORM?", "answer": "<p>Each serving contains a moderate, crash-free dose of natural caffeine.</p>" } }
+      },
+      "block_order": ["faq-1", "faq-2", "faq-3", "faq-4", "faq-5"]
+    }
+  },
+  "order": [
+    "pz_hero",
+    "pz_stat",
+    "pz_nav",
+    "pz_how",
+    "pz_compare",
+    "pz_nutrition",
+    "pz_ingredients",
+    "pz_freeof",
+    "pz_reviews",
+    "pz_faq"
+  ]
+}

@@ -1,0 +1,104 @@
+{% comment %}
+  PZ Comparison Grid — "why we stand out" checklist comparing us vs. competitors.
+  Mirrors AG1's "more-in-one solution" grid / the existing point_table section.
+{% endcomment %}
+<section id="{{ section.settings.anchor_id }}" class="pz-compare pz-compare-{{ section.id }}">
+  {% style %}
+    .pz-compare-{{ section.id }} {
+      background: {{ section.settings.background }};
+      padding: 64px 24px;
+      scroll-margin-top: 80px;
+    }
+    .pz-compare-{{ section.id }} .pz-compare-inner { max-width: 960px; margin: 0 auto; text-align: center; }
+    .pz-compare-{{ section.id }} h2 { font-size: clamp(24px, 3vw, 34px); font-weight: 800; margin: 0 0 12px; }
+    .pz-compare-{{ section.id }} .pz-compare-sub { opacity: .75; max-width: 60ch; margin: 0 auto 40px; }
+    .pz-compare-{{ section.id }} table { width: 100%; border-collapse: collapse; text-align: left; }
+    .pz-compare-{{ section.id }} th, .pz-compare-{{ section.id }} td {
+      padding: 14px 12px; border-bottom: 1px solid #eaeaea; font-size: 14px;
+    }
+    .pz-compare-{{ section.id }} th { font-size: 12px; text-transform: uppercase; letter-spacing: .05em; opacity: .6; font-weight: 700; }
+    .pz-compare-{{ section.id }} th.pz-col-us { color: {{ section.settings.accent_color }}; }
+    .pz-compare-{{ section.id }} td:not(:first-child), .pz-compare-{{ section.id }} th:not(:first-child) {
+      text-align: center; width: 120px;
+    }
+    .pz-compare-{{ section.id }} .pz-icon-yes { color: {{ section.settings.accent_color }}; }
+    .pz-compare-{{ section.id }} .pz-icon-no { color: #c6c6c6; }
+    .pz-compare-{{ section.id }} tr td:first-child { font-weight: 600; }
+  {% endstyle %}
+  <div class="pz-compare-inner">
+    {% if section.settings.heading != blank %}<h2>{{ section.settings.heading }}</h2>{% endif %}
+    {% if section.settings.subheading != blank %}<p class="pz-compare-sub">{{ section.settings.subheading }}</p>{% endif %}
+    <table>
+      <thead>
+        <tr>
+          <th></th>
+          <th class="pz-col-us">{{ section.settings.us_label | default: '5 Point Zero' }}</th>
+          <th>{{ section.settings.them_label | default: 'Others' }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for block in section.blocks %}
+          {% if block.type == 'row' %}
+            <tr {{ block.shopify_attributes }}>
+              <td>{{ block.settings.feature }}</td>
+              <td>
+                {% if block.settings.us_value %}
+                  <svg class="pz-icon-yes" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>
+                {% else %}
+                  <svg class="pz-icon-no" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M18 6 6 18M6 6l12 12"/></svg>
+                {% endif %}
+              </td>
+              <td>
+                {% if block.settings.them_value %}
+                  <svg class="pz-icon-yes" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M20 6 9 17l-5-5"/></svg>
+                {% else %}
+                  <svg class="pz-icon-no" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M18 6 6 18M6 6l12 12"/></svg>
+                {% endif %}
+              </td>
+            </tr>
+          {% endif %}
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "PZ Comparison Grid",
+  "tag": "section",
+  "class": "pz-section",
+  "settings": [
+    { "type": "text", "id": "anchor_id", "label": "Anchor id", "default": "pz-benefits" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Why 5 Point Zero Stands Out" },
+    { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "See how we outshine the competition in fueling your performance." },
+    { "type": "text", "id": "us_label", "label": "Us column label", "default": "5 Point Zero" },
+    { "type": "text", "id": "them_label", "label": "Them column label", "default": "Others" },
+    { "type": "color", "id": "accent_color", "label": "Accent color", "default": "#E8447C" },
+    { "type": "color", "id": "background", "label": "Background", "default": "#fafafa" }
+  ],
+  "blocks": [
+    {
+      "type": "row",
+      "name": "Comparison row",
+      "settings": [
+        { "type": "text", "id": "feature", "label": "Feature", "default": "5 electrolytes" },
+        { "type": "checkbox", "id": "us_value", "label": "We have it", "default": true },
+        { "type": "checkbox", "id": "them_value", "label": "They have it", "default": false }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "PZ Comparison Grid",
+      "blocks": [
+        { "type": "row", "settings": { "feature": "5 electrolytes", "us_value": true, "them_value": false } },
+        { "type": "row", "settings": { "feature": "Crash-free energy", "us_value": true, "them_value": false } },
+        { "type": "row", "settings": { "feature": "Enhanced focus", "us_value": true, "them_value": false } },
+        { "type": "row", "settings": { "feature": "No artificial colors", "us_value": true, "them_value": false } },
+        { "type": "row", "settings": { "feature": "No artificial flavors", "us_value": true, "them_value": false } }
+      ]
+    }
+  ]
+}
+{% endschema %}

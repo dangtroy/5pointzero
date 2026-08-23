@@ -1,0 +1,84 @@
+{% comment %}
+  PZ Reviews — testimonial card carousel, mirrors AG1's review carousel /
+  the existing straight_customers_YqmXDU section.
+{% endcomment %}
+<section id="{{ section.settings.anchor_id }}" class="pz-reviews pz-reviews-{{ section.id }}">
+  {% style %}
+    .pz-reviews-{{ section.id }} {
+      background: {{ section.settings.background }};
+      padding: 64px 0;
+      scroll-margin-top: 80px;
+    }
+    .pz-reviews-{{ section.id }} .pz-reviews-head {
+      max-width: 1280px; margin: 0 auto 32px; padding: 0 24px; text-align: center;
+    }
+    .pz-reviews-{{ section.id }} h2 { font-size: clamp(24px, 3vw, 34px); font-weight: 800; margin: 0 0 8px; }
+    .pz-reviews-{{ section.id }} .pz-reviews-sub { opacity: .75; max-width: 60ch; margin: 0 auto; }
+    .pz-reviews-{{ section.id }} .pz-review-row {
+      display: flex; gap: 16px; overflow-x: auto; padding: 4px 24px 12px;
+      scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+    }
+    .pz-reviews-{{ section.id }} .pz-review-card {
+      flex: 0 0 300px; scroll-snap-align: start;
+      border: 1px solid #ececec; border-radius: 16px; padding: 20px; background: #fff;
+    }
+    .pz-reviews-{{ section.id }} .pz-review-stars { color: #f5a623; letter-spacing: 2px; margin-bottom: 10px; }
+    .pz-reviews-{{ section.id }} .pz-review-title { font-weight: 800; margin-bottom: 8px; }
+    .pz-reviews-{{ section.id }} .pz-review-quote { font-size: 14px; line-height: 1.6; opacity: .85; margin-bottom: 14px; }
+    .pz-reviews-{{ section.id }} .pz-review-author { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; font-weight: 700; opacity: .6; }
+  {% endstyle %}
+  <div class="pz-reviews-head">
+    {% if section.settings.heading != blank %}<h2>{{ section.settings.heading }}</h2>{% endif %}
+    {% if section.settings.subheading != blank %}<p class="pz-reviews-sub">{{ section.settings.subheading }}</p>{% endif %}
+  </div>
+  <div class="pz-review-row">
+    {% for block in section.blocks %}
+      {% if block.type == 'review' %}
+        <div class="pz-review-card" {{ block.shopify_attributes }}>
+          <div class="pz-review-stars" aria-hidden="true">
+            {% for i in (1..5) %}{% if i <= block.settings.rating %}★{% else %}☆{% endif %}{% endfor %}
+          </div>
+          <div class="pz-review-title">{{ block.settings.title }}</div>
+          <div class="pz-review-quote">"{{ block.settings.quote }}"</div>
+          <div class="pz-review-author">{{ block.settings.author }}</div>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "PZ Reviews",
+  "tag": "section",
+  "class": "pz-section",
+  "settings": [
+    { "type": "text", "id": "anchor_id", "label": "Anchor id", "default": "pz-reviews" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Straight From Our Customers" },
+    { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "5 Point Zero is a game changer. Try it, feel the difference, join the community." },
+    { "type": "color", "id": "background", "label": "Background", "default": "#fafafa" }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Review",
+      "settings": [
+        { "type": "range", "id": "rating", "label": "Rating", "min": 1, "max": 5, "step": 1, "default": 5 },
+        { "type": "text", "id": "title", "label": "Title", "default": "Unstoppable energy!" },
+        { "type": "textarea", "id": "quote", "label": "Quote", "default": "I played four hours straight and never crashed. This is my new pre-match ritual." },
+        { "type": "text", "id": "author", "label": "Author", "default": "Shay" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "PZ Reviews",
+      "blocks": [
+        { "type": "review", "settings": { "rating": 5, "title": "Unstoppable energy!", "quote": "I played four hours straight and never crashed. This is my new pre-match ritual.", "author": "Shay" } },
+        { "type": "review", "settings": { "rating": 5, "title": "Real difference on court", "quote": "My endurance during matches has noticeably improved. I can push harder and last longer.", "author": "Mathi" } },
+        { "type": "review", "settings": { "rating": 5, "title": "Tastes great!", "quote": "Delightful drink with all the nutrients to boost energy and focus, made with natural ingredients.", "author": "Michelle" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
