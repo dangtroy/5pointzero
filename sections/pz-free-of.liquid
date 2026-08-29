@@ -1,10 +1,10 @@
 {% comment %}
-  PZ Free Of — "We Left The Junk Out".
-  A scannable grid of what the formula omits. Every claim here should be
-  traceable to the product copy or the Supplement Facts panel.
-  White ground; neon green sits on dark icon chips, since #96FF00 as a
-  mark on white measures ~1.3:1 and would not be visible.
-  Mobile is a two-column grid — no horizontal scrolling.
+  PZ Free Of — "Discover the difference of ZERO".
+  Two-column brand statement: headline + copy on the left, a struck-out
+  claim list on the right. Modeled on the brand's existing "Discover the
+  difference" section so this page matches the rest of the site.
+  Dark ground, so neon green reads at ~15:1 as the ZERO keyword.
+  Mobile stacks — no horizontal scrolling.
 {% endcomment %}
 <section id="{{ section.settings.anchor_id }}" class="pz-freeof pz-freeof-{{ section.id }}">
   {% style %}
@@ -17,77 +17,70 @@
     @media (min-width: 600px) {
       .pz-freeof-{{ section.id }} { padding: 88px 24px; }
     }
-    .pz-freeof-{{ section.id }} .pz-freeof-inner { max-width: 1120px; margin: 0 auto; }
-    .pz-freeof-{{ section.id }} .pz-freeof-head { text-align: center; margin-bottom: 40px; }
-    @media (min-width: 600px) {
-      .pz-freeof-{{ section.id }} .pz-freeof-head { margin-bottom: 56px; }
+    .pz-freeof-{{ section.id }} .pz-freeof-inner {
+      max-width: 1280px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr; gap: 40px; align-items: start;
     }
-    .pz-freeof-{{ section.id }} h2 {
-      font-size: clamp(28px, 4vw, 46px); font-weight: 900; margin: 0 0 12px;
-      color: {{ section.settings.heading_color }};
-      text-transform: uppercase; letter-spacing: -0.02em; line-height: 1.03;
+    @media (min-width: 900px) {
+      .pz-freeof-{{ section.id }} .pz-freeof-inner {
+        grid-template-columns: {{ section.settings.left_width }}fr {{ 100 | minus: section.settings.left_width }}fr;
+        gap: 64px;
+      }
     }
-    .pz-freeof-{{ section.id }} .pz-freeof-sub {
-      font-size: clamp(15px, 1.5vw, 18px); opacity: .65; max-width: 46ch; margin: 0 auto;
-    }
+    .pz-freeof-{{ section.id }} .pz-freeof-copy-col { min-width: 0; }
 
-    /* Six items: three across on desktop, two on mobile — no orphan row
-       and no horizontal scrolling. */
-    .pz-freeof-{{ section.id }} .pz-freeof-grid {
-      display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
+    .pz-freeof-{{ section.id }} h2 {
+      font-size: clamp(32px, 4.6vw, 58px); font-weight: 900; margin: 0 0 22px;
+      color: {{ section.settings.heading_color }};
+      text-transform: uppercase; letter-spacing: -0.02em; line-height: 1.02;
     }
-    @media (min-width: 700px) {
-      .pz-freeof-{{ section.id }} .pz-freeof-grid { grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .pz-freeof-{{ section.id }} .pz-freeof-highlight {
+      color: {{ section.settings.accent_color }};
+    }
+    .pz-freeof-{{ section.id }} .pz-freeof-body {
+      font-size: clamp(14px, 1.2vw, 16px); line-height: 1.65; opacity: .8; max-width: 52ch;
+    }
+    .pz-freeof-{{ section.id }} .pz-freeof-body p { margin: 0 0 12px; }
+    .pz-freeof-{{ section.id }} .pz-freeof-body p:last-child { margin-bottom: 0; }
+
+    /* Claim list — one column on small screens so long claims never get
+       cramped, two once there is room. No horizontal scrolling. */
+    .pz-freeof-{{ section.id }} .pz-freeof-grid {
+      min-width: 0;
+      display: grid; grid-template-columns: 1fr; gap: 18px 28px;
+    }
+    @media (min-width: 600px) {
+      .pz-freeof-{{ section.id }} .pz-freeof-grid { grid-template-columns: repeat(2, 1fr); gap: 22px 32px; }
     }
 
     .pz-freeof-{{ section.id }} .pz-freeof-item {
-      min-width: 0;
-      display: flex; flex-direction: column; align-items: center; text-align: center;
-      gap: 14px; padding: 26px 14px;
-      border: 1px solid {{ section.settings.border_color }};
-      border-radius: 14px;
-      background: {{ section.settings.card_background }};
-      transition: border-color .2s ease;
+      min-width: 0; display: flex; align-items: center; gap: 14px;
     }
-    @media (min-width: 700px) {
-      .pz-freeof-{{ section.id }} .pz-freeof-item { padding: 34px 20px; gap: 18px; }
-    }
-    .pz-freeof-{{ section.id }} .pz-freeof-item:hover {
-      border-color: {{ section.settings.accent_color }};
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .pz-freeof-{{ section.id }} .pz-freeof-item { transition: none; }
-    }
-
-    /* Neon mark on a dark chip keeps the accent legible on a white page. */
-    .pz-freeof-{{ section.id }} .pz-freeof-chip {
+    .pz-freeof-{{ section.id }} .pz-freeof-mark {
       flex: none;
-      width: {{ section.settings.icon_size | plus: 24 }}px;
-      height: {{ section.settings.icon_size | plus: 24 }}px;
-      border-radius: 16px;
-      background: {{ section.settings.chip_color }};
-      color: {{ section.settings.accent_color }};
+      width: {{ section.settings.icon_size }}px; height: {{ section.settings.icon_size }}px;
+      border-radius: 50%;
+      background: {{ section.settings.mark_bg_color }};
+      color: {{ section.settings.mark_icon_color }};
       display: flex; align-items: center; justify-content: center;
     }
-    .pz-freeof-{{ section.id }} .pz-freeof-chip svg {
-      width: {{ section.settings.icon_size }}px; height: {{ section.settings.icon_size }}px;
-      display: block;
+    .pz-freeof-{{ section.id }} .pz-freeof-mark svg {
+      width: 55%; height: 55%; display: block;
     }
     .pz-freeof-{{ section.id }} .pz-freeof-claim {
-      font-size: clamp(14px, 1.2vw, 16px); font-weight: 900; line-height: 1.25;
+      font-size: clamp(15px, 1.35vw, 19px); font-weight: 900; line-height: 1.15;
       text-transform: uppercase; letter-spacing: .01em;
     }
     .pz-freeof-{{ section.id }} .pz-freeof-prefix {
-      color: {{ section.settings.accent_on_light_color }};
+      color: {{ section.settings.accent_color }};
     }
 
     .pz-freeof-{{ section.id }} .pz-freeof-note {
-      margin: 26px auto 0; text-align: center; max-width: 66ch;
-      font-size: 12px; opacity: .5; line-height: 1.5;
+      grid-column: 1 / -1;
+      margin: 28px 0 0; font-size: 12px; opacity: .45; line-height: 1.5; max-width: 70ch;
     }
-    .pz-freeof-{{ section.id }} .pz-freeof-foot { text-align: center; margin-top: 26px; }
     .pz-freeof-{{ section.id }} .pz-freeof-link {
-      display: inline-flex; align-items: center; gap: 8px;
+      display: inline-flex; align-items: center; gap: 8px; margin-top: 22px;
       font-size: 13px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase;
       color: {{ section.settings.text_color }}; text-decoration: none;
       border-bottom: 2px solid {{ section.settings.accent_color }}; padding-bottom: 4px;
@@ -96,32 +89,35 @@
   {% endstyle %}
 
   <div class="pz-freeof-inner">
-    <div class="pz-freeof-head">
-      {% if section.settings.heading != blank %}<h2>{{ section.settings.heading }}</h2>{% endif %}
-      {% if section.settings.subheading != blank %}<p class="pz-freeof-sub">{{ section.settings.subheading }}</p>{% endif %}
+    <div class="pz-freeof-copy-col">
+      {% if section.settings.heading != blank or section.settings.heading_highlight != blank %}
+        <h2>
+          {{ section.settings.heading }}
+          {%- if section.settings.heading_highlight != blank -%}
+            {% if section.settings.quote_highlight %}
+              <span class="pz-freeof-highlight">&ldquo;{{ section.settings.heading_highlight }}&rdquo;</span>
+            {% else %}
+              <span class="pz-freeof-highlight">{{ section.settings.heading_highlight }}</span>
+            {% endif %}
+          {%- endif -%}
+        </h2>
+      {% endif %}
+      {% if section.settings.body != blank %}
+        <div class="pz-freeof-body">{{ section.settings.body }}</div>
+      {% endif %}
+      {% if section.settings.link_text != blank and section.settings.link_url != blank %}
+        <a class="pz-freeof-link" href="{{ section.settings.link_url }}">
+          {{ section.settings.link_text }} <span aria-hidden="true">&rarr;</span>
+        </a>
+      {% endif %}
     </div>
 
     <div class="pz-freeof-grid">
       {% for block in section.blocks %}
         {% if block.type == 'item' %}
           <div class="pz-freeof-item" {{ block.shopify_attributes }}>
-            <span class="pz-freeof-chip" aria-hidden="true">
-              {% case block.settings.icon %}
-                {% when 'colors' %}
-                  <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M24 6c0 0 11 12.4 11 19.5A11 11 0 0 1 13 25.5C13 18.4 24 6 24 6Z"/><path d="M9 39 39 9"/></svg>
-                {% when 'flavors' %}
-                  <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 6v13L10 34a5 5 0 0 0 4.4 7.5h19.2A5 5 0 0 0 38 34l-9-15V6"/><path d="M16 6h16"/><path d="M9 41 39 8"/></svg>
-                {% when 'sweeteners' %}
-                  <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 14h26l-3 24H14L11 14Z"/><path d="M17 14V9h14v5"/><path d="M9 41 39 8"/></svg>
-                {% when 'sugar' %}
-                  <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="11" y="15" width="26" height="20" rx="3"/><path d="M11 22h26"/><path d="M9 41 39 8"/></svg>
-                {% when 'calories' %}
-                  <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M26 5c1 7-4 9-6.5 13A12 12 0 1 0 36 28c0-8-7-9-10-23Z"/><path d="M9 41 39 8"/></svg>
-                {% when 'gluten' %}
-                  <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M24 42V16"/><path d="M24 20c-5-1-8-5-8-10 5 0 8 3 8 6"/><path d="M24 20c5-1 8-5 8-10-5 0-8 3-8 6"/><path d="M24 30c-5-1-8-5-8-10 5 0 8 3 8 6"/><path d="M24 30c5-1 8-5 8-10-5 0-8 3-8 6"/><path d="M9 41 39 8"/></svg>
-                {% else %}
-                  <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M13 13 35 35M35 13 13 35"/></svg>
-              {% endcase %}
+            <span class="pz-freeof-mark" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
             </span>
             <span class="pz-freeof-claim">
               {% if block.settings.prefix != blank %}
@@ -132,19 +128,10 @@
           </div>
         {% endif %}
       {% endfor %}
+      {% if section.settings.note != blank %}
+        <p class="pz-freeof-note">{{ section.settings.note }}</p>
+      {% endif %}
     </div>
-
-    {% if section.settings.link_text != blank and section.settings.link_url != blank %}
-      <div class="pz-freeof-foot">
-        <a class="pz-freeof-link" href="{{ section.settings.link_url }}">
-          {{ section.settings.link_text }} <span aria-hidden="true">&rarr;</span>
-        </a>
-      </div>
-    {% endif %}
-
-    {% if section.settings.note != blank %}
-      <p class="pz-freeof-note">{{ section.settings.note }}</p>
-    {% endif %}
   </div>
 </section>
 
@@ -155,44 +142,30 @@
   "class": "pz-section",
   "settings": [
     { "type": "text", "id": "anchor_id", "label": "Anchor id", "default": "pz-zero" },
-    { "type": "text", "id": "heading", "label": "Heading", "default": "We Left The Junk Out." },
-    { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "What we don't put in matters too." },
-    { "type": "range", "id": "icon_size", "label": "Icon size (px)", "min": 24, "max": 64, "step": 2, "default": 40 },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Discover the difference of" },
+    { "type": "text", "id": "heading_highlight", "label": "Highlighted word", "info": "Shown in the accent color", "default": "Zero" },
+    { "type": "checkbox", "id": "quote_highlight", "label": "Wrap highlighted word in quotes", "default": true },
+    { "type": "richtext", "id": "body", "label": "Body copy" },
+    { "type": "range", "id": "left_width", "label": "Left column width (%)", "min": 30, "max": 60, "step": 2, "default": 44 },
+    { "type": "range", "id": "icon_size", "label": "Mark size (px)", "min": 24, "max": 56, "step": 2, "default": 38 },
     { "type": "textarea", "id": "note", "label": "Footnote", "info": "Optional. Use to cite where these claims come from." },
     { "type": "header", "content": "Link" },
     { "type": "text", "id": "link_text", "label": "Link text", "info": "Only shown when a URL is set below" },
     { "type": "url", "id": "link_url", "label": "Link URL" },
     { "type": "header", "content": "Colors" },
-    { "type": "color", "id": "accent_color", "label": "Icon color", "default": "#96FF00" },
-    { "type": "color", "id": "chip_color", "label": "Icon chip background", "info": "Neon green needs a dark ground to stay visible on a white page", "default": "#111111" },
-    { "type": "color", "id": "accent_on_light_color", "label": "Highlighted word color", "info": "Darker green that stays readable on white", "default": "#457300" },
-    { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#141414" },
-    { "type": "color", "id": "text_color", "label": "Body text color", "default": "#141414" },
-    { "type": "color", "id": "card_background", "label": "Card background", "default": "#ffffff" },
-    { "type": "color", "id": "border_color", "label": "Card border", "default": "#e6e6e6" },
-    { "type": "color", "id": "background", "label": "Section background", "default": "#ffffff" }
+    { "type": "color", "id": "accent_color", "label": "Accent", "info": "Used for the highlighted word and each claim's keyword", "default": "#96FF00" },
+    { "type": "color", "id": "mark_bg_color", "label": "Mark background", "default": "#ffffff" },
+    { "type": "color", "id": "mark_icon_color", "label": "Mark icon", "default": "#000000" },
+    { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#ffffff" },
+    { "type": "color", "id": "text_color", "label": "Body text color", "default": "#ffffff" },
+    { "type": "color", "id": "background", "label": "Section background", "default": "#000000" }
   ],
   "blocks": [
     {
       "type": "item",
       "name": "Claim",
       "settings": [
-        {
-          "type": "select",
-          "id": "icon",
-          "label": "Icon",
-          "options": [
-            { "value": "colors", "label": "Colors" },
-            { "value": "flavors", "label": "Flavors" },
-            { "value": "sweeteners", "label": "Sweeteners" },
-            { "value": "sugar", "label": "Sugar" },
-            { "value": "calories", "label": "Calories" },
-            { "value": "gluten", "label": "Gluten" },
-            { "value": "cross", "label": "Cross" }
-          ],
-          "default": "cross"
-        },
-        { "type": "text", "id": "prefix", "label": "Highlighted first word", "info": "Shown in green, e.g. NO" },
+        { "type": "text", "id": "prefix", "label": "Highlighted keyword", "info": "Shown in the accent color, e.g. ZERO", "default": "Zero" },
         { "type": "text", "id": "text", "label": "Claim", "info": "Must be supported by the product copy or Supplement Facts panel", "default": "Artificial Colors" }
       ]
     }
@@ -201,12 +174,12 @@
     {
       "name": "PZ Free Of",
       "blocks": [
-        { "type": "item", "settings": { "icon": "colors", "prefix": "No", "text": "Artificial Colors" } },
-        { "type": "item", "settings": { "icon": "flavors", "prefix": "No", "text": "Artificial Flavors" } },
-        { "type": "item", "settings": { "icon": "sweeteners", "prefix": "No", "text": "Artificial Sweeteners" } },
-        { "type": "item", "settings": { "icon": "sugar", "prefix": "No", "text": "Sugar" } },
-        { "type": "item", "settings": { "icon": "calories", "prefix": "No", "text": "Calories" } },
-        { "type": "item", "settings": { "icon": "gluten", "text": "Gluten Free" } }
+        { "type": "item", "settings": { "prefix": "Zero", "text": "Artificial Colors" } },
+        { "type": "item", "settings": { "prefix": "Zero", "text": "Artificial Flavors" } },
+        { "type": "item", "settings": { "prefix": "Zero", "text": "Artificial Sweeteners" } },
+        { "type": "item", "settings": { "prefix": "Zero", "text": "Sugar" } },
+        { "type": "item", "settings": { "prefix": "Zero", "text": "Calories" } },
+        { "type": "item", "settings": { "prefix": "Zero", "text": "Gluten" } }
       ]
     }
   ]

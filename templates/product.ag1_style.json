@@ -413,65 +413,61 @@
       "type": "pz-free-of",
       "settings": {
         "anchor_id": "pz-zero",
-        "heading": "We Left The Junk Out.",
-        "subheading": "What we don't put in matters too.",
-        "icon_size": 40,
+        "heading": "Discover the difference of",
+        "heading_highlight": "Zero",
+        "quote_highlight": true,
+        "body": "<p>We are just as proud of what we DON'T put into 5 point zero drinks as the potent ingredients we do include. Read our labels closely, then check out your favorite performance drink. With our competitors, watch out for dextrose, sucrose, artificial colors, artificial flavors and artificial sweeteners. Would you rather be drinking organic coconut water (in ours) or Blue Dye #1 (in theirs)?</p>",
+        "left_width": 44,
+        "icon_size": 38,
         "note": "Claims per the product description and Supplement Facts panel.",
         "accent_color": "#96FF00",
-        "chip_color": "#111111",
-        "accent_on_light_color": "#457300",
-        "heading_color": "#141414",
-        "text_color": "#141414",
-        "card_background": "#ffffff",
-        "border_color": "#e6e6e6",
-        "background": "#ffffff"
+        "mark_bg_color": "#ffffff",
+        "mark_icon_color": "#000000",
+        "heading_color": "#ffffff",
+        "text_color": "#ffffff",
+        "background": "#000000"
       },
       "blocks": {
         "z-1": {
           "type": "item",
           "settings": {
-            "icon": "colors",
-            "text": "Artificial Colors",
-            "prefix": "No"
+            "prefix": "Zero",
+            "text": "Artificial Colors"
           }
         },
         "z-2": {
           "type": "item",
           "settings": {
-            "icon": "flavors",
-            "text": "Artificial Flavors",
-            "prefix": "No"
+            "prefix": "Zero",
+            "text": "Artificial Flavors"
           }
         },
         "z-3": {
           "type": "item",
           "settings": {
-            "icon": "sweeteners",
-            "text": "Artificial Sweeteners",
-            "prefix": "No"
+            "prefix": "Zero",
+            "text": "Artificial Sweeteners"
           }
         },
         "z-4": {
           "type": "item",
           "settings": {
-            "icon": "sugar",
-            "text": "Sugar",
-            "prefix": "No"
+            "prefix": "Zero",
+            "text": "Sugar"
           }
         },
         "z-5": {
           "type": "item",
           "settings": {
-            "icon": "calories",
-            "text": "Calories",
-            "prefix": "No"
+            "prefix": "Zero",
+            "text": "Calories"
           }
         },
         "z-6": {
           "type": "item",
           "settings": {
-            "icon": "gluten",
-            "text": "Gluten Free"
+            "prefix": "Zero",
+            "text": "Gluten"
           }
         }
       },
