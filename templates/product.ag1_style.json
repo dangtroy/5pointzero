@@ -413,44 +413,65 @@
       "type": "pz-free-of",
       "settings": {
         "anchor_id": "pz-zero",
-        "heading": "Zero Artificial Ingredients",
-        "body": "<p>What we don't put in is as important as what we do put in. No artificial colors, flavors, or sweeteners. No sugar, calories, or gluten.</p>"
+        "heading": "We Left The Junk Out.",
+        "subheading": "What we don't put in matters too.",
+        "icon_size": 40,
+        "note": "Claims per the product description and Supplement Facts panel.",
+        "accent_color": "#96FF00",
+        "chip_color": "#111111",
+        "accent_on_light_color": "#457300",
+        "heading_color": "#141414",
+        "text_color": "#141414",
+        "card_background": "#ffffff",
+        "border_color": "#e6e6e6",
+        "background": "#ffffff"
       },
       "blocks": {
         "z-1": {
           "type": "item",
           "settings": {
-            "text": "No artificial colors"
+            "icon": "colors",
+            "text": "Artificial Colors",
+            "prefix": "No"
           }
         },
         "z-2": {
           "type": "item",
           "settings": {
-            "text": "No artificial flavors"
+            "icon": "flavors",
+            "text": "Artificial Flavors",
+            "prefix": "No"
           }
         },
         "z-3": {
           "type": "item",
           "settings": {
-            "text": "No artificial sweeteners"
+            "icon": "sweeteners",
+            "text": "Artificial Sweeteners",
+            "prefix": "No"
           }
         },
         "z-4": {
           "type": "item",
           "settings": {
-            "text": "No sugar"
+            "icon": "sugar",
+            "text": "Sugar",
+            "prefix": "No"
           }
         },
         "z-5": {
           "type": "item",
           "settings": {
-            "text": "No calories"
+            "icon": "calories",
+            "text": "Calories",
+            "prefix": "No"
           }
         },
         "z-6": {
           "type": "item",
           "settings": {
-            "text": "No gluten"
+            "icon": "gluten",
+            "text": "Gluten Free"
           }
         }
       },
