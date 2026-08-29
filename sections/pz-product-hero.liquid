@@ -8,6 +8,9 @@
     .pz-hero-{{ section.id }} {
       --pz-accent: {{ section.settings.accent_color }};
       --pz-accent-text: {{ section.settings.accent_text_color }};
+      /* Neon green is unreadable as text on white (~1.3:1). This darker
+         green is the on-light equivalent for text/icons. */
+      --pz-accent-strong: {{ section.settings.accent_on_light_color }};
       --pz-ink: {{ section.settings.text_color }};
       --pz-heading: {{ section.settings.heading_color }};
       --pz-bg: {{ section.settings.background }};
@@ -124,19 +127,39 @@
       padding: 7px 13px; border-radius: 4px; margin-bottom: 14px;
       line-height: 1.2;
     }
-    .pz-hero-{{ section.id }} h1 {
-      font-size: clamp(32px, 4vw, 46px); line-height: 1.02; margin: 0 0 10px; font-weight: 800;
-      color: var(--pz-heading); letter-spacing: -0.015em;
+    /* Title lockup — PERFORM leads, flavor sits under it as a secondary
+       line so the product reads as a line ("PERFORM") with a variant,
+       not as one long hyphenated string. */
+    .pz-hero-{{ section.id }} .pz-title {
+      margin: 0 0 12px; display: flex; flex-direction: column;
+      line-height: .92; color: var(--pz-heading);
     }
-    .pz-hero-{{ section.id }} .pz-subhead {
-      font-size: 16px; line-height: 1.55; margin: 0 0 16px; max-width: 46ch;
-      color: var(--pz-ink); opacity: .7;
+    .pz-hero-{{ section.id }} .pz-title-main {
+      font-size: clamp(44px, 6.2vw, 76px); font-weight: 900;
+      letter-spacing: -0.03em; text-transform: uppercase;
     }
+    .pz-hero-{{ section.id }} .pz-title-flavor {
+      font-size: clamp(18px, 2.2vw, 26px); font-weight: 800;
+      letter-spacing: .12em; text-transform: uppercase;
+      color: {{ section.settings.flavor_color }}; margin-top: 6px;
+    }
+    .pz-hero-{{ section.id }} .pz-tagline {
+      font-size: clamp(14px, 1.35vw, 16px); font-weight: 800; margin: 0 0 12px;
+      letter-spacing: .04em; text-transform: uppercase; color: var(--pz-ink);
+    }
+    .pz-hero-{{ section.id }} .pz-benefit-line {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+      font-size: 13px; font-weight: 700; margin: 0 0 16px;
+      letter-spacing: .02em; color: var(--pz-ink); opacity: .8;
+    }
+    .pz-hero-{{ section.id }} .pz-benefit-sep { color: var(--pz-accent-strong); font-weight: 900; }
     .pz-hero-{{ section.id }} .pz-reviews-line {
       display: flex; align-items: center; gap: 8px; font-size: 14px; margin-bottom: 22px; flex-wrap: wrap;
       padding-bottom: 18px; border-bottom: 1px solid var(--pz-border);
     }
     .pz-hero-{{ section.id }} .pz-stars { color: {{ section.settings.star_color }}; letter-spacing: 1px; }
+    .pz-hero-{{ section.id }} .pz-reviews-rating { font-weight: 800; }
+    .pz-hero-{{ section.id }} .pz-reviews-divider { opacity: .35; }
     .pz-hero-{{ section.id }} .pz-reviews-count { font-weight: 800; }
     .pz-hero-{{ section.id }} .pz-reviews-text { opacity: .7; }
 
@@ -160,13 +183,18 @@
       border-radius: {{ section.settings.atc_border_radius }}px !important;
       {% case section.settings.atc_size %}
         {% when 'small' %}
-          padding-top: 10px !important; padding-bottom: 10px !important; font-size: 14px !important;
+          padding-top: 12px !important; padding-bottom: 12px !important; font-size: 15px !important;
         {% when 'large' %}
-          padding-top: 20px !important; padding-bottom: 20px !important; font-size: 18px !important;
+          padding-top: 22px !important; padding-bottom: 22px !important; font-size: 19px !important;
         {% else %}
-          padding-top: 15px !important; padding-bottom: 15px !important; font-size: 16px !important;
+          padding-top: 17px !important; padding-bottom: 17px !important; font-size: 17px !important;
       {% endcase %}
-      font-weight: 800 !important;
+      font-weight: 900 !important;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+    .pz-hero-{{ section.id }} .product-form__submit:hover {
+      filter: brightness(1.06);
     }
     /* Dawn's buy-buttons markup includes a trailing arrow icon inside the
        button's text span — hide it for a cleaner, text-only button. */
@@ -261,9 +289,22 @@
       padding-bottom: max(10px, env(safe-area-inset-bottom));
     }
     .pz-hero-{{ section.id }} .pz-sticky-bar.is-visible { display: flex; }
-    .pz-hero-{{ section.id }} .pz-sticky-bar .pz-atc { margin: 0; width: auto; padding: 12px 24px; font-size: 14px; }
-    .pz-hero-{{ section.id }} .pz-sticky-title { font-size: 14px; font-weight: 700; }
-    .pz-hero-{{ section.id }} .pz-sticky-price { font-size: 13px; opacity: .7; }
+    /* Sticky bar is a mobile conversion aid — on desktop the buy box is
+       still reachable, so keep it out of the way there. */
+    @media (min-width: 901px) {
+      .pz-hero-{{ section.id }} .pz-sticky-bar { display: none !important; }
+    }
+    .pz-hero-{{ section.id }} .pz-sticky-bar .pz-atc {
+      margin: 0; width: auto; flex: none; padding: 14px 22px; font-size: 14px;
+      border-radius: {{ section.settings.atc_border_radius }}px;
+      background: var(--pz-accent); color: var(--pz-accent-text);
+      font-weight: 900; letter-spacing: .04em; text-transform: uppercase;
+    }
+    .pz-hero-{{ section.id }} .pz-sticky-title {
+      font-size: 14px; font-weight: 900; text-transform: uppercase; letter-spacing: .04em;
+      line-height: 1.1;
+    }
+    .pz-hero-{{ section.id }} .pz-sticky-price { font-size: 15px; font-weight: 800; margin-top: 2px; }
   {% endstyle %}
 
   <div class="pz-hero-grid">
@@ -347,14 +388,45 @@
       {% if section.settings.badge_text != blank %}
         <span class="pz-badge">{{ section.settings.badge_text }}</span>
       {% endif %}
-      <h1>{{ product.title }}</h1>
-      {% if section.settings.subheadline != blank %}
-        <p class="pz-subhead">{{ section.settings.subheadline }}</p>
+
+      {%- liquid
+        assign title_main = section.settings.title_main
+        assign title_flavor = section.settings.title_flavor
+        if title_main == blank
+          assign title_parts = product.title | split: '-'
+          assign title_main = title_parts[0] | strip
+          assign title_flavor = title_parts[1] | strip
+        endif
+      -%}
+      <h1 class="pz-title">
+        <span class="pz-title-main">{{ title_main }}</span>
+        {% if title_flavor != blank %}
+          <span class="pz-title-flavor">{{ title_flavor }}</span>
+        {% endif %}
+      </h1>
+
+      {% if section.settings.tagline != blank %}
+        <p class="pz-tagline">{{ section.settings.tagline }}</p>
       {% endif %}
+
+      {% if section.settings.benefit_line != blank %}
+        <p class="pz-benefit-line">
+          {%- assign benefits = section.settings.benefit_line | split: ',' -%}
+          {%- for b in benefits -%}
+            <span class="pz-benefit-word">{{ b | strip }}</span>
+            {%- unless forloop.last %}<span class="pz-benefit-sep" aria-hidden="true">/</span>{% endunless -%}
+          {%- endfor -%}
+        </p>
+      {% endif %}
+
       {% if section.settings.show_reviews_line %}
         <div class="pz-reviews-line">
           <span class="pz-stars" aria-hidden="true">★★★★★</span>
+          {% if section.settings.reviews_rating != blank %}
+            <span class="pz-reviews-rating">{{ section.settings.reviews_rating }}</span>
+          {% endif %}
           {% if section.settings.reviews_count != blank %}
+            <span class="pz-reviews-divider" aria-hidden="true">|</span>
             <span class="pz-reviews-count">{{ section.settings.reviews_count }}</span>
           {% endif %}
           <span class="pz-reviews-text">{{ section.settings.reviews_line_text }}</span>
@@ -474,7 +546,7 @@
 
   <div class="pz-sticky-bar" id="pz-sticky-bar-{{ section.id }}">
     <div>
-      <div class="pz-sticky-title">{{ product.title }}</div>
+      <div class="pz-sticky-title">{{ title_main | default: product.title }}</div>
       <div class="pz-sticky-price" id="pz-sticky-price-{{ section.id }}">{{ product.selected_or_first_available_variant.price | money }}</div>
     </div>
     <button
@@ -543,7 +615,14 @@
   }
 
   function updateButtonPrice(cents) {
-    if (!showPriceInButton || !atcButton || typeof cents !== 'number') return;
+    if (typeof cents !== 'number') return;
+
+    // Keep the sticky bar in sync with the selected pack — otherwise it
+    // keeps showing the first tier's price after the shopper switches.
+    var stickyPriceEl = document.getElementById('pz-sticky-price-{{ section.id }}');
+    if (stickyPriceEl) stickyPriceEl.textContent = pzFormatMoney(cents);
+
+    if (!showPriceInButton || !atcButton) return;
     var span = atcButton.querySelector('span');
     if (!span) return;
     var priceEl = span.querySelector('.pz-btn-price');
@@ -632,15 +711,36 @@
     setActive(0);
   }
 
+  /* Sticky mobile add-to-cart bar. Uses a scroll position check rather
+     than IntersectionObserver so the reveal point is explicit: the bar
+     appears once the main buy button has scrolled off the top. */
   var heroAtc = root.querySelector('#ProductSubmitButton-{{ section.id }}');
   var stickyBar = root.querySelector('#pz-sticky-bar-{{ section.id }}');
-  if (heroAtc && stickyBar && 'IntersectionObserver' in window) {
-    var observer = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        stickyBar.classList.toggle('is-visible', !entry.isIntersecting);
-      });
-    }, { threshold: 0 });
-    observer.observe(heroAtc);
+
+  if (heroAtc && stickyBar) {
+    var stickyTicking = false;
+
+    function updateStickyBar() {
+      var rect = heroAtc.getBoundingClientRect();
+      // Show only after the buy button has fully scrolled past the top.
+      var scrolledPast = rect.bottom < 0;
+      stickyBar.classList.toggle('is-visible', scrolledPast);
+      stickyTicking = false;
+    }
+
+    function onStickyScroll() {
+      if (stickyTicking) return;
+      stickyTicking = true;
+      if (typeof window.requestAnimationFrame === 'function' && !document.hidden) {
+        window.requestAnimationFrame(updateStickyBar);
+      } else {
+        updateStickyBar();
+      }
+    }
+
+    window.addEventListener('scroll', onStickyScroll, { passive: true });
+    window.addEventListener('resize', onStickyScroll, { passive: true });
+    updateStickyBar();
   }
 })();
 </script>
@@ -652,10 +752,16 @@
   "class": "pz-section",
   "settings": [
     { "type": "text", "id": "badge_text", "label": "Badge text", "default": "NEW: Best Sports Performance Drink" },
-    { "type": "textarea", "id": "subheadline", "label": "Subheadline", "default": "Hydration. Endurance. Anti-cramping. Focus. Everything you need, nothing you don't." },
+    { "type": "header", "content": "Title lockup" },
+    { "type": "text", "id": "title_main", "label": "Main title", "info": "Leave blank to auto-split the product title on the hyphen", "default": "PERFORM" },
+    { "type": "text", "id": "title_flavor", "label": "Flavor line", "default": "PINK LEMONADE" },
+    { "type": "text", "id": "tagline", "label": "Tagline", "default": "The performance drink built for pickleball." },
+    { "type": "text", "id": "benefit_line", "label": "Benefit line", "info": "Comma-separated; rendered with separators", "default": "Hydration, Energy, Endurance, Focus, Anti-Cramping" },
+    { "type": "header", "content": "Reviews" },
     { "type": "checkbox", "id": "show_reviews_line", "label": "Show reviews line", "default": true },
-    { "type": "text", "id": "reviews_count", "label": "Review count", "info": "Optional. Only enter a real number from your reviews app — leave blank to hide." },
-    { "type": "text", "id": "reviews_line_text", "label": "Reviews line text", "default": "Loved by pickleball players nationwide" },
+    { "type": "text", "id": "reviews_rating", "label": "Rating", "info": "Must match your live reviews app data — this is a public claim about real customer reviews" },
+    { "type": "text", "id": "reviews_count", "label": "Review count", "info": "Must match your live reviews app data. Leave blank to hide." },
+    { "type": "text", "id": "reviews_line_text", "label": "Reviews line text", "default": "Verified Reviews" },
     { "type": "text", "id": "atc_label", "label": "Sticky bar add to cart label", "info": "Only used by the mobile sticky bar; the main button uses the theme's own 'Add to cart' translation", "default": "Add to Cart" },
     { "type": "text", "id": "guarantee_text", "label": "Guarantee text", "default": "100% money back guarantee" },
     { "type": "checkbox", "id": "enable_sticky_gallery", "label": "Sticky image on scroll (desktop)", "default": true },
@@ -690,6 +796,8 @@
     },
     { "type": "color", "id": "accent_color", "label": "Accent color", "info": "Neon green reads ~1.3:1 on white — keep it as a background with dark text, not as text on light surfaces", "default": "#96FF00" },
     { "type": "color", "id": "accent_text_color", "label": "Text on accent color", "info": "Text/icon color shown on top of the accent color above", "default": "#000000" },
+    { "type": "color", "id": "accent_on_light_color", "label": "Accent (on light surfaces)", "info": "Darker green used for text/icons on white, where neon green fails contrast", "default": "#457300" },
+    { "type": "color", "id": "flavor_color", "label": "Flavor line color", "default": "#E8447C" },
     { "type": "color", "id": "badge_bg_color", "label": "Award badge background", "default": "#111111" },
     { "type": "color", "id": "badge_text_color", "label": "Award badge text", "default": "#96FF00" },
     { "type": "color", "id": "savings_bg_color", "label": "Savings tag background", "default": "#111111" },

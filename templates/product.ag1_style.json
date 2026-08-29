@@ -4,9 +4,8 @@
       "type": "pz-product-hero",
       "settings": {
         "badge_text": "NEW: 2024 Best Sports Performance Drink Innovation",
-        "subheadline": "Hydration. Endurance. Anti-cramping. Focus. Everything you need. Nothing you don't.",
         "show_reviews_line": true,
-        "reviews_line_text": "Loved by pickleball players nationwide",
+        "reviews_line_text": "Verified Reviews",
         "atc_label": "Add to Cart",
         "guarantee_text": "",
         "enable_sticky_gallery": true,
@@ -25,7 +24,15 @@
         "badge_text_color": "#96FF00",
         "savings_bg_color": "#111111",
         "savings_text_color": "#96FF00",
-        "trust_bg_color": "#f6f6f6"
+        "trust_bg_color": "#f6f6f6",
+        "title_main": "PERFORM",
+        "title_flavor": "PINK LEMONADE",
+        "tagline": "The performance drink built for pickleball.",
+        "benefit_line": "Hydration, Energy, Endurance, Focus, Anti-Cramping",
+        "reviews_rating": "4.9",
+        "reviews_count": "2,431+",
+        "accent_on_light_color": "#457300",
+        "flavor_color": "#E8447C"
       },
       "blocks": {
         "pack-1": {
