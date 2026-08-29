@@ -77,6 +77,9 @@
             {% elsif block.settings.image != blank %}
               {% assign lifestyle_alt = block.settings.caption | default: 'Lifestyle image' %}
               {{ block.settings.image | image_url: width: 1600 | image_tag: widths: '400, 600, 900, 1200, 1600', sizes: '(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw', alt: lifestyle_alt, loading: 'lazy' }}
+            {% elsif block.settings.fallback_filename != blank %}
+              {% assign lifestyle_alt = block.settings.caption | default: 'Lifestyle image' %}
+              <img src="{{ block.settings.fallback_filename | asset_url }}" alt="{{ lifestyle_alt | escape }}" loading="lazy" width="896" height="1152">
             {% else %}
               {{ 'lifestyle-1' | placeholder_svg_tag }}
             {% endif %}
@@ -168,6 +171,7 @@
           "default": "image"
         },
         { "type": "image_picker", "id": "image", "label": "Image", "info": "Used when media type is Image, and as a fallback if no video is set" },
+        { "type": "text", "id": "fallback_filename", "label": "Bundled asset filename", "info": "Advanced: filename of an image already uploaded to the theme's assets folder, used when no Image is picked above" },
         { "type": "video", "id": "video", "label": "Video", "info": "Uploaded via Shopify Files. Plays muted, looping, no controls." },
         {
           "type": "select",

@@ -2,12 +2,13 @@
   PZ Free Of — "Discover the difference of Zero" checklist, matches AG1's
   "AG1 is free of" list and the existing discover_wGCgTk section.
 {% endcomment %}
-<section class="pz-freeof pz-freeof-{{ section.id }}">
+<section id="{{ section.settings.anchor_id }}" class="pz-freeof pz-freeof-{{ section.id }}">
   {% style %}
     .pz-freeof-{{ section.id }} {
       background: {{ section.settings.background }};
       color: {{ section.settings.text_color }};
       padding: 48px 16px;
+      scroll-margin-top: 80px;
     }
     @media (min-width: 600px) {
       .pz-freeof-{{ section.id }} { padding: 64px 24px; }
@@ -50,10 +51,11 @@
   "tag": "section",
   "class": "pz-section",
   "settings": [
-    { "type": "text", "id": "heading", "label": "Heading", "default": "Discover the Difference of \"Zero\"" },
-    { "type": "richtext", "id": "body", "label": "Body", "default": "<p>We're just as proud of what we DON'T put into 5 Point Zero as the ingredients we do include. Compare our label to your current sports drink.</p>" },
+    { "type": "text", "id": "anchor_id", "label": "Anchor id", "default": "pz-zero" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Zero Artificial Ingredients" },
+    { "type": "richtext", "id": "body", "label": "Body", "default": "<p>What we don't put in is as important as what we do put in. No artificial colors, flavors, or sweeteners. No sugar, calories, or gluten.</p>" },
     { "type": "header", "content": "Colors" },
-    { "type": "color", "id": "accent_color", "label": "Accent color", "info": "Checkmark icon color", "default": "#E8447C" },
+    { "type": "color", "id": "accent_color", "label": "Accent color", "info": "Checkmark icon color", "default": "#96FF00" },
     { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#141414" },
     { "type": "color", "id": "text_color", "label": "Body text color", "default": "#141414" },
     { "type": "color", "id": "card_background", "label": "List item background", "default": "#ffffff" },

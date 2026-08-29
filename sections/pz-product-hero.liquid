@@ -39,10 +39,11 @@
     }
 
     /* Slider */
-    .pz-hero-{{ section.id }} .pz-gallery { position: sticky; top: 24px; }
-    @media (max-width: 900px) {
-      .pz-hero-{{ section.id }} .pz-gallery { position: static; }
-    }
+    {% if section.settings.enable_sticky_gallery %}
+      @media (min-width: 901px) {
+        .pz-hero-{{ section.id }} .pz-gallery { position: sticky; top: 24px; }
+      }
+    {% endif %}
     .pz-hero-{{ section.id }} product-info { padding: 0 16px; }
     @media (min-width: 901px) {
       .pz-hero-{{ section.id }} product-info { padding: 0; }
@@ -138,7 +139,40 @@
     .pz-hero-{{ section.id }} #price-{{ section.id }} { margin-bottom: 16px; font-size: 18px; }
     .pz-hero-{{ section.id }} .product-form__input { margin-bottom: 16px; }
     .pz-hero-{{ section.id }} .product-form__buttons { margin-bottom: 12px; }
-    .pz-hero-{{ section.id }} .product-form__submit { min-height: 44px; }
+
+    /* Buy button — fully overridden per-section rather than relying on the
+       theme's global button settings, so this section's button can have its
+       own color/shape/size regardless of the rest of the theme. */
+    .pz-hero-{{ section.id }} .product-form__submit {
+      min-height: 44px;
+      width: 100%;
+      background: {{ section.settings.atc_bg_color }} !important;
+      color: {{ section.settings.atc_text_color }} !important;
+      border-color: {{ section.settings.atc_bg_color }} !important;
+      border-radius: {{ section.settings.atc_border_radius }}px !important;
+      {% case section.settings.atc_size %}
+        {% when 'small' %}
+          padding-top: 10px !important; padding-bottom: 10px !important; font-size: 14px !important;
+        {% when 'large' %}
+          padding-top: 20px !important; padding-bottom: 20px !important; font-size: 18px !important;
+        {% else %}
+          padding-top: 15px !important; padding-bottom: 15px !important; font-size: 16px !important;
+      {% endcase %}
+      font-weight: 800 !important;
+    }
+    /* Dawn's buy-buttons markup includes a trailing arrow icon inside the
+       button's text span — hide it for a cleaner, text-only button. */
+    .pz-hero-{{ section.id }} .product-form__submit > span > svg {
+      display: none;
+    }
+    .pz-hero-{{ section.id }} .product-form__submit .pz-btn-price {
+      font-weight: 700;
+      opacity: .9;
+    }
+    .pz-hero-{{ section.id }} .product-form__submit .pz-btn-price::before {
+      content: '·';
+      margin: 0 6px;
+    }
 
     .pz-hero-{{ section.id }} .pz-atc {
       width: 100%; padding: 16px; border-radius: 999px; border: none;
@@ -150,13 +184,56 @@
       display: flex; align-items: center; gap: 8px; font-size: 13px; opacity: .8; justify-content: center; margin-bottom: 20px;
     }
     .pz-hero-{{ section.id }} .pz-trust-list {
-      list-style: none; margin: 0; padding: 16px 0 0; border-top: 1px solid var(--pz-border);
+      list-style: none; margin: 16px 0 0; padding: 0;
       display: grid; gap: 8px;
     }
-    .pz-hero-{{ section.id }} .pz-trust-list li {
-      display: flex; align-items: center; gap: 8px; font-size: 14px;
+    .pz-hero-{{ section.id }} .pz-trust-row {
+      display: flex; align-items: center; gap: 12px; font-size: 14px; font-weight: 600;
+      background: color-mix(in srgb, var(--pz-accent) 8%, var(--pz-bg));
+      border-radius: 12px; padding: 12px 14px;
     }
-    .pz-hero-{{ section.id }} .pz-trust-list svg { flex: none; color: var(--pz-accent); }
+    .pz-hero-{{ section.id }} .pz-trust-icon {
+      flex: none; width: 32px; height: 32px; border-radius: 9px;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--pz-accent); color: var(--pz-accent-text);
+    }
+    .pz-hero-{{ section.id }} .pz-trust-highlight {
+      display: inline-block; background: var(--pz-accent); color: var(--pz-accent-text);
+      font-weight: 800; padding: 2px 8px; border-radius: 5px; margin-left: 4px;
+    }
+
+    /* Pack / quantity bundle selector */
+    .pz-hero-{{ section.id }} .pz-pack-tiers {
+      display: grid; gap: 10px; margin-bottom: 18px;
+    }
+    .pz-hero-{{ section.id }} .pz-pack-tier {
+      display: flex; align-items: center; justify-content: space-between; gap: 12px;
+      border: 2px solid var(--pz-border); border-radius: 12px; padding: 14px 16px;
+      cursor: pointer; position: relative; transition: border-color .15s ease;
+      background: var(--pz-card-bg); min-height: 44px;
+    }
+    .pz-hero-{{ section.id }} .pz-pack-tier:hover { border-color: var(--pz-accent); }
+    .pz-hero-{{ section.id }} .pz-pack-tier.is-selected {
+      border-color: var(--pz-accent); box-shadow: 0 0 0 1px var(--pz-accent);
+    }
+    .pz-hero-{{ section.id }} .pz-pack-tier input { position: absolute; opacity: 0; pointer-events: none; }
+    .pz-hero-{{ section.id }} .pz-pack-badge {
+      position: absolute; top: -10px; left: 16px; background: var(--pz-accent); color: var(--pz-accent-text);
+      font-size: 10px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
+      padding: 3px 8px; border-radius: 999px;
+    }
+    .pz-hero-{{ section.id }} .pz-pack-label { font-weight: 700; font-size: 15px; }
+    .pz-hero-{{ section.id }} .pz-pack-sub { font-size: 13px; opacity: .7; margin-top: 2px; }
+    .pz-hero-{{ section.id }} .pz-pack-price-cluster { text-align: right; flex: none; }
+    .pz-hero-{{ section.id }} .pz-pack-price-row { display: flex; align-items: baseline; gap: 6px; justify-content: flex-end; }
+    .pz-hero-{{ section.id }} .pz-pack-compare-at { text-decoration: line-through; opacity: .5; font-size: 13px; }
+    .pz-hero-{{ section.id }} .pz-pack-now { font-weight: 800; font-size: 18px; }
+    .pz-hero-{{ section.id }} .pz-pack-tags { display: flex; gap: 6px; justify-content: flex-end; margin-top: 4px; flex-wrap: wrap; }
+    .pz-hero-{{ section.id }} .pz-pack-tag {
+      font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 999px; white-space: nowrap;
+    }
+    .pz-hero-{{ section.id }} .pz-pack-tag--save { background: color-mix(in srgb, var(--pz-accent) 15%, transparent); color: var(--pz-accent); }
+    .pz-hero-{{ section.id }} .pz-pack-tag--ship { background: #eef7ee; color: #2f7a3d; }
 
     .pz-hero-{{ section.id }} .pz-sticky-bar {
       position: fixed; left: 0; right: 0; bottom: 0; z-index: 40;
@@ -263,11 +340,71 @@
         </div>
       {% endif %}
 
-      <div id="price-{{ section.id }}" role="status">
-        {%- render 'price', product: product, use_variant: true, show_badges: true, price_class: 'price--large' -%}
-      </div>
+      {%- assign pack_tiers = section.blocks | where: 'type', 'pack_tier' -%}
+      {% unless section.settings.show_pack_selector and pack_tiers.size > 0 %}
+        <div id="price-{{ section.id }}" role="status">
+          {%- render 'price', product: product, use_variant: true, show_badges: true, price_class: 'price--large' -%}
+        </div>
+      {% endunless %}
 
-      {% render 'product-variant-picker', product: product, block: variant_picker_block, product_form_id: product_form_id %}
+      {% if section.settings.show_variant_picker %}
+        {% render 'product-variant-picker', product: product, block: variant_picker_block, product_form_id: product_form_id %}
+      {% endif %}
+
+      {% if section.settings.show_pack_selector and pack_tiers.size > 0 %}
+        <div class="pz-pack-tiers" role="radiogroup" aria-label="Pack size">
+          {% for block in pack_tiers %}
+            {%- liquid
+              assign matched_variant = product.variants | where: 'title', block.settings.variant_title | first
+              unless matched_variant
+                assign matched_variant = product.selected_or_first_available_variant
+              endunless
+              assign tier_price = matched_variant.price
+              assign tier_compare = 0
+              if matched_variant.compare_at_price > tier_price
+                assign tier_compare = matched_variant.compare_at_price
+              endif
+              assign tier_savings = 0
+              if tier_compare > tier_price
+                assign tier_savings = tier_compare | minus: tier_price
+              endif
+            -%}
+            <label
+              class="pz-pack-tier {% if forloop.first %}is-selected{% endif %}"
+              data-variant-id="{{ matched_variant.id }}"
+              data-price="{{ tier_price }}"
+              {{ block.shopify_attributes }}
+            >
+              {% if block.settings.badge_text != blank %}
+                <span class="pz-pack-badge">{{ block.settings.badge_text }}</span>
+              {% endif %}
+              <input type="radio" name="pz-pack-radio-{{ section.id }}" value="{{ matched_variant.id }}" {% if forloop.first %}checked{% endif %} {% unless matched_variant.available %}disabled{% endunless %}>
+              <span>
+                <span class="pz-pack-label">{{ block.settings.label }}</span>
+                {% if block.settings.sublabel != blank %}
+                  <span class="pz-pack-sub">{{ block.settings.sublabel }}</span>
+                {% endif %}
+              </span>
+              <span class="pz-pack-price-cluster">
+                <span class="pz-pack-price-row">
+                  {% if tier_compare > tier_price %}
+                    <span class="pz-pack-compare-at">{{ tier_compare | money_without_trailing_zeros }}</span>
+                  {% endif %}
+                  <span class="pz-pack-now">{{ tier_price | money_without_trailing_zeros }}</span>
+                </span>
+                <span class="pz-pack-tags">
+                  {% if tier_savings > 0 %}
+                    <span class="pz-pack-tag pz-pack-tag--save">Save {{ tier_savings | money_without_trailing_zeros }}</span>
+                  {% endif %}
+                  {% if block.settings.show_free_shipping %}
+                    <span class="pz-pack-tag pz-pack-tag--ship">Free S&amp;H</span>
+                  {% endif %}
+                </span>
+              </span>
+            </label>
+          {% endfor %}
+        </div>
+      {% endif %}
 
       {% render 'buy-buttons',
         block: buy_buttons_block,
@@ -288,9 +425,25 @@
       {% if trust_items.size > 0 %}
         <ul class="pz-trust-list">
           {% for block in trust_items %}
-            <li {{ block.shopify_attributes }}>
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>
-              {{ block.settings.text }}
+            <li class="pz-trust-row" {{ block.shopify_attributes }}>
+              <span class="pz-trust-icon">
+                {% case block.settings.icon %}
+                  {% when 'truck' %}
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 17V7a1 1 0 0 1 1-1h9v11"/><path d="M13 10h4l3 3v4h-2"/><circle cx="7.5" cy="17.5" r="1.5"/><circle cx="16.5" cy="17.5" r="1.5"/></svg>
+                  {% when 'pause' %}
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+                  {% when 'shield' %}
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3Z"/></svg>
+                  {% else %}
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>
+                {% endcase %}
+              </span>
+              <span>
+                {{ block.settings.text }}
+                {% if block.settings.highlight != blank %}
+                  <span class="pz-trust-highlight">{{ block.settings.highlight }}</span>
+                {% endif %}
+              </span>
             </li>
           {% endfor %}
         </ul>
@@ -346,7 +499,67 @@
           ? '{{ section.settings.atc_label | default: "Add to Cart" }}'
           : 'Sold Out';
       }
+      if (!packTiers.length && variant) updateButtonPrice(variant.price);
     });
+  }
+
+  /* Pack selector — each tier maps to a real variant, not a fake quantity */
+  var showPriceInButton = {{ section.settings.show_price_in_button | default: false | json }};
+  var atcButton = document.getElementById('ProductSubmitButton-{{ section.id }}');
+  var packTiers = root.querySelectorAll('.pz-pack-tier');
+  var productForm = document.getElementById('{{ product_form_id }}');
+  var variantIdInput = productForm ? productForm.querySelector('.product-variant-id') : null;
+
+  function pzFormatMoney(cents) {
+    try {
+      return new Intl.NumberFormat(document.documentElement.lang || 'en-US', {
+        style: 'currency',
+        currency: '{{ shop.currency }}'
+      }).format(cents / 100);
+    } catch (e) {
+      return '$' + (cents / 100).toFixed(2);
+    }
+  }
+
+  function updateButtonPrice(cents) {
+    if (!showPriceInButton || !atcButton || typeof cents !== 'number') return;
+    var span = atcButton.querySelector('span');
+    if (!span) return;
+    var priceEl = span.querySelector('.pz-btn-price');
+    if (!priceEl) {
+      priceEl = document.createElement('span');
+      priceEl.className = 'pz-btn-price';
+      span.appendChild(priceEl);
+    }
+    priceEl.textContent = pzFormatMoney(cents);
+  }
+
+  function selectTier(tier) {
+    var radio = tier.querySelector('input[type="radio"]');
+    if (radio && radio.disabled) return;
+    packTiers.forEach(function (t) { t.classList.remove('is-selected'); });
+    tier.classList.add('is-selected');
+    if (radio) radio.checked = true;
+    if (variantIdInput) {
+      variantIdInput.value = tier.dataset.variantId;
+      variantIdInput.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+    if (atcButton) {
+      var soldOut = !!(radio && radio.disabled);
+      atcButton.setAttribute('aria-disabled', soldOut);
+      atcButton.disabled = soldOut;
+    }
+    updateButtonPrice(+tier.dataset.price);
+  }
+
+  if (packTiers.length) {
+    packTiers.forEach(function (tier) {
+      tier.addEventListener('click', function () { selectTier(tier); });
+    });
+    var initialTier = root.querySelector('.pz-pack-tier.is-selected') || packTiers[0];
+    if (initialTier) updateButtonPrice(+initialTier.dataset.price);
+  } else {
+    updateButtonPrice({{ product.selected_or_first_available_variant.price | default: 0 }});
   }
 
   /* Slider */
@@ -423,12 +636,38 @@
     { "type": "text", "id": "reviews_line_text", "label": "Reviews line text", "default": "Loved by pickleball players nationwide" },
     { "type": "text", "id": "atc_label", "label": "Sticky bar add to cart label", "info": "Only used by the mobile sticky bar; the main button uses the theme's own 'Add to cart' translation", "default": "Add to Cart" },
     { "type": "text", "id": "guarantee_text", "label": "Guarantee text", "default": "100% money back guarantee" },
+    { "type": "checkbox", "id": "enable_sticky_gallery", "label": "Sticky image on scroll (desktop)", "default": true },
+    { "type": "checkbox", "id": "show_variant_picker", "label": "Show variant picker", "info": "Hides the native option picker (e.g. flavor/size). Turn off for single-variant products or if the pack selector below covers it.", "default": true },
+    {
+      "type": "header",
+      "content": "Pack / quantity selector"
+    },
+    { "type": "checkbox", "id": "show_pack_selector", "label": "Show pack selector", "info": "Lets customers pick a quantity bundle (e.g. 1 bag vs. 2 bags) without discovering it via the quantity field. Add 'Pack option' blocks below.", "default": true },
+    {
+      "type": "header",
+      "content": "Add to cart button"
+    },
+    { "type": "checkbox", "id": "show_price_in_button", "label": "Show price in button", "info": "e.g. \"Add to Cart · $49.00\", updates live with the selected pack", "default": true },
+    { "type": "color", "id": "atc_bg_color", "label": "Background color", "default": "#96FF00" },
+    { "type": "color", "id": "atc_text_color", "label": "Text color", "default": "#000000" },
+    { "type": "range", "id": "atc_border_radius", "label": "Corner roundedness (px)", "info": "CSS caps this at half the button's height, so a high value still gives a full pill shape", "min": 0, "max": 60, "step": 2, "default": 60 },
+    {
+      "type": "select",
+      "id": "atc_size",
+      "label": "Button size",
+      "options": [
+        { "value": "small", "label": "Small" },
+        { "value": "medium", "label": "Medium" },
+        { "value": "large", "label": "Large" }
+      ],
+      "default": "large"
+    },
     {
       "type": "header",
       "content": "Colors"
     },
-    { "type": "color", "id": "accent_color", "label": "Accent color", "info": "Used for the badge, button, and best-value tag backgrounds", "default": "#E8447C" },
-    { "type": "color", "id": "accent_text_color", "label": "Text on accent color", "info": "Text/icon color shown on top of the accent color above", "default": "#ffffff" },
+    { "type": "color", "id": "accent_color", "label": "Accent color", "info": "Used for the badge, button, and best-value tag backgrounds", "default": "#96FF00" },
+    { "type": "color", "id": "accent_text_color", "label": "Text on accent color", "info": "Text/icon color shown on top of the accent color above", "default": "#000000" },
     { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#141414" },
     { "type": "color", "id": "text_color", "label": "Body text color", "default": "#141414" },
     { "type": "color", "id": "star_color", "label": "Star rating color", "default": "#f5a623" },
@@ -476,10 +715,34 @@
       ]
     },
     {
+      "type": "pack_tier",
+      "name": "Pack option",
+      "settings": [
+        { "type": "text", "id": "variant_title", "label": "Variant title", "info": "Must exactly match a real variant's title in Product > Variants, e.g. \"2 PERFORM - 60 Servings\". Price, compare-at price, and availability are pulled live from that variant." },
+        { "type": "text", "id": "label", "label": "Label", "default": "1 Bag" },
+        { "type": "text", "id": "sublabel", "label": "Sublabel", "default": "30 servings" },
+        { "type": "text", "id": "badge_text", "label": "Corner badge text", "info": "e.g. Best Value — leave blank to hide" },
+        { "type": "checkbox", "id": "show_free_shipping", "label": "Show \"Free S&H\" tag", "default": false }
+      ]
+    },
+    {
       "type": "trust_item",
       "name": "Trust list item",
       "settings": [
-        { "type": "text", "id": "text", "label": "Text", "default": "Free shipping always" }
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "truck", "label": "Truck (shipping)" },
+            { "value": "pause", "label": "Pause (subscription)" },
+            { "value": "shield", "label": "Shield (guarantee)" },
+            { "value": "check", "label": "Checkmark" }
+          ],
+          "default": "check"
+        },
+        { "type": "text", "id": "text", "label": "Text", "default": "Free shipping always" },
+        { "type": "text", "id": "highlight", "label": "Highlighted phrase (optional)", "info": "Shown in a pill after the text, e.g. a delivery date" }
       ]
     }
   ],
@@ -488,10 +751,12 @@
       "name": "PZ Product Hero",
       "blocks": [
         { "type": "variant_picker", "settings": { "picker_type": "button", "swatch_shape": "circle" } },
+        { "type": "pack_tier", "settings": { "variant_title": "1 PERFORM -  30 Servings", "label": "1 Bag", "sublabel": "30 servings" } },
+        { "type": "pack_tier", "settings": { "variant_title": "2 PERFORM - 60 Servings", "label": "2 Bags", "sublabel": "60 servings", "badge_text": "Best Value", "show_free_shipping": true } },
         { "type": "buy_buttons", "settings": { "show_dynamic_checkout": true } },
-        { "type": "trust_item", "settings": { "text": "Free shipping on subscriptions" } },
-        { "type": "trust_item", "settings": { "text": "Pause or cancel anytime" } },
-        { "type": "trust_item", "settings": { "text": "100% money back guarantee" } }
+        { "type": "trust_item", "settings": { "icon": "truck", "text": "Free shipping on subscriptions" } },
+        { "type": "trust_item", "settings": { "icon": "pause", "text": "Pause or cancel anytime" } },
+        { "type": "trust_item", "settings": { "icon": "shield", "text": "100% money back guarantee" } }
       ]
     }
   ]
