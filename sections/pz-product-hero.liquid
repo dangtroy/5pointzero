@@ -388,13 +388,13 @@
               <span class="pz-pack-price-cluster">
                 <span class="pz-pack-price-row">
                   {% if tier_compare > tier_price %}
-                    <span class="pz-pack-compare-at">{{ tier_compare | money_without_trailing_zeros }}</span>
+                    <span class="pz-pack-compare-at">{{ tier_compare | money }}</span>
                   {% endif %}
-                  <span class="pz-pack-now">{{ tier_price | money_without_trailing_zeros }}</span>
+                  <span class="pz-pack-now">{{ tier_price | money }}</span>
                 </span>
                 <span class="pz-pack-tags">
                   {% if tier_savings > 0 %}
-                    <span class="pz-pack-tag pz-pack-tag--save">Save {{ tier_savings | money_without_trailing_zeros }}</span>
+                    <span class="pz-pack-tag pz-pack-tag--save">Save {{ tier_savings | money }}</span>
                   {% endif %}
                   {% if block.settings.show_free_shipping %}
                     <span class="pz-pack-tag pz-pack-tag--ship">Free S&amp;H</span>

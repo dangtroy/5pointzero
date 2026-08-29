@@ -30,12 +30,17 @@
       display: flex; align-items: center; flex: none;
     }
     .pz-marquee-{{ section.id }} .pz-marquee-item {
-      display: flex; align-items: center; gap: 10px; flex: none;
-      padding: 0 28px; white-space: nowrap;
-      font-size: 15px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase;
+      display: flex; align-items: center; gap: {{ section.settings.icon_gap }}px; flex: none;
+      padding: 0 {{ section.settings.item_spacing }}px; white-space: nowrap;
+      font-size: {{ section.settings.font_size }}px; font-weight: 800; letter-spacing: .04em; text-transform: uppercase;
     }
-    .pz-marquee-{{ section.id }} .pz-marquee-item svg { flex: none; color: var(--pz-marquee-accent, {{ section.settings.icon_color }}); }
-    .pz-marquee-{{ section.id }} .pz-marquee-item img { flex: none; width: 20px; height: 20px; object-fit: contain; }
+    .pz-marquee-{{ section.id }} .pz-marquee-item svg {
+      flex: none; color: var(--pz-marquee-accent, {{ section.settings.icon_color }});
+      width: {{ section.settings.icon_size }}px; height: {{ section.settings.icon_size }}px;
+    }
+    .pz-marquee-{{ section.id }} .pz-marquee-item img {
+      flex: none; width: {{ section.settings.icon_size }}px; height: {{ section.settings.icon_size }}px; object-fit: contain;
+    }
     .pz-marquee-{{ section.id }} .pz-marquee-dot {
       width: 4px; height: 4px; border-radius: 50%; background: currentColor; opacity: .4; flex: none;
     }
@@ -84,7 +89,12 @@
   "class": "pz-section",
   "settings": [
     { "type": "range", "id": "speed", "label": "Scroll speed (seconds per loop)", "min": 5, "max": 60, "step": 1, "default": 22 },
-    { "type": "range", "id": "padding_y", "label": "Vertical padding (px)", "min": 0, "max": 40, "step": 2, "default": 14 },
+    { "type": "range", "id": "padding_y", "label": "Vertical padding (px)", "min": 0, "max": 60, "step": 2, "default": 14 },
+    { "type": "header", "content": "Size" },
+    { "type": "range", "id": "font_size", "label": "Text size (px)", "min": 11, "max": 40, "step": 1, "default": 15 },
+    { "type": "range", "id": "icon_size", "label": "Icon size (px)", "min": 12, "max": 56, "step": 2, "default": 18 },
+    { "type": "range", "id": "icon_gap", "label": "Gap between icon and text (px)", "min": 0, "max": 24, "step": 1, "default": 10 },
+    { "type": "range", "id": "item_spacing", "label": "Space between items (px)", "min": 8, "max": 80, "step": 2, "default": 28 },
     { "type": "header", "content": "Colors" },
     { "type": "color", "id": "background", "label": "Background", "default": "#141414" },
     { "type": "color", "id": "text_color", "label": "Text color", "default": "#ffffff" },

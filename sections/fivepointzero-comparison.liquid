@@ -104,9 +104,13 @@
     }
 
     /* 2 & 3. Comparison table */
+    /* The host theme sets a global dark color on headings, which wins over
+       the section's inherited white — set it explicitly on every heading
+       here or they render near-black on the black background. */
     #fivepointzero-comparison-{{ section.id }} .fpz-table-heading {
       text-align: center; text-transform: uppercase; font-style: italic; font-weight: 900;
       font-size: clamp(22px, 4vw, 32px); margin: 0 0 6px;
+      color: var(--fpz-white);
     }
     #fivepointzero-comparison-{{ section.id }} .fpz-swipe-hint {
       display: none; text-align: center; font-size: 12px; font-weight: 700;
@@ -199,6 +203,7 @@
     #fivepointzero-comparison-{{ section.id }} .fpz-winning h3 {
       font-size: clamp(20px, 4vw, 30px); font-weight: 900; font-style: italic;
       text-transform: uppercase; margin: 0 0 14px;
+      color: var(--fpz-white);
     }
     #fivepointzero-comparison-{{ section.id }} .fpz-winning p {
       font-size: clamp(14px, 2vw, 17px); color: var(--fpz-gray); line-height: 1.6; margin: 0 0 14px;
@@ -214,6 +219,7 @@
     #fivepointzero-comparison-{{ section.id }} .fpz-clean h3 {
       font-size: clamp(18px, 3.4vw, 26px); font-weight: 900; font-style: italic;
       text-transform: uppercase; margin: 0 0 28px;
+      color: var(--fpz-white);
     }
     #fivepointzero-comparison-{{ section.id }} .fpz-clean-grid {
       display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px;

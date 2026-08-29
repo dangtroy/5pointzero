@@ -28,7 +28,7 @@
     .pz-pros-{{ section.id }} .pz-pros-row {
       display: flex; gap: 16px; overflow-x: auto; padding: 4px 16px 12px;
       scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
-      max-width: 1280px; margin: 0 auto;
+      justify-content: safe center; max-width: 1280px; margin: 0 auto;
     }
     @media (min-width: 600px) {
       .pz-pros-{{ section.id }} .pz-pros-row { gap: 20px; padding: 4px 24px 12px; }
@@ -49,7 +49,7 @@
       width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;
       background: linear-gradient(135deg, #e9e9e9, #f6f6f6); color: #b3b3b3;
     }
-    .pz-pros-{{ section.id }} .pz-pro-body { padding: 16px; }
+    .pz-pros-{{ section.id }} .pz-pro-body { padding: 16px; text-align: center; }
     .pz-pros-{{ section.id }} .pz-pro-quote { font-size: 13px; line-height: 1.5; opacity: .85; margin-bottom: 10px; min-height: 3.9em; }
     .pz-pros-{{ section.id }} .pz-pro-name { font-weight: 800; font-size: 14px; }
     .pz-pros-{{ section.id }} .pz-pro-credential {
