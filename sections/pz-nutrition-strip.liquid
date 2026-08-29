@@ -1,43 +1,103 @@
 {% comment %}
-  PZ Nutrition Strip — per-serving facts numbers, AG1-style ("40 calories, 6g carbs...").
+  PZ Nutrition Strip — "In Every Serving of PERFORM".
+  A performance specification band: oversized figures with short
+  uppercase labels, divided by hairlines for horizontal rhythm.
+  Rendered on a dark ground so the neon figures are legible (#96FF00 is
+  ~14.9:1 on near-black but only ~1.3:1 on white).
+  Mobile stacks into full-width spec rows — no horizontal scrolling.
 {% endcomment %}
 <section id="{{ section.settings.anchor_id }}" class="pz-nutrition pz-nutrition-{{ section.id }}">
   {% style %}
     .pz-nutrition-{{ section.id }} {
       background: {{ section.settings.background }};
       color: {{ section.settings.text_color }};
-      padding: 40px 16px;
+      padding: 56px 16px;
       scroll-margin-top: 80px;
     }
     @media (min-width: 600px) {
-      .pz-nutrition-{{ section.id }} { padding: 56px 24px; }
+      .pz-nutrition-{{ section.id }} { padding: 84px 24px; }
     }
-    .pz-nutrition-{{ section.id }} .pz-nutrition-inner { max-width: 1080px; margin: 0 auto; text-align: center; }
-    .pz-nutrition-{{ section.id }} h2 { font-size: clamp(22px, 2.8vw, 30px); font-weight: 800; margin: 0 0 8px; color: {{ section.settings.heading_color }}; }
-    .pz-nutrition-{{ section.id }} .pz-nutrition-sub { opacity: .7; max-width: 60ch; margin: 0 auto 32px; }
+    .pz-nutrition-{{ section.id }} .pz-nutrition-inner { max-width: 1280px; margin: 0 auto; }
+    .pz-nutrition-{{ section.id }} .pz-nutrition-head { text-align: center; margin-bottom: 40px; }
+    @media (min-width: 600px) {
+      .pz-nutrition-{{ section.id }} .pz-nutrition-head { margin-bottom: 56px; }
+    }
+    .pz-nutrition-{{ section.id }} h2 {
+      font-size: clamp(26px, 3.6vw, 42px); font-weight: 900; margin: 0 0 12px;
+      color: {{ section.settings.heading_color }};
+      text-transform: uppercase; letter-spacing: -0.02em; line-height: 1.05;
+    }
+    .pz-nutrition-{{ section.id }} .pz-nutrition-sub {
+      font-size: clamp(15px, 1.5vw, 17px); opacity: .6; max-width: 52ch; margin: 0 auto;
+    }
+
+    /* Desktop: one row, hairline dividers for spec-sheet rhythm. */
     .pz-nutrition-{{ section.id }} .pz-nutrition-grid {
-      display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 24px;
+      display: grid;
+      grid-template-columns: repeat({{ section.settings.columns }}, 1fr);
+      border-top: 1px solid {{ section.settings.rule_color }};
+      border-bottom: 1px solid {{ section.settings.rule_color }};
     }
+    .pz-nutrition-{{ section.id }} .pz-fact {
+      min-width: 0; text-align: center; padding: 34px 14px;
+      border-left: 1px solid {{ section.settings.rule_color }};
+    }
+    .pz-nutrition-{{ section.id }} .pz-fact:first-child { border-left: none; }
     .pz-nutrition-{{ section.id }} .pz-fact-value {
-      font-size: clamp(24px, 3vw, 32px); font-weight: 800; color: {{ section.settings.accent_color }};
+      font-size: clamp(34px, 4.4vw, 62px); font-weight: 900; line-height: 1;
+      color: {{ section.settings.accent_color }};
+      letter-spacing: -0.03em; display: block;
     }
     .pz-nutrition-{{ section.id }} .pz-fact-label {
-      font-size: 12px; text-transform: uppercase; letter-spacing: .04em; opacity: .65; margin-top: 4px;
+      font-size: 12px; text-transform: uppercase; letter-spacing: .12em;
+      font-weight: 700; opacity: .75; margin-top: 12px; display: block; line-height: 1.3;
+    }
+
+    /* Mobile: full-width spec rows, figure left / label right.
+       Stacked rather than scrolled, and the figure stays large. */
+    @media (max-width: 749px) {
+      .pz-nutrition-{{ section.id }} .pz-nutrition-grid {
+        grid-template-columns: 1fr;
+      }
+      .pz-nutrition-{{ section.id }} .pz-fact {
+        display: flex; align-items: baseline; justify-content: space-between; gap: 16px;
+        text-align: left; padding: 20px 4px;
+        border-left: none;
+        border-top: 1px solid {{ section.settings.rule_color }};
+      }
+      .pz-nutrition-{{ section.id }} .pz-fact:first-child { border-top: none; }
+      .pz-nutrition-{{ section.id }} .pz-fact-value { font-size: 40px; }
+      .pz-nutrition-{{ section.id }} .pz-fact-label {
+        margin-top: 0; text-align: right; font-size: 12px; max-width: 52%;
+      }
+    }
+
+    .pz-nutrition-{{ section.id }} .pz-nutrition-note {
+      margin: 26px auto 0; text-align: center; max-width: 70ch;
+      font-size: 12px; opacity: .5; line-height: 1.5;
     }
   {% endstyle %}
+
   <div class="pz-nutrition-inner">
-    {% if section.settings.heading != blank %}<h2>{{ section.settings.heading }}</h2>{% endif %}
-    {% if section.settings.subheading != blank %}<p class="pz-nutrition-sub">{{ section.settings.subheading }}</p>{% endif %}
+    <div class="pz-nutrition-head">
+      {% if section.settings.heading != blank %}<h2>{{ section.settings.heading }}</h2>{% endif %}
+      {% if section.settings.subheading != blank %}<p class="pz-nutrition-sub">{{ section.settings.subheading }}</p>{% endif %}
+    </div>
+
     <div class="pz-nutrition-grid">
       {% for block in section.blocks %}
         {% if block.type == 'fact' %}
-          <div {{ block.shopify_attributes }}>
-            <div class="pz-fact-value">{{ block.settings.value }}</div>
-            <div class="pz-fact-label">{{ block.settings.label }}</div>
+          <div class="pz-fact" {{ block.shopify_attributes }}>
+            <span class="pz-fact-value">{{ block.settings.value }}</span>
+            <span class="pz-fact-label">{{ block.settings.label }}</span>
           </div>
         {% endif %}
       {% endfor %}
     </div>
+
+    {% if section.settings.note != blank %}
+      <p class="pz-nutrition-note">{{ section.settings.note }}</p>
+    {% endif %}
   </div>
 </section>
 
@@ -50,18 +110,21 @@
     { "type": "text", "id": "anchor_id", "label": "Anchor id", "default": "pz-nutrition" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "In Every Serving of PERFORM" },
     { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "Built to fuel a full session on the court — nothing wasted, nothing extra." },
+    { "type": "range", "id": "columns", "label": "Columns (desktop)", "min": 3, "max": 6, "step": 1, "default": 5 },
+    { "type": "textarea", "id": "note", "label": "Footnote", "info": "Use this to cite the source of these figures, e.g. the Supplement Facts panel" },
     { "type": "header", "content": "Colors" },
-    { "type": "color", "id": "accent_color", "label": "Accent color", "info": "Fact number color", "default": "#96FF00" },
-    { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#141414" },
-    { "type": "color", "id": "text_color", "label": "Body text color", "default": "#141414" },
-    { "type": "color", "id": "background", "label": "Background", "default": "#ffffff" }
+    { "type": "color", "id": "accent_color", "label": "Figure color", "info": "Neon green is legible on dark grounds (~14.9:1) but not on white (~1.3:1)", "default": "#96FF00" },
+    { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#ffffff" },
+    { "type": "color", "id": "text_color", "label": "Body text color", "default": "#ffffff" },
+    { "type": "color", "id": "rule_color", "label": "Divider color", "default": "rgba(255,255,255,0.16)" },
+    { "type": "color", "id": "background", "label": "Section background", "default": "#0A0A0A" }
   ],
   "blocks": [
     {
       "type": "fact",
-      "name": "Fact",
+      "name": "Stat",
       "settings": [
-        { "type": "text", "id": "value", "label": "Value", "default": "0" },
+        { "type": "text", "id": "value", "label": "Figure", "info": "Use only values verifiable from the Supplement Facts panel or product copy", "default": "0g" },
         { "type": "text", "id": "label", "label": "Label", "default": "Sugar" }
       ]
     }
@@ -70,11 +133,11 @@
     {
       "name": "PZ Nutrition Strip",
       "blocks": [
-        { "type": "fact", "settings": { "value": "10", "label": "Calories" } },
+        { "type": "fact", "settings": { "value": "1,949mg", "label": "Active Ingredients" } },
+        { "type": "fact", "settings": { "value": "389mg", "label": "Total Electrolytes" } },
         { "type": "fact", "settings": { "value": "0g", "label": "Sugar" } },
-        { "type": "fact", "settings": { "value": "0g", "label": "Carbs" } },
-        { "type": "fact", "settings": { "value": "5", "label": "Electrolytes" } },
-        { "type": "fact", "settings": { "value": "100mg", "label": "Caffeine" } }
+        { "type": "fact", "settings": { "value": "0", "label": "Calories" } },
+        { "type": "fact", "settings": { "value": "30", "label": "Single-Serve Packs" } }
       ]
     }
   ]

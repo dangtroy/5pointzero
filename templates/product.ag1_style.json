@@ -276,42 +276,49 @@
       "settings": {
         "anchor_id": "pz-nutrition",
         "heading": "In Every Serving of PERFORM",
-        "subheading": "Built to fuel a full session on the court — nothing wasted, nothing extra."
+        "subheading": "A performance formula built to fuel a full session on the court.",
+        "columns": 5,
+        "note": "Figures per 1 packet (4.2g) serving, taken from the product's Supplement Facts panel. Sugar, calorie and carb claims per the product description.",
+        "accent_color": "#96FF00",
+        "heading_color": "#ffffff",
+        "text_color": "#ffffff",
+        "rule_color": "rgba(255,255,255,0.16)",
+        "background": "#0A0A0A"
       },
       "blocks": {
         "fact-1": {
           "type": "fact",
           "settings": {
-            "value": "10",
-            "label": "Calories"
+            "value": "1,949mg",
+            "label": "Active Ingredients"
           }
         },
         "fact-2": {
           "type": "fact",
           "settings": {
-            "value": "0g",
-            "label": "Sugar"
+            "value": "389mg",
+            "label": "Total Electrolytes"
           }
         },
         "fact-3": {
           "type": "fact",
           "settings": {
             "value": "0g",
-            "label": "Carbs"
+            "label": "Sugar"
           }
         },
         "fact-4": {
           "type": "fact",
           "settings": {
-            "value": "5",
-            "label": "Electrolytes"
+            "value": "0",
+            "label": "Calories"
           }
         },
         "fact-5": {
           "type": "fact",
           "settings": {
-            "value": "100mg",
-            "label": "Caffeine"
+            "value": "30",
+            "label": "Single-Serve Packs"
           }
         }
       },
