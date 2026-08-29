@@ -8,7 +8,7 @@
         "show_reviews_line": true,
         "reviews_line_text": "Loved by pickleball players nationwide",
         "atc_label": "Add to Cart",
-        "guarantee_text": "100% money back guarantee",
+        "guarantee_text": "",
         "enable_sticky_gallery": true,
         "show_variant_picker": false,
         "show_pack_selector": true,
@@ -20,7 +20,12 @@
         "accent_color": "#96FF00",
         "accent_text_color": "#000000",
         "text_color": "#141414",
-        "background": "#ffffff"
+        "background": "#ffffff",
+        "badge_bg_color": "#111111",
+        "badge_text_color": "#96FF00",
+        "savings_bg_color": "#111111",
+        "savings_text_color": "#96FF00",
+        "trust_bg_color": "#f6f6f6"
       },
       "blocks": {
         "pack-1": {
@@ -51,21 +56,21 @@
           "type": "trust_item",
           "settings": {
             "icon": "truck",
-            "text": "Free shipping on subscriptions"
+            "text": "Free shipping on orders over $70"
           }
         },
         "trust-2": {
           "type": "trust_item",
           "settings": {
-            "icon": "pause",
-            "text": "Pause or cancel anytime"
+            "icon": "shield",
+            "text": "100% money-back guarantee"
           }
         },
         "trust-3": {
           "type": "trust_item",
           "settings": {
-            "icon": "shield",
-            "text": "100% money back guarantee"
+            "icon": "check",
+            "text": "Made by pickleball players, for pickleball players"
           }
         }
       },
