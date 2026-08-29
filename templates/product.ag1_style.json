@@ -1063,8 +1063,71 @@
         "text_color": "#FFFFFF",
         "accent_color": "#96FF00",
         "line_color": "rgba(255,255,255,0.28)",
-        "ball_color": "#FFFFFF"
-      }
+        "ball_color": "#FFFFFF",
+        "product_image_filename": "pz-stickpack.png",
+        "water_image_filename": "pz-water-ripple.png",
+        "water_strength": 55,
+        "show_sheen": true,
+        "idle_speed": 7,
+        "idle_turn": 7,
+        "sheen_speed": 9,
+        "badge_speed": 45,
+        "cta_text": "View full formula",
+        "cta_url": "https://cdn.shopify.com/s/files/1/0644/0763/4125/files/FinalSupplementFacts_002_-square.png?v=1744390481"
+      },
+      "blocks": {
+        "badge-1": {
+          "type": "badge",
+          "settings": {
+            "text": "No Sugar"
+          }
+        },
+        "badge-2": {
+          "type": "badge",
+          "settings": {
+            "text": "No Calories"
+          }
+        },
+        "badge-3": {
+          "type": "badge",
+          "settings": {
+            "text": "No Artificial Colors"
+          }
+        },
+        "badge-4": {
+          "type": "badge",
+          "settings": {
+            "text": "No Artificial Flavors"
+          }
+        },
+        "badge-5": {
+          "type": "badge",
+          "settings": {
+            "text": "No Artificial Sweeteners"
+          }
+        },
+        "badge-6": {
+          "type": "badge",
+          "settings": {
+            "text": "Gluten Free"
+          }
+        },
+        "badge-7": {
+          "type": "badge",
+          "settings": {
+            "text": "Built For Pickleball"
+          }
+        }
+      },
+      "block_order": [
+        "badge-1",
+        "badge-2",
+        "badge-3",
+        "badge-4",
+        "badge-5",
+        "badge-6",
+        "badge-7"
+      ]
     }
   },
   "order": [

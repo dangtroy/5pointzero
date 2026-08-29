@@ -12,9 +12,18 @@
 {%- liquid
   assign sid = section.id
   assign has_image = false
-  if section.settings.product_image or product.featured_media
+  assign product_src = ''
+  if section.settings.product_image
     assign has_image = true
+    assign product_src = section.settings.product_image | image_url: width: 900
+  elsif section.settings.product_image_filename != blank
+    assign has_image = true
+    assign product_src = section.settings.product_image_filename | asset_url
+  elsif product.featured_media
+    assign has_image = true
+    assign product_src = product.featured_media | image_url: width: 900
   endif
+  assign badges = section.blocks | where: 'type', 'badge'
 -%}
 <section
   id="pzhy-{{ sid }}"
@@ -87,10 +96,67 @@
       .pzhy-{{ sid }} .pzhy-product { margin-bottom: clamp(64px, 13vh, 120px); }
     }
 
+    /* Environmental water plate. Sits low and wide behind the product,
+       screen-blended so only the highlights read against the dark ground. */
+    .pzhy-{{ sid }} .pzhy-waterplate {
+      position: absolute; left: 50%; bottom: -6%; z-index: 0;
+      width: min(120%, 1100px); transform: translateX(-50%);
+      opacity: calc(var(--pzhy-water) * {{ section.settings.water_strength | divided_by: 100.0 }});
+      mix-blend-mode: screen;
+      pointer-events: none;
+      -webkit-mask-image: radial-gradient(60% 70% at 50% 45%, #000 35%, transparent 78%);
+      mask-image: radial-gradient(60% 70% at 50% 45%, #000 35%, transparent 78%);
+    }
+    .pzhy-{{ sid }} .pzhy-waterplate img { width: 100%; height: auto; display: block; }
+
     .pzhy-{{ sid }} .pzhy-product {
       position: relative; z-index: 3;
       transform: translate3d(0, var(--pzhy-lift), 0) scale(var(--pzhy-scale)) rotate(var(--pzhy-rot));
       transform-origin: 50% 55%;
+      perspective: 900px;
+    }
+    /* Idle motion lives on an inner wrapper so it never fights the
+       scroll-driven transform on the parent. */
+    .pzhy-{{ sid }} .pzhy-product-inner {
+      position: relative; display: block;
+      transform-style: preserve-3d;
+      animation:
+        pzhy-float-{{ sid }} {{ section.settings.idle_speed }}s ease-in-out infinite,
+        pzhy-turn-{{ sid }} {{ section.settings.idle_speed | times: 1.6 }}s ease-in-out infinite;
+    }
+    @keyframes pzhy-float-{{ sid }} {
+      0%, 100% { translate: 0 0; }
+      50%      { translate: 0 -10px; }
+    }
+    @keyframes pzhy-turn-{{ sid }} {
+      0%, 100% { rotate: y {{ section.settings.idle_turn }}deg; }
+      50%      { rotate: y -{{ section.settings.idle_turn }}deg; }
+    }
+    /* Foil sheen, clipped to the product silhouette by its own alpha. */
+    .pzhy-{{ sid }} .pzhy-sheen {
+      position: absolute; inset: 0; z-index: 2; pointer-events: none;
+      background: linear-gradient(105deg,
+        transparent 42%,
+        rgba(255,255,255,.30) 50%,
+        transparent 58%);
+      background-size: 260% 100%;
+      animation: pzhy-sheen-{{ sid }} {{ section.settings.sheen_speed }}s ease-in-out infinite;
+      {% if product_src != blank %}
+        -webkit-mask-image: url({{ product_src }});
+        mask-image: url({{ product_src }});
+        -webkit-mask-size: contain; mask-size: contain;
+        -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+        -webkit-mask-position: center; mask-position: center;
+      {% endif %}
+    }
+    @keyframes pzhy-sheen-{{ sid }} {
+      0%   { background-position: 140% 0; }
+      55%  { background-position: -40% 0; }
+      100% { background-position: -40% 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .pzhy-{{ sid }} .pzhy-product-inner { animation: none; }
+      .pzhy-{{ sid }} .pzhy-sheen { animation: none; opacity: 0; }
     }
     .pzhy-{{ sid }} .pzhy-product img {
       display: block; width: auto; height: auto;
@@ -190,6 +256,37 @@
     .pzhy-{{ sid }} .pzhy-callouts .pzhy-callout { max-width: 100%; }
     .pzhy-{{ sid }} .pzhy-callouts .pzhy-callout::before { margin-left: auto; margin-right: auto; }
 
+    /* Attribute marquee */
+    .pzhy-{{ sid }} .pzhy-badges {
+      width: 100%; overflow: hidden; margin-top: 30px;
+      border-top: 1px solid rgba(255,255,255,.10);
+      border-bottom: 1px solid rgba(255,255,255,.10);
+      -webkit-mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+      mask-image: linear-gradient(90deg, transparent, #000 12%, #000 88%, transparent);
+    }
+    .pzhy-{{ sid }} .pzhy-badges-track {
+      display: flex; width: max-content;
+      animation: pzhy-badges-{{ sid }} {{ section.settings.badge_speed }}s linear infinite;
+    }
+    .pzhy-{{ sid }} .pzhy-badges:hover .pzhy-badges-track { animation-play-state: paused; }
+    @keyframes pzhy-badges-{{ sid }} {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+    .pzhy-{{ sid }} .pzhy-badge {
+      display: inline-flex; align-items: center; gap: 9px; flex: none;
+      padding: 15px 26px; white-space: nowrap;
+      font-size: 11px; font-weight: 800; letter-spacing: .2em; text-transform: uppercase;
+      opacity: .62;
+    }
+    .pzhy-{{ sid }} .pzhy-badge::before {
+      content: ''; width: 5px; height: 5px; border-radius: 50%;
+      background: var(--pzhy-accent); flex: none;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .pzhy-{{ sid }} .pzhy-badges-track { animation: none; }
+    }
+
     .pzhy-{{ sid }} .pzhy-cta {
       display: inline-flex; align-items: center; gap: 8px; margin-top: 6px;
       font-size: 12px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase;
@@ -239,6 +336,11 @@
         </div>
 
         <div class="pzhy-scene" data-pzhy-scene>
+          {% if section.settings.show_water and section.settings.water_image_filename != blank %}
+            <span class="pzhy-waterplate" aria-hidden="true">
+              <img src="{{ section.settings.water_image_filename | asset_url }}" alt="" loading="lazy" width="1344" height="768">
+            </span>
+          {% endif %}
           <svg class="pzhy-connectors" data-pzhy-connectors aria-hidden="true" preserveAspectRatio="none">
             <line data-c="0" x1="0" y1="0" x2="0" y2="0" />
             <line data-c="1" x1="0" y1="0" x2="0" y2="0" />
@@ -259,21 +361,20 @@
           {% endif %}
 
           <div class="pzhy-product" data-pzhy-product>
-            {% if section.settings.product_image %}
-              {{ section.settings.product_image | image_url: width: 900 | image_tag: alt: section.settings.heading, loading: 'lazy', class: 'pzhy-product-img' }}
-            {% elsif product.featured_media %}
-              {{ product.featured_media | image_url: width: 900 | image_tag: alt: product.title, loading: 'lazy', class: 'pzhy-product-img' }}
-            {% else %}
-              <div class="pzhy-product-placeholder">Add a product image in this section's settings</div>
-            {% endif %}
+            <span class="pzhy-product-inner">
+              {% if product_src != blank %}
+                <img src="{{ product_src }}" alt="{{ section.settings.heading | escape }}" loading="lazy" class="pzhy-product-img" width="341" height="515">
+                {% if section.settings.show_sheen %}
+                  <span class="pzhy-sheen" aria-hidden="true"></span>
+                {% endif %}
+              {% else %}
+                <div class="pzhy-product-placeholder">Add a product image in this section's settings</div>
+              {% endif %}
+            </span>
 
             {% if section.settings.show_water and has_image %}
               <span class="pzhy-water" aria-hidden="true">
-                {% if section.settings.product_image %}
-                  {{ section.settings.product_image | image_url: width: 600 | image_tag: alt: '', loading: 'lazy' }}
-                {% else %}
-                  {{ product.featured_media | image_url: width: 600 | image_tag: alt: '', loading: 'lazy' }}
-                {% endif %}
+                <img src="{{ product_src }}" alt="" loading="lazy" width="341" height="515">
               </span>
               <span class="pzhy-waterline" aria-hidden="true"></span>
             {% endif %}
@@ -311,6 +412,18 @@
             {% endfor %}
           </div>
         </div>
+
+        {% if badges.size > 0 %}
+          <div class="pzhy-badges">
+            <div class="pzhy-badges-track">
+              {% for i in (1..2) %}
+                {% for b in badges %}
+                  <span class="pzhy-badge" {% if i == 2 %}aria-hidden="true"{% else %}{{ b.shopify_attributes }}{% endif %}>{{ b.settings.text }}</span>
+                {% endfor %}
+              {% endfor %}
+            </div>
+          </div>
+        {% endif %}
 
         {% if section.settings.cta_text != blank and section.settings.cta_url != blank %}
           <a class="pzhy-cta" href="{{ section.settings.cta_url }}">
@@ -485,11 +598,21 @@
   "settings": [
     { "type": "text", "id": "heading", "label": "Heading", "default": "Hydration, dialed in." },
     { "type": "textarea", "id": "subheading", "label": "Supporting text", "default": "Electrolytes and performance support for every rally." },
-    { "type": "image_picker", "id": "product_image", "label": "Product image", "info": "Use the real product artwork, ideally a cut-out PNG. Falls back to the product's featured image." },
+    { "type": "image_picker", "id": "product_image", "label": "Product image", "info": "Use the real product artwork, ideally a cut-out PNG with transparency. Falls back to the bundled asset below, then the product's featured image." },
+    { "type": "text", "id": "product_image_filename", "label": "Bundled product asset", "info": "Filename of a cut-out PNG in the theme's assets folder" },
     { "type": "range", "id": "scroll_length", "label": "Scroll length (vh)", "info": "How far the viewer scrolls through the animation", "min": 150, "max": 400, "step": 10, "default": 260 },
     { "type": "checkbox", "id": "enable_animation", "label": "Enable scroll animation", "default": true },
-    { "type": "checkbox", "id": "show_water", "label": "Show water reflection", "default": true },
+    { "type": "checkbox", "id": "show_water", "label": "Show water", "default": true },
+    { "type": "text", "id": "water_image_filename", "label": "Water plate asset", "info": "Filename of a dark water image in the theme's assets folder. Blended so only its highlights show." },
+    { "type": "range", "id": "water_strength", "label": "Water strength (%)", "min": 10, "max": 100, "step": 5, "default": 55 },
     { "type": "checkbox", "id": "show_pickleball", "label": "Show pickleball", "default": true },
+
+    { "type": "header", "content": "Idle motion" },
+    { "type": "checkbox", "id": "show_sheen", "label": "Show foil sheen sweep", "default": true },
+    { "type": "range", "id": "idle_speed", "label": "Float speed (seconds)", "info": "Higher is slower", "min": 3, "max": 14, "step": 1, "default": 7 },
+    { "type": "range", "id": "idle_turn", "label": "Turn angle (degrees)", "info": "A flat product image can only suggest rotation. Beyond about 10 degrees it reads as skew.", "min": 0, "max": 14, "step": 1, "default": 7 },
+    { "type": "range", "id": "sheen_speed", "label": "Sheen interval (seconds)", "min": 4, "max": 20, "step": 1, "default": 9 },
+    { "type": "range", "id": "badge_speed", "label": "Badge marquee speed (seconds)", "min": 15, "max": 90, "step": 5, "default": 45 },
 
     { "type": "header", "content": "Callout 1" },
     { "type": "text", "id": "n1_amount", "label": "Amount", "default": "110" },
@@ -520,6 +643,28 @@
     { "type": "color", "id": "line_color", "label": "Connector line", "default": "rgba(255,255,255,0.28)" },
     { "type": "color", "id": "ball_color", "label": "Pickleball", "default": "#FFFFFF" }
   ],
-  "presets": [{ "name": "PZ Hydration Story" }]
+  "blocks": [
+    {
+      "type": "badge",
+      "name": "Attribute badge",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Text", "info": "Must be supported by the product copy or Supplement Facts panel", "default": "No Sugar" }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "PZ Hydration Story",
+      "blocks": [
+        { "type": "badge", "settings": { "text": "No Sugar" } },
+        { "type": "badge", "settings": { "text": "No Calories" } },
+        { "type": "badge", "settings": { "text": "No Artificial Colors" } },
+        { "type": "badge", "settings": { "text": "No Artificial Flavors" } },
+        { "type": "badge", "settings": { "text": "No Artificial Sweeteners" } },
+        { "type": "badge", "settings": { "text": "Gluten Free" } },
+        { "type": "badge", "settings": { "text": "Built For Pickleball" } }
+      ]
+    }
+  ]
 }
 {% endschema %}
