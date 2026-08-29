@@ -1040,6 +1040,31 @@
         "faq-4",
         "faq-5"
       ]
+    },
+    "pz_hydration": {
+      "type": "pz-hydration-story",
+      "settings": {
+        "heading": "Hydration, dialed in.",
+        "subheading": "Electrolytes and performance support for every rally.",
+        "scroll_length": 260,
+        "enable_animation": true,
+        "show_water": true,
+        "show_pickleball": true,
+        "n1_amount": "110",
+        "n1_unit": "MG",
+        "n1_label": "Sodium",
+        "n2_amount": "59",
+        "n2_unit": "MG",
+        "n2_label": "Potassium",
+        "n3_amount": "10",
+        "n3_unit": "MG",
+        "n3_label": "Magnesium",
+        "background_color": "#0A0A0B",
+        "text_color": "#FFFFFF",
+        "accent_color": "#96FF00",
+        "line_color": "rgba(255,255,255,0.28)",
+        "ball_color": "#FFFFFF"
+      }
     }
   },
   "order": [
@@ -1047,6 +1072,7 @@
     "pz_marquee",
     "pz_nav",
     "pz_benefits",
+    "pz_hydration",
     "pz_nutrition",
     "pz_ingredients",
     "pz_freeof",

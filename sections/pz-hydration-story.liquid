@@ -1,0 +1,525 @@
+{% comment %}
+  PZ Hydration Story — scroll-driven product feature.
+  A sticky stage where the product holds the centre while three electrolyte
+  callouts and their connector lines resolve as the viewer scrolls.
+
+  Motion is driven by a single scroll-derived progress value written to CSS
+  custom properties, so the animation only ever touches transform, opacity
+  and stroke-dashoffset. Fully scoped to section.id, so several instances
+  can coexist. Honours prefers-reduced-motion by rendering the final
+  composition immediately and never binding a scroll listener.
+{% endcomment %}
+{%- liquid
+  assign sid = section.id
+  assign has_image = false
+  if section.settings.product_image or product.featured_media
+    assign has_image = true
+  endif
+-%}
+<section
+  id="pzhy-{{ sid }}"
+  class="pzhy pzhy-{{ sid }}"
+  data-pzhy
+  data-animate="{{ section.settings.enable_animation }}"
+>
+  {% style %}
+    .pzhy-{{ sid }} {
+      --pzhy-bg: {{ section.settings.background_color }};
+      --pzhy-accent: {{ section.settings.accent_color }};
+      --pzhy-ink: {{ section.settings.text_color }};
+      --pzhy-p: 0;
+      --pzhy-scale: .9;
+      --pzhy-rot: 0deg;
+      --pzhy-lift: 0px;
+      --pzhy-ball-x: 0px;
+      --pzhy-ball-y: 0px;
+      --pzhy-ball-rot: 0deg;
+      --pzhy-water: .25;
+
+      position: relative;
+      background: var(--pzhy-bg);
+      color: var(--pzhy-ink);
+      overflow-x: clip;
+    }
+    /* Depth without an obvious gradient: one soft off-centre light. */
+    .pzhy-{{ sid }}::before {
+      content: '';
+      position: absolute; inset: 0; pointer-events: none;
+      background:
+        radial-gradient(70% 55% at 50% 38%, rgba(255,255,255,.055), transparent 70%),
+        radial-gradient(120% 80% at 50% 120%, rgba(0,0,0,.55), transparent 60%);
+    }
+
+    .pzhy-{{ sid }} .pzhy-track { position: relative; }
+    .pzhy-{{ sid }} .pzhy-sticky {
+      position: sticky; top: 0;
+      min-height: 100svh;
+      display: flex; align-items: center; justify-content: center;
+      padding: 64px 16px;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+    .pzhy-{{ sid }} .pzhy-stage {
+      position: relative; width: 100%; max-width: 1180px; margin: 0 auto;
+      display: flex; flex-direction: column; align-items: center; gap: 26px;
+    }
+
+    .pzhy-{{ sid }} .pzhy-head { text-align: center; max-width: 34ch; }
+    .pzhy-{{ sid }} .pzhy-heading {
+      font-size: clamp(26px, 4vw, 50px); font-weight: 900; margin: 0 0 10px;
+      text-transform: uppercase; letter-spacing: -0.025em; line-height: 1.02;
+    }
+    .pzhy-{{ sid }} .pzhy-sub {
+      font-size: clamp(13px, 1.3vw, 16px); margin: 0; opacity: .55; line-height: 1.5;
+    }
+
+    /* Scene ------------------------------------------------------------ */
+    /* Column by default so the callout stack sits below the product on
+       small screens. On desktop the callouts become absolutely positioned,
+       so the direction no longer applies. */
+    .pzhy-{{ sid }} .pzhy-scene {
+      position: relative; width: 100%;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+    }
+    /* Reserve room beneath the product for the reflection, which is
+       absolutely positioned and would otherwise sit over the callouts. */
+    @media (max-width: 999px) {
+      .pzhy-{{ sid }} .pzhy-product { margin-bottom: clamp(64px, 13vh, 120px); }
+    }
+
+    .pzhy-{{ sid }} .pzhy-product {
+      position: relative; z-index: 3;
+      transform: translate3d(0, var(--pzhy-lift), 0) scale(var(--pzhy-scale)) rotate(var(--pzhy-rot));
+      transform-origin: 50% 55%;
+    }
+    .pzhy-{{ sid }} .pzhy-product img {
+      display: block; width: auto; height: auto;
+      max-height: clamp(230px, 42vh, 430px);
+      max-width: min(74vw, 320px);
+      object-fit: contain;
+      filter: drop-shadow(0 26px 40px rgba(0,0,0,.6));
+    }
+    .pzhy-{{ sid }} .pzhy-product-placeholder {
+      width: min(60vw, 230px); aspect-ratio: 2 / 3; border-radius: 10px;
+      border: 1px dashed rgba(255,255,255,.25);
+      display: flex; align-items: center; justify-content: center;
+      text-align: center; padding: 16px; font-size: 12px; opacity: .5; line-height: 1.4;
+    }
+
+    /* Water: a masked mirror of the product, not a graphic of water. */
+    .pzhy-{{ sid }} .pzhy-water {
+      position: absolute; left: 50%; top: 100%; z-index: 2;
+      transform: translateX(-50%) scaleY(-1);
+      opacity: var(--pzhy-water);
+      -webkit-mask-image: linear-gradient(to bottom, rgba(0,0,0,.5), transparent 62%);
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,.5), transparent 62%);
+      filter: blur(2.5px) saturate(.75);
+      pointer-events: none;
+    }
+    .pzhy-{{ sid }} .pzhy-water img {
+      display: block; max-height: clamp(120px, 22vh, 220px); width: auto;
+      max-width: min(74vw, 320px); object-fit: contain;
+    }
+    .pzhy-{{ sid }} .pzhy-waterline {
+      position: absolute; left: 50%; top: 100%; z-index: 1;
+      width: min(86vw, 520px); height: 78px;
+      transform: translateX(-50%);
+      background: radial-gradient(60% 50% at 50% 0%, rgba(255,255,255,.10), transparent 70%);
+      opacity: calc(var(--pzhy-water) * .9);
+      pointer-events: none;
+    }
+
+    /* Pickleball: one, restrained, behind the product. */
+    .pzhy-{{ sid }} .pzhy-ball {
+      position: absolute; z-index: 1; pointer-events: none;
+      width: clamp(52px, 8vw, 96px); height: clamp(52px, 8vw, 96px);
+      left: 50%; top: 50%;
+      transform:
+        translate3d(calc(-50% + var(--pzhy-ball-x)), calc(-50% + var(--pzhy-ball-y)), 0)
+        rotate(var(--pzhy-ball-rot));
+      opacity: .5;
+    }
+    .pzhy-{{ sid }} .pzhy-ball svg { width: 100%; height: 100%; display: block; }
+
+    /* Connectors (desktop only) ---------------------------------------- */
+    .pzhy-{{ sid }} .pzhy-connectors {
+      position: absolute; inset: 0; z-index: 2; pointer-events: none;
+      display: none;
+    }
+    .pzhy-{{ sid }} .pzhy-connectors line {
+      stroke: {{ section.settings.line_color }};
+      stroke-width: 1;
+      stroke-dasharray: var(--len, 300);
+      stroke-dashoffset: var(--len, 300);
+      transition: stroke-dashoffset .7s cubic-bezier(.22,.61,.36,1);
+    }
+    .pzhy-{{ sid }} .pzhy-connectors line.is-drawn { stroke-dashoffset: 0; }
+
+    /* Callouts --------------------------------------------------------- */
+    .pzhy-{{ sid }} .pzhy-callout {
+      opacity: 0;
+      transform: translate3d(0, 14px, 0);
+      transition: opacity .6s ease, transform .6s cubic-bezier(.22,.61,.36,1);
+      max-width: 210px;
+    }
+    .pzhy-{{ sid }} .pzhy-callout.is-in { opacity: 1; transform: translate3d(0,0,0); }
+    .pzhy-{{ sid }} .pzhy-amount {
+      font-size: clamp(24px, 2.6vw, 38px); font-weight: 900; line-height: 1;
+      letter-spacing: -0.03em; display: block;
+    }
+    .pzhy-{{ sid }} .pzhy-unit { font-size: .5em; font-weight: 800; opacity: .5; margin-left: 3px; }
+    .pzhy-{{ sid }} .pzhy-label {
+      display: block; margin-top: 7px;
+      font-size: 11px; font-weight: 800; letter-spacing: .2em; text-transform: uppercase;
+      opacity: .6;
+    }
+    .pzhy-{{ sid }} .pzhy-note {
+      display: block; margin-top: 7px; font-size: 12px; line-height: 1.45; opacity: .38;
+    }
+    .pzhy-{{ sid }} .pzhy-callout::before {
+      content: ''; display: block; width: 20px; height: 2px;
+      background: var(--pzhy-accent); margin-bottom: 12px; border-radius: 2px;
+    }
+
+    /* Mobile-first callout stack: purpose-built, purely vertical. */
+    .pzhy-{{ sid }} .pzhy-callouts {
+      display: grid; grid-template-columns: 1fr; gap: 22px;
+      width: 100%; max-width: 420px; margin-top: 26px; text-align: center;
+      justify-items: center;
+    }
+    .pzhy-{{ sid }} .pzhy-callouts .pzhy-callout { max-width: 100%; }
+    .pzhy-{{ sid }} .pzhy-callouts .pzhy-callout::before { margin-left: auto; margin-right: auto; }
+
+    .pzhy-{{ sid }} .pzhy-cta {
+      display: inline-flex; align-items: center; gap: 8px; margin-top: 6px;
+      font-size: 12px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase;
+      color: var(--pzhy-ink); text-decoration: none;
+      border-bottom: 2px solid var(--pzhy-accent); padding-bottom: 4px;
+    }
+    .pzhy-{{ sid }} .pzhy-cta:hover { opacity: .75; }
+
+    /* Desktop composition ---------------------------------------------- */
+    @media (min-width: 1000px) {
+      .pzhy-{{ sid }} .pzhy-sticky { padding: 72px 32px; }
+      .pzhy-{{ sid }} .pzhy-scene {
+        min-height: min(62vh, 520px);
+      }
+      .pzhy-{{ sid }} .pzhy-connectors { display: block; }
+      .pzhy-{{ sid }} .pzhy-callouts {
+        display: block; position: absolute; inset: 0; max-width: none; margin: 0;
+        pointer-events: none;
+      }
+      .pzhy-{{ sid }} .pzhy-callouts .pzhy-callout {
+        position: absolute; text-align: left; width: 200px;
+      }
+      .pzhy-{{ sid }} .pzhy-callouts .pzhy-callout::before { margin-left: 0; margin-right: 0; }
+      /* Balanced triangle around the product, well clear of it. */
+      .pzhy-{{ sid }} .pzhy-callout[data-i="0"] { right: 4%;  top: 6%; text-align: left; }
+      .pzhy-{{ sid }} .pzhy-callout[data-i="1"] { left: 4%;   top: 40%; }
+      .pzhy-{{ sid }} .pzhy-callout[data-i="2"] { right: 8%;  bottom: 6%; text-align: left; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .pzhy-{{ sid }} .pzhy-callout { transition: none; }
+      .pzhy-{{ sid }} .pzhy-connectors line { transition: none; }
+    }
+  {% endstyle %}
+
+  <div class="pzhy-track" style="height: {{ section.settings.scroll_length }}vh;">
+    <div class="pzhy-sticky">
+      <div class="pzhy-stage">
+
+        <div class="pzhy-head">
+          {% if section.settings.heading != blank %}
+            <h2 class="pzhy-heading">{{ section.settings.heading }}</h2>
+          {% endif %}
+          {% if section.settings.subheading != blank %}
+            <p class="pzhy-sub">{{ section.settings.subheading }}</p>
+          {% endif %}
+        </div>
+
+        <div class="pzhy-scene" data-pzhy-scene>
+          <svg class="pzhy-connectors" data-pzhy-connectors aria-hidden="true" preserveAspectRatio="none">
+            <line data-c="0" x1="0" y1="0" x2="0" y2="0" />
+            <line data-c="1" x1="0" y1="0" x2="0" y2="0" />
+            <line data-c="2" x1="0" y1="0" x2="0" y2="0" />
+          </svg>
+
+          {% if section.settings.show_pickleball %}
+            <span class="pzhy-ball" data-pzhy-ball aria-hidden="true">
+              <svg viewBox="0 0 100 100" fill="none">
+                <circle cx="50" cy="50" r="47" fill="{{ section.settings.ball_color }}" fill-opacity="0.16" stroke="{{ section.settings.ball_color }}" stroke-opacity="0.5" stroke-width="1.5"/>
+                {% assign cxs = "30,50,70,38,62,30,50,70" | split: "," %}
+                {% assign cys = "28,24,28,48,48,70,74,70" | split: "," %}
+                {% for i in (0..7) %}
+                  <circle cx="{{ cxs[i] }}" cy="{{ cys[i] }}" r="5.4" fill="{{ section.settings.background_color }}" fill-opacity="0.85"/>
+                {% endfor %}
+              </svg>
+            </span>
+          {% endif %}
+
+          <div class="pzhy-product" data-pzhy-product>
+            {% if section.settings.product_image %}
+              {{ section.settings.product_image | image_url: width: 900 | image_tag: alt: section.settings.heading, loading: 'lazy', class: 'pzhy-product-img' }}
+            {% elsif product.featured_media %}
+              {{ product.featured_media | image_url: width: 900 | image_tag: alt: product.title, loading: 'lazy', class: 'pzhy-product-img' }}
+            {% else %}
+              <div class="pzhy-product-placeholder">Add a product image in this section's settings</div>
+            {% endif %}
+
+            {% if section.settings.show_water and has_image %}
+              <span class="pzhy-water" aria-hidden="true">
+                {% if section.settings.product_image %}
+                  {{ section.settings.product_image | image_url: width: 600 | image_tag: alt: '', loading: 'lazy' }}
+                {% else %}
+                  {{ product.featured_media | image_url: width: 600 | image_tag: alt: '', loading: 'lazy' }}
+                {% endif %}
+              </span>
+              <span class="pzhy-waterline" aria-hidden="true"></span>
+            {% endif %}
+          </div>
+
+          <div class="pzhy-callouts" data-pzhy-callouts>
+            {% for i in (1..3) %}
+              {%- liquid
+                case i
+                  when 1
+                    assign amt = section.settings.n1_amount
+                    assign unit = section.settings.n1_unit
+                    assign lbl = section.settings.n1_label
+                    assign note = section.settings.n1_note
+                  when 2
+                    assign amt = section.settings.n2_amount
+                    assign unit = section.settings.n2_unit
+                    assign lbl = section.settings.n2_label
+                    assign note = section.settings.n2_note
+                  when 3
+                    assign amt = section.settings.n3_amount
+                    assign unit = section.settings.n3_unit
+                    assign lbl = section.settings.n3_label
+                    assign note = section.settings.n3_note
+                endcase
+                assign idx = i | minus: 1
+              -%}
+              {% if amt != blank %}
+                <div class="pzhy-callout" data-i="{{ idx }}" data-pzhy-callout>
+                  <span class="pzhy-amount">{{ amt }}<span class="pzhy-unit">{{ unit }}</span></span>
+                  <span class="pzhy-label">{{ lbl }}</span>
+                  {% if note != blank %}<span class="pzhy-note">{{ note }}</span>{% endif %}
+                </div>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+
+        {% if section.settings.cta_text != blank and section.settings.cta_url != blank %}
+          <a class="pzhy-cta" href="{{ section.settings.cta_url }}">
+            {{ section.settings.cta_text }} <span aria-hidden="true">&rarr;</span>
+          </a>
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function () {
+  var root = document.getElementById('pzhy-{{ sid }}');
+  if (!root || root.dataset.pzhyInit === '1') return;
+  root.dataset.pzhyInit = '1';
+
+  var track     = root.querySelector('.pzhy-track');
+  var scene     = root.querySelector('[data-pzhy-scene]');
+  var product   = root.querySelector('[data-pzhy-product]');
+  var ball      = root.querySelector('[data-pzhy-ball]');
+  var svg       = root.querySelector('[data-pzhy-connectors]');
+  var callouts  = Array.prototype.slice.call(root.querySelectorAll('[data-pzhy-callout]'));
+  if (!track || !product) return;
+
+  var reduced = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var enabled = root.dataset.animate === 'true';
+
+  function setFinalState() {
+    root.style.setProperty('--pzhy-scale', '1');
+    root.style.setProperty('--pzhy-rot', '0deg');
+    root.style.setProperty('--pzhy-lift', '0px');
+    root.style.setProperty('--pzhy-water', '1');
+    root.style.setProperty('--pzhy-ball-x', '0px');
+    root.style.setProperty('--pzhy-ball-y', '0px');
+    callouts.forEach(function (c) { c.classList.add('is-in'); });
+    if (svg) {
+      Array.prototype.forEach.call(svg.querySelectorAll('line'), function (l) { l.classList.add('is-drawn'); });
+    }
+  }
+
+  /* Connectors are measured from live geometry so they always meet the
+     product wherever it lands at the current breakpoint. */
+  function layoutConnectors() {
+    if (!svg || !scene) return;
+    var isDesktop = window.matchMedia('(min-width: 1000px)').matches;
+    if (!isDesktop) return;
+
+    var s = scene.getBoundingClientRect();
+    svg.setAttribute('viewBox', '0 0 ' + s.width + ' ' + s.height);
+    svg.setAttribute('width', s.width);
+    svg.setAttribute('height', s.height);
+
+    var p = product.getBoundingClientRect();
+    var px = p.left - s.left + p.width / 2;
+    var py = p.top - s.top + p.height / 2;
+
+    callouts.forEach(function (c, i) {
+      var line = svg.querySelector('line[data-c="' + i + '"]');
+      if (!line) return;
+      var r = c.getBoundingClientRect();
+      var cx = r.left - s.left + r.width / 2;
+      var cy = r.top - s.top + r.height / 2;
+
+      // Stop short of the product so the line never crosses the artwork.
+      var dx = px - cx, dy = py - cy;
+      var dist = Math.sqrt(dx * dx + dy * dy) || 1;
+      var stop = Math.min(dist * 0.82, dist - Math.min(p.width, p.height) * 0.34);
+      var ex = cx + (dx / dist) * stop;
+      var ey = cy + (dy / dist) * stop;
+
+      line.setAttribute('x1', cx); line.setAttribute('y1', cy);
+      line.setAttribute('x2', ex); line.setAttribute('y2', ey);
+      line.style.setProperty('--len', Math.sqrt(Math.pow(ex - cx, 2) + Math.pow(ey - cy, 2)));
+    });
+  }
+
+  if (!enabled || reduced) {
+    setFinalState();
+    layoutConnectors();
+    window.addEventListener('resize', layoutConnectors, { passive: true });
+    return;
+  }
+
+  var ticking = false;
+
+  function lerp(a, b, t) { return a + (b - a) * t; }
+  function clamp01(v) { return v < 0 ? 0 : v > 1 ? 1 : v; }
+  // Progress within a sub-range of the overall timeline.
+  function seg(p, from, to) { return clamp01((p - from) / (to - from)); }
+
+  function update() {
+    ticking = false;
+    var rect = track.getBoundingClientRect();
+    var total = rect.height - window.innerHeight;
+    if (total <= 0) { setFinalState(); return; }
+
+    var p = clamp01(-rect.top / total);
+    root.style.setProperty('--pzhy-p', p.toFixed(4));
+
+    // Scale: settles early, then holds.
+    root.style.setProperty('--pzhy-scale', lerp(0.9, 1, seg(p, 0, 0.45)).toFixed(4));
+
+    // Rotation: out and back, never past a few degrees.
+    var rot;
+    if (p < 0.4)      rot = lerp(0, 4, seg(p, 0.12, 0.4));
+    else if (p < 0.7) rot = lerp(4, -3, seg(p, 0.4, 0.7));
+    else              rot = lerp(-3, 0, seg(p, 0.7, 1));
+    root.style.setProperty('--pzhy-rot', rot.toFixed(2) + 'deg');
+
+    root.style.setProperty('--pzhy-lift', lerp(10, 0, seg(p, 0, 0.5)).toFixed(2) + 'px');
+    root.style.setProperty('--pzhy-water', lerp(0.25, 1, seg(p, 0.55, 0.9)).toFixed(3));
+
+    if (ball) {
+      root.style.setProperty('--pzhy-ball-x', lerp(-90, -132, seg(p, 0.1, 1)).toFixed(1) + 'px');
+      root.style.setProperty('--pzhy-ball-y', lerp(64, 22, seg(p, 0.1, 1)).toFixed(1) + 'px');
+      root.style.setProperty('--pzhy-ball-rot', lerp(0, 26, p).toFixed(1) + 'deg');
+    }
+
+    var thresholds = [0.18, 0.40, 0.62];
+    callouts.forEach(function (c, i) {
+      var on = p >= thresholds[i];
+      c.classList.toggle('is-in', on);
+      var line = svg && svg.querySelector('line[data-c="' + i + '"]');
+      if (line) line.classList.toggle('is-drawn', on);
+    });
+  }
+
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    window.requestAnimationFrame(update);
+  }
+
+  function onResize() { layoutConnectors(); onScroll(); }
+
+  // Only listen while the section is near the viewport.
+  var listening = false;
+  function bind(on) {
+    if (on === listening) return;
+    listening = on;
+    if (on) {
+      window.addEventListener('scroll', onScroll, { passive: true });
+      product.style.willChange = 'transform';
+    } else {
+      window.removeEventListener('scroll', onScroll);
+      product.style.willChange = '';
+    }
+  }
+
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) { bind(e.isIntersecting); });
+    }, { rootMargin: '200px 0px' }).observe(root);
+  } else {
+    bind(true);
+  }
+
+  window.addEventListener('resize', onResize, { passive: true });
+  window.addEventListener('load', onResize);
+  layoutConnectors();
+  update();
+})();
+</script>
+
+{% schema %}
+{
+  "name": "PZ Hydration Story",
+  "tag": "section",
+  "class": "pz-section",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Hydration, dialed in." },
+    { "type": "textarea", "id": "subheading", "label": "Supporting text", "default": "Electrolytes and performance support for every rally." },
+    { "type": "image_picker", "id": "product_image", "label": "Product image", "info": "Use the real product artwork, ideally a cut-out PNG. Falls back to the product's featured image." },
+    { "type": "range", "id": "scroll_length", "label": "Scroll length (vh)", "info": "How far the viewer scrolls through the animation", "min": 150, "max": 400, "step": 10, "default": 260 },
+    { "type": "checkbox", "id": "enable_animation", "label": "Enable scroll animation", "default": true },
+    { "type": "checkbox", "id": "show_water", "label": "Show water reflection", "default": true },
+    { "type": "checkbox", "id": "show_pickleball", "label": "Show pickleball", "default": true },
+
+    { "type": "header", "content": "Callout 1" },
+    { "type": "text", "id": "n1_amount", "label": "Amount", "default": "110" },
+    { "type": "text", "id": "n1_unit", "label": "Unit", "default": "MG" },
+    { "type": "text", "id": "n1_label", "label": "Label", "default": "Sodium" },
+    { "type": "text", "id": "n1_note", "label": "Supporting line", "info": "Keep it short. Must be supportable by the Supplement Facts panel." },
+
+    { "type": "header", "content": "Callout 2" },
+    { "type": "text", "id": "n2_amount", "label": "Amount", "default": "59" },
+    { "type": "text", "id": "n2_unit", "label": "Unit", "default": "MG" },
+    { "type": "text", "id": "n2_label", "label": "Label", "default": "Potassium" },
+    { "type": "text", "id": "n2_note", "label": "Supporting line" },
+
+    { "type": "header", "content": "Callout 3" },
+    { "type": "text", "id": "n3_amount", "label": "Amount", "default": "10" },
+    { "type": "text", "id": "n3_unit", "label": "Unit", "default": "MG" },
+    { "type": "text", "id": "n3_label", "label": "Label", "default": "Magnesium" },
+    { "type": "text", "id": "n3_note", "label": "Supporting line" },
+
+    { "type": "header", "content": "Call to action" },
+    { "type": "text", "id": "cta_text", "label": "CTA text" },
+    { "type": "url", "id": "cta_url", "label": "CTA URL" },
+
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#0A0A0B" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#FFFFFF" },
+    { "type": "color", "id": "accent_color", "label": "Accent", "default": "#96FF00" },
+    { "type": "color", "id": "line_color", "label": "Connector line", "default": "rgba(255,255,255,0.28)" },
+    { "type": "color", "id": "ball_color", "label": "Pickleball", "default": "#FFFFFF" }
+  ],
+  "presets": [{ "name": "PZ Hydration Story" }]
+}
+{% endschema %}
