@@ -55,6 +55,10 @@
             <div class="pz-card-img">
               {{ block.settings.image | image_url: width: 520 | image_tag: alt: block.settings.name, loading: 'lazy' }}
             </div>
+          {% elsif block.settings.fallback_filename != blank %}
+            <div class="pz-card-img">
+              <img src="{{ block.settings.fallback_filename | asset_url }}" alt="{{ block.settings.name | escape }}" loading="lazy" width="1216" height="896">
+            </div>
           {% endif %}
           <div class="pz-card-body">
             {% if block.settings.eyebrow != blank %}<div class="pz-card-eyebrow">{{ block.settings.eyebrow }}</div>{% endif %}
@@ -90,6 +94,7 @@
       "name": "Ingredient",
       "settings": [
         { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "fallback_filename", "label": "Bundled asset filename", "info": "Advanced: filename of an image already in the theme's assets folder, used when no Image is picked above" },
         { "type": "text", "id": "eyebrow", "label": "Category", "default": "Electrolytes" },
         { "type": "text", "id": "name", "label": "Name", "default": "Sodium & Potassium" },
         { "type": "textarea", "id": "description", "label": "Description", "default": "Replaces what you sweat out on the court to prevent cramping and keep you hydrated." }

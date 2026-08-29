@@ -23,14 +23,60 @@
         "background": "#ffffff"
       },
       "blocks": {
-        "pack-1": { "type": "pack_tier", "settings": { "variant_title": "1 PERFORM -  30 Servings", "label": "1 Bag", "sublabel": "30 servings" } },
-        "pack-2": { "type": "pack_tier", "settings": { "variant_title": "2 PERFORM - 60 Servings", "label": "2 Bags", "sublabel": "60 servings", "badge_text": "Best Value", "show_free_shipping": true } },
-        "buy-buttons": { "type": "buy_buttons", "settings": { "show_dynamic_checkout": true } },
-        "trust-1": { "type": "trust_item", "settings": { "icon": "truck", "text": "Free shipping on subscriptions" } },
-        "trust-2": { "type": "trust_item", "settings": { "icon": "pause", "text": "Pause or cancel anytime" } },
-        "trust-3": { "type": "trust_item", "settings": { "icon": "shield", "text": "100% money back guarantee" } }
+        "pack-1": {
+          "type": "pack_tier",
+          "settings": {
+            "variant_title": "1 PERFORM -  30 Servings",
+            "label": "1 Bag",
+            "sublabel": "30 servings"
+          }
+        },
+        "pack-2": {
+          "type": "pack_tier",
+          "settings": {
+            "variant_title": "2 PERFORM - 60 Servings",
+            "label": "2 Bags",
+            "sublabel": "60 servings",
+            "badge_text": "Best Value",
+            "show_free_shipping": true
+          }
+        },
+        "buy-buttons": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_dynamic_checkout": true
+          }
+        },
+        "trust-1": {
+          "type": "trust_item",
+          "settings": {
+            "icon": "truck",
+            "text": "Free shipping on subscriptions"
+          }
+        },
+        "trust-2": {
+          "type": "trust_item",
+          "settings": {
+            "icon": "pause",
+            "text": "Pause or cancel anytime"
+          }
+        },
+        "trust-3": {
+          "type": "trust_item",
+          "settings": {
+            "icon": "shield",
+            "text": "100% money back guarantee"
+          }
+        }
       },
-      "block_order": ["pack-1", "pack-2", "buy-buttons", "trust-1", "trust-2", "trust-3"]
+      "block_order": [
+        "pack-1",
+        "pack-2",
+        "buy-buttons",
+        "trust-1",
+        "trust-2",
+        "trust-3"
+      ]
     },
     "pz_marquee": {
       "type": "pz-benefit-marquee",
@@ -41,26 +87,112 @@
         "icon_color": "#96FF00"
       },
       "blocks": {
-        "item-1": { "type": "item", "settings": { "icon": "droplet", "label": "Hydration" } },
-        "item-2": { "type": "item", "settings": { "icon": "bolt", "label": "Energy" } },
-        "item-3": { "type": "item", "settings": { "icon": "shield", "label": "Endurance" } },
-        "item-4": { "type": "item", "settings": { "icon": "target", "label": "Focus" } },
-        "item-5": { "type": "item", "settings": { "icon": "check", "label": "Anti-Cramping" } },
-        "item-6": { "type": "item", "settings": { "icon": "check", "label": "Zero Artificial Ingredients" } }
+        "item-1": {
+          "type": "item",
+          "settings": {
+            "icon": "droplet",
+            "label": "Hydration"
+          }
+        },
+        "item-2": {
+          "type": "item",
+          "settings": {
+            "icon": "bolt",
+            "label": "Energy"
+          }
+        },
+        "item-3": {
+          "type": "item",
+          "settings": {
+            "icon": "shield",
+            "label": "Endurance"
+          }
+        },
+        "item-4": {
+          "type": "item",
+          "settings": {
+            "icon": "target",
+            "label": "Focus"
+          }
+        },
+        "item-5": {
+          "type": "item",
+          "settings": {
+            "icon": "check",
+            "label": "Anti-Cramping"
+          }
+        },
+        "item-6": {
+          "type": "item",
+          "settings": {
+            "icon": "check",
+            "label": "Zero Artificial Ingredients"
+          }
+        }
       },
-      "block_order": ["item-1", "item-2", "item-3", "item-4", "item-5", "item-6"]
+      "block_order": [
+        "item-1",
+        "item-2",
+        "item-3",
+        "item-4",
+        "item-5",
+        "item-6"
+      ]
     },
     "pz_nav": {
       "type": "pz-anchor-nav",
       "blocks": {
-        "link-1": { "type": "link", "settings": { "label": "Benefits", "target_id": "pz-benefits" } },
-        "link-2": { "type": "link", "settings": { "label": "Zero Artificial", "target_id": "pz-zero" } },
-        "link-3": { "type": "link", "settings": { "label": "Reviews", "target_id": "pz-reviews" } },
-        "link-4": { "type": "link", "settings": { "label": "Compare", "target_id": "pz-compare" } },
-        "link-5": { "type": "link", "settings": { "label": "Pros", "target_id": "pz-pros" } },
-        "link-6": { "type": "link", "settings": { "label": "FAQ", "target_id": "pz-faq" } }
+        "link-1": {
+          "type": "link",
+          "settings": {
+            "label": "Benefits",
+            "target_id": "pz-benefits"
+          }
+        },
+        "link-2": {
+          "type": "link",
+          "settings": {
+            "label": "Zero Artificial",
+            "target_id": "pz-zero"
+          }
+        },
+        "link-3": {
+          "type": "link",
+          "settings": {
+            "label": "Reviews",
+            "target_id": "pz-reviews"
+          }
+        },
+        "link-4": {
+          "type": "link",
+          "settings": {
+            "label": "Compare",
+            "target_id": "pz-compare"
+          }
+        },
+        "link-5": {
+          "type": "link",
+          "settings": {
+            "label": "Pros",
+            "target_id": "pz-pros"
+          }
+        },
+        "link-6": {
+          "type": "link",
+          "settings": {
+            "label": "FAQ",
+            "target_id": "pz-faq"
+          }
+        }
       },
-      "block_order": ["link-1", "link-2", "link-3", "link-4", "link-5", "link-6"]
+      "block_order": [
+        "link-1",
+        "link-2",
+        "link-3",
+        "link-4",
+        "link-5",
+        "link-6"
+      ]
     },
     "pz_benefits": {
       "type": "pz-benefit-grid",
@@ -70,13 +202,54 @@
         "subheading": "More than just flavored salt water."
       },
       "blocks": {
-        "b-1": { "type": "benefit", "settings": { "icon": "droplet", "title": "Hydration", "description": "5 electrolytes to keep you in the game." } },
-        "b-2": { "type": "benefit", "settings": { "icon": "bolt", "title": "Energy", "description": "Crash-free energy from natural caffeine." } },
-        "b-3": { "type": "benefit", "settings": { "icon": "shield", "title": "Endurance", "description": "Fuel for a full session, start to finish." } },
-        "b-4": { "type": "benefit", "settings": { "icon": "target", "title": "Focus", "description": "L-theanine for smooth, jitter-free clarity." } },
-        "b-5": { "type": "benefit", "settings": { "icon": "no-cramp", "title": "Anti-Cramping", "description": "Magnesium and potassium to keep legs loose." } }
+        "b-1": {
+          "type": "benefit",
+          "settings": {
+            "icon": "droplet",
+            "title": "Hydration",
+            "description": "5 electrolytes to keep you in the game."
+          }
+        },
+        "b-2": {
+          "type": "benefit",
+          "settings": {
+            "icon": "bolt",
+            "title": "Energy",
+            "description": "Crash-free energy from natural caffeine."
+          }
+        },
+        "b-3": {
+          "type": "benefit",
+          "settings": {
+            "icon": "shield",
+            "title": "Endurance",
+            "description": "Fuel for a full session, start to finish."
+          }
+        },
+        "b-4": {
+          "type": "benefit",
+          "settings": {
+            "icon": "target",
+            "title": "Focus",
+            "description": "L-theanine for smooth, jitter-free clarity."
+          }
+        },
+        "b-5": {
+          "type": "benefit",
+          "settings": {
+            "icon": "no-cramp",
+            "title": "Anti-Cramping",
+            "description": "Magnesium and potassium to keep legs loose."
+          }
+        }
       },
-      "block_order": ["b-1", "b-2", "b-3", "b-4", "b-5"]
+      "block_order": [
+        "b-1",
+        "b-2",
+        "b-3",
+        "b-4",
+        "b-5"
+      ]
     },
     "pz_nutrition": {
       "type": "pz-nutrition-strip",
@@ -86,13 +259,49 @@
         "subheading": "Built to fuel a full session on the court — nothing wasted, nothing extra."
       },
       "blocks": {
-        "fact-1": { "type": "fact", "settings": { "value": "10", "label": "Calories" } },
-        "fact-2": { "type": "fact", "settings": { "value": "0g", "label": "Sugar" } },
-        "fact-3": { "type": "fact", "settings": { "value": "0g", "label": "Carbs" } },
-        "fact-4": { "type": "fact", "settings": { "value": "5", "label": "Electrolytes" } },
-        "fact-5": { "type": "fact", "settings": { "value": "100mg", "label": "Caffeine" } }
+        "fact-1": {
+          "type": "fact",
+          "settings": {
+            "value": "10",
+            "label": "Calories"
+          }
+        },
+        "fact-2": {
+          "type": "fact",
+          "settings": {
+            "value": "0g",
+            "label": "Sugar"
+          }
+        },
+        "fact-3": {
+          "type": "fact",
+          "settings": {
+            "value": "0g",
+            "label": "Carbs"
+          }
+        },
+        "fact-4": {
+          "type": "fact",
+          "settings": {
+            "value": "5",
+            "label": "Electrolytes"
+          }
+        },
+        "fact-5": {
+          "type": "fact",
+          "settings": {
+            "value": "100mg",
+            "label": "Caffeine"
+          }
+        }
       },
-      "block_order": ["fact-1", "fact-2", "fact-3", "fact-4", "fact-5"]
+      "block_order": [
+        "fact-1",
+        "fact-2",
+        "fact-3",
+        "fact-4",
+        "fact-5"
+      ]
     },
     "pz_ingredients": {
       "type": "pz-ingredient-cards",
@@ -102,12 +311,49 @@
         "subheading": "Every ingredient is chosen for one job: keeping you sharp for all five points."
       },
       "blocks": {
-        "ing-1": { "type": "ingredient", "settings": { "eyebrow": "Electrolytes", "name": "Sodium & Potassium", "description": "Replaces what you sweat out on the court to prevent cramping." } },
-        "ing-2": { "type": "ingredient", "settings": { "eyebrow": "Focus", "name": "L-Theanine", "description": "Smooth, jitter-free focus for long rallies and tournament days." } },
-        "ing-3": { "type": "ingredient", "settings": { "eyebrow": "Energy", "name": "Natural Caffeine", "description": "Crash-free energy sourced from green tea, not synthetic stimulants." } },
-        "ing-4": { "type": "ingredient", "settings": { "eyebrow": "Hydration", "name": "Coconut Water", "description": "Organic coconut water for real, whole-food hydration." } }
+        "ing-1": {
+          "type": "ingredient",
+          "settings": {
+            "eyebrow": "Electrolytes",
+            "name": "Sodium & Potassium",
+            "description": "Replaces what you sweat out on the court to prevent cramping.",
+            "fallback_filename": "pz-ingredient-electrolytes.png"
+          }
+        },
+        "ing-2": {
+          "type": "ingredient",
+          "settings": {
+            "eyebrow": "Focus",
+            "name": "L-Theanine",
+            "description": "Smooth, jitter-free focus for long rallies and tournament days.",
+            "fallback_filename": "pz-ingredient-ltheanine.png"
+          }
+        },
+        "ing-3": {
+          "type": "ingredient",
+          "settings": {
+            "eyebrow": "Energy",
+            "name": "Natural Caffeine",
+            "description": "Crash-free energy sourced from green tea, not synthetic stimulants.",
+            "fallback_filename": "pz-ingredient-caffeine.png"
+          }
+        },
+        "ing-4": {
+          "type": "ingredient",
+          "settings": {
+            "eyebrow": "Hydration",
+            "name": "Coconut Water",
+            "description": "Organic coconut water for real, whole-food hydration.",
+            "fallback_filename": "pz-ingredient-coconut.png"
+          }
+        }
       },
-      "block_order": ["ing-1", "ing-2", "ing-3", "ing-4"]
+      "block_order": [
+        "ing-1",
+        "ing-2",
+        "ing-3",
+        "ing-4"
+      ]
     },
     "pz_freeof": {
       "type": "pz-free-of",
@@ -117,14 +363,51 @@
         "body": "<p>What we don't put in is as important as what we do put in. No artificial colors, flavors, or sweeteners. No sugar, calories, or gluten.</p>"
       },
       "blocks": {
-        "z-1": { "type": "item", "settings": { "text": "No artificial colors" } },
-        "z-2": { "type": "item", "settings": { "text": "No artificial flavors" } },
-        "z-3": { "type": "item", "settings": { "text": "No artificial sweeteners" } },
-        "z-4": { "type": "item", "settings": { "text": "No sugar" } },
-        "z-5": { "type": "item", "settings": { "text": "No calories" } },
-        "z-6": { "type": "item", "settings": { "text": "No gluten" } }
+        "z-1": {
+          "type": "item",
+          "settings": {
+            "text": "No artificial colors"
+          }
+        },
+        "z-2": {
+          "type": "item",
+          "settings": {
+            "text": "No artificial flavors"
+          }
+        },
+        "z-3": {
+          "type": "item",
+          "settings": {
+            "text": "No artificial sweeteners"
+          }
+        },
+        "z-4": {
+          "type": "item",
+          "settings": {
+            "text": "No sugar"
+          }
+        },
+        "z-5": {
+          "type": "item",
+          "settings": {
+            "text": "No calories"
+          }
+        },
+        "z-6": {
+          "type": "item",
+          "settings": {
+            "text": "No gluten"
+          }
+        }
       },
-      "block_order": ["z-1", "z-2", "z-3", "z-4", "z-5", "z-6"]
+      "block_order": [
+        "z-1",
+        "z-2",
+        "z-3",
+        "z-4",
+        "z-5",
+        "z-6"
+      ]
     },
     "pz_reviews": {
       "type": "pz-reviews",
@@ -134,11 +417,42 @@
         "subheading": "5 Point Zero is a game changer. Try it, feel the difference, join the community."
       },
       "blocks": {
-        "rev-1": { "type": "review", "settings": { "rating": 5, "title": "Unstoppable energy!", "quote": "I played four hours straight and never crashed. This is my new pre-match ritual.", "author": "Shay" } },
-        "rev-2": { "type": "review", "settings": { "rating": 5, "title": "Real difference on court", "quote": "My endurance during matches has noticeably improved. I can push harder and last longer.", "author": "Mathi" } },
-        "rev-3": { "type": "review", "settings": { "rating": 5, "title": "Tastes great!", "quote": "Delightful drink with all the nutrients to boost energy and focus, made with natural ingredients.", "author": "Michelle" } }
+        "rev-1": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "title": "Unstoppable energy!",
+            "quote": "I played four hours straight and never crashed. This is my new pre-match ritual.",
+            "author": "Shay",
+            "fallback_filename": "pz-review-1.png"
+          }
+        },
+        "rev-2": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "title": "Real difference on court",
+            "quote": "My endurance during matches has noticeably improved. I can push harder and last longer.",
+            "author": "Mathi",
+            "fallback_filename": "pz-review-2.png"
+          }
+        },
+        "rev-3": {
+          "type": "review",
+          "settings": {
+            "rating": 5,
+            "title": "Tastes great!",
+            "quote": "Delightful drink with all the nutrients to boost energy and focus, made with natural ingredients.",
+            "author": "Michelle",
+            "fallback_filename": "pz-review-3.png"
+          }
+        }
       },
-      "block_order": ["rev-1", "rev-2", "rev-3"]
+      "block_order": [
+        "rev-1",
+        "rev-2",
+        "rev-3"
+      ]
     },
     "pz_lifestyle": {
       "type": "pz-lifestyle-media",
@@ -151,11 +465,42 @@
         "corner_radius": 16
       },
       "blocks": {
-        "media-1": { "type": "media_item", "settings": { "media_type": "image", "aspect_ratio": "portrait", "caption": "Game day ready", "caption_style": "overlay", "fallback_filename": "pz-lifestyle-1.png" } },
-        "media-2": { "type": "media_item", "settings": { "media_type": "image", "aspect_ratio": "portrait", "caption": "Between points", "caption_style": "overlay", "fallback_filename": "pz-lifestyle-2.png" } },
-        "media-3": { "type": "media_item", "settings": { "media_type": "image", "aspect_ratio": "portrait", "caption": "Post-match recovery", "caption_style": "overlay", "fallback_filename": "pz-lifestyle-3.png" } }
+        "media-1": {
+          "type": "media_item",
+          "settings": {
+            "media_type": "image",
+            "aspect_ratio": "portrait",
+            "caption": "Game day ready",
+            "caption_style": "overlay",
+            "fallback_filename": "pz-lifestyle-1.png"
+          }
+        },
+        "media-2": {
+          "type": "media_item",
+          "settings": {
+            "media_type": "image",
+            "aspect_ratio": "portrait",
+            "caption": "Between points",
+            "caption_style": "overlay",
+            "fallback_filename": "pz-lifestyle-2.png"
+          }
+        },
+        "media-3": {
+          "type": "media_item",
+          "settings": {
+            "media_type": "image",
+            "aspect_ratio": "portrait",
+            "caption": "Post-match recovery",
+            "caption_style": "overlay",
+            "fallback_filename": "pz-lifestyle-3.png"
+          }
+        }
       },
-      "block_order": ["media-1", "media-2", "media-3"]
+      "block_order": [
+        "media-1",
+        "media-2",
+        "media-3"
+      ]
     },
     "pz_compare": {
       "type": "fivepointzero-comparison",
@@ -163,42 +508,263 @@
         "anchor_id": "pz-compare"
       },
       "blocks": {
-        "cat-perf": { "type": "comparison_row", "settings": { "row_type": "category", "label": "Performance & Cost" } },
-        "row-price": { "type": "comparison_row", "settings": { "row_type": "comparison", "label": "Price Per Serving", "fivepointzero_status": "empty", "lmnt_status": "empty", "liquidiv_status": "empty", "gatorade_status": "empty" } },
-        "row-sugar": { "type": "comparison_row", "settings": { "row_type": "comparison", "label": "Sugar", "fivepointzero_status": "text", "fivepointzero_value": "0g", "lmnt_status": "empty", "liquidiv_status": "empty", "gatorade_status": "empty" } },
-        "row-cal": { "type": "comparison_row", "settings": { "row_type": "comparison", "label": "Calories", "fivepointzero_status": "empty", "lmnt_status": "empty", "liquidiv_status": "empty", "gatorade_status": "empty" } },
-        "row-elytes": { "type": "comparison_row", "settings": { "row_type": "comparison", "label": "Total Electrolytes", "fivepointzero_status": "text", "fivepointzero_value": "5", "lmnt_status": "empty", "liquidiv_status": "empty", "gatorade_status": "empty" } },
-        "row-artcolor": { "type": "comparison_row", "settings": { "row_type": "comparison", "label": "Artificial Colors", "fivepointzero_status": "text", "fivepointzero_value": "None", "lmnt_status": "empty", "liquidiv_status": "empty", "gatorade_status": "empty" } },
-        "row-artflavor": { "type": "comparison_row", "settings": { "row_type": "comparison", "label": "Artificial Flavors", "fivepointzero_status": "text", "fivepointzero_value": "None", "lmnt_status": "empty", "liquidiv_status": "empty", "gatorade_status": "empty" } },
-        "row-artsweet": { "type": "comparison_row", "settings": { "row_type": "comparison", "label": "Artificial Sweeteners", "fivepointzero_status": "text", "fivepointzero_value": "None", "lmnt_status": "empty", "liquidiv_status": "empty", "gatorade_status": "empty" } },
-        "row-madefor": { "type": "comparison_row", "settings": { "row_type": "comparison", "label": "Made For Performance", "fivepointzero_status": "check", "lmnt_status": "x", "liquidiv_status": "x", "gatorade_status": "x" } },
-        "cat-elytes": { "type": "comparison_row", "settings": { "row_type": "category", "label": "Electrolytes" } },
-        "row-sodium": { "type": "comparison_row", "settings": { "row_type": "comparison", "label": "Sodium", "fivepointzero_status": "check", "lmnt_status": "check", "liquidiv_status": "check", "gatorade_status": "check" } },
-        "row-potassium": { "type": "comparison_row", "settings": { "row_type": "comparison", "label": "Potassium", "fivepointzero_status": "check", "lmnt_status": "check", "liquidiv_status": "check", "gatorade_status": "check" } },
-        "row-magnesium": { "type": "comparison_row", "settings": { "row_type": "comparison", "label": "Magnesium", "fivepointzero_status": "check", "lmnt_status": "check", "liquidiv_status": "x", "gatorade_status": "x" } },
-        "row-calcium": { "type": "comparison_row", "settings": { "row_type": "comparison", "label": "Calcium", "fivepointzero_status": "check", "lmnt_status": "x", "liquidiv_status": "x", "gatorade_status": "x" } },
-        "row-chloride": { "type": "comparison_row", "settings": { "row_type": "comparison", "label": "Chloride", "fivepointzero_status": "check", "lmnt_status": "x", "liquidiv_status": "x", "gatorade_status": "x" } },
-        "cat-vitamins": { "type": "comparison_row", "settings": { "row_type": "category", "label": "Vitamins" } },
-        "row-vitd3": { "type": "comparison_row", "settings": { "row_type": "comparison", "label": "Vitamin D3", "fivepointzero_status": "check", "lmnt_status": "x", "liquidiv_status": "x", "gatorade_status": "x" } },
-        "row-vitb6": { "type": "comparison_row", "settings": { "row_type": "comparison", "label": "Vitamin B6", "fivepointzero_status": "check", "lmnt_status": "x", "liquidiv_status": "x", "gatorade_status": "x" } },
-        "cat-perf2": { "type": "comparison_row", "settings": { "row_type": "category", "label": "Performance" } },
-        "row-taurine": { "type": "comparison_row", "settings": { "row_type": "comparison", "label": "Taurine", "fivepointzero_status": "check", "lmnt_status": "x", "liquidiv_status": "x", "gatorade_status": "x" } },
-        "row-glutamine": { "type": "comparison_row", "settings": { "row_type": "comparison", "label": "Glutamine", "fivepointzero_status": "check", "lmnt_status": "x", "liquidiv_status": "x", "gatorade_status": "x" } },
-        "row-ltheanine": { "type": "comparison_row", "settings": { "row_type": "comparison", "label": "L-Theanine", "fivepointzero_status": "check", "lmnt_status": "x", "liquidiv_status": "x", "gatorade_status": "x" } },
-        "cat-botanicals": { "type": "comparison_row", "settings": { "row_type": "category", "label": "Botanicals / Performance Support" } },
-        "row-greentea": { "type": "comparison_row", "settings": { "row_type": "comparison", "label": "Green Tea", "fivepointzero_status": "check", "lmnt_status": "x", "liquidiv_status": "x", "gatorade_status": "x" } },
-        "row-yerba": { "type": "comparison_row", "settings": { "row_type": "comparison", "label": "Yerba Mate", "fivepointzero_status": "check", "lmnt_status": "x", "liquidiv_status": "x", "gatorade_status": "x" } },
-        "row-panax": { "type": "comparison_row", "settings": { "row_type": "comparison", "label": "Panax Ginseng Root", "fivepointzero_status": "check", "lmnt_status": "x", "liquidiv_status": "x", "gatorade_status": "x" } },
-        "row-bacopa": { "type": "comparison_row", "settings": { "row_type": "comparison", "label": "Bacopa Monnieri", "fivepointzero_status": "check", "lmnt_status": "x", "liquidiv_status": "x", "gatorade_status": "x" } },
-        "row-rhodiola": { "type": "comparison_row", "settings": { "row_type": "comparison", "label": "Rhodiola Rosea", "fivepointzero_status": "check", "lmnt_status": "x", "liquidiv_status": "x", "gatorade_status": "x" } },
-        "clean-1": { "type": "clean_item", "settings": { "label": "No Artificial Colors" } },
-        "clean-2": { "type": "clean_item", "settings": { "label": "No Artificial Flavors" } },
-        "clean-3": { "type": "clean_item", "settings": { "label": "No Artificial Sweeteners" } },
-        "clean-4": { "type": "clean_item", "settings": { "label": "No Sugar" } },
-        "clean-5": { "type": "clean_item", "settings": { "label": "No Calories" } },
-        "clean-6": { "type": "clean_item", "settings": { "label": "Gluten Free" } }
+        "cat-elytes": {
+          "type": "comparison_row",
+          "settings": {
+            "row_type": "category",
+            "label": "Electrolytes"
+          }
+        },
+        "row-sodium": {
+          "type": "comparison_row",
+          "settings": {
+            "row_type": "comparison",
+            "label": "Sodium",
+            "fivepointzero_status": "check",
+            "lmnt_status": "check",
+            "liquidiv_status": "check",
+            "gatorade_status": "check"
+          }
+        },
+        "row-potassium": {
+          "type": "comparison_row",
+          "settings": {
+            "row_type": "comparison",
+            "label": "Potassium",
+            "fivepointzero_status": "check",
+            "lmnt_status": "check",
+            "liquidiv_status": "check",
+            "gatorade_status": "check"
+          }
+        },
+        "row-magnesium": {
+          "type": "comparison_row",
+          "settings": {
+            "row_type": "comparison",
+            "label": "Magnesium",
+            "fivepointzero_status": "check",
+            "lmnt_status": "check",
+            "liquidiv_status": "x",
+            "gatorade_status": "x"
+          }
+        },
+        "row-calcium": {
+          "type": "comparison_row",
+          "settings": {
+            "row_type": "comparison",
+            "label": "Calcium",
+            "fivepointzero_status": "check",
+            "lmnt_status": "x",
+            "liquidiv_status": "x",
+            "gatorade_status": "x"
+          }
+        },
+        "row-chloride": {
+          "type": "comparison_row",
+          "settings": {
+            "row_type": "comparison",
+            "label": "Chloride",
+            "fivepointzero_status": "check",
+            "lmnt_status": "x",
+            "liquidiv_status": "x",
+            "gatorade_status": "x"
+          }
+        },
+        "cat-vitamins": {
+          "type": "comparison_row",
+          "settings": {
+            "row_type": "category",
+            "label": "Vitamins"
+          }
+        },
+        "row-vitd3": {
+          "type": "comparison_row",
+          "settings": {
+            "row_type": "comparison",
+            "label": "Vitamin D3",
+            "fivepointzero_status": "check",
+            "lmnt_status": "x",
+            "liquidiv_status": "x",
+            "gatorade_status": "x"
+          }
+        },
+        "row-vitb6": {
+          "type": "comparison_row",
+          "settings": {
+            "row_type": "comparison",
+            "label": "Vitamin B6",
+            "fivepointzero_status": "check",
+            "lmnt_status": "x",
+            "liquidiv_status": "x",
+            "gatorade_status": "x"
+          }
+        },
+        "cat-perf2": {
+          "type": "comparison_row",
+          "settings": {
+            "row_type": "category",
+            "label": "Performance"
+          }
+        },
+        "row-taurine": {
+          "type": "comparison_row",
+          "settings": {
+            "row_type": "comparison",
+            "label": "Taurine",
+            "fivepointzero_status": "check",
+            "lmnt_status": "x",
+            "liquidiv_status": "x",
+            "gatorade_status": "x"
+          }
+        },
+        "row-glutamine": {
+          "type": "comparison_row",
+          "settings": {
+            "row_type": "comparison",
+            "label": "Glutamine",
+            "fivepointzero_status": "check",
+            "lmnt_status": "x",
+            "liquidiv_status": "x",
+            "gatorade_status": "x"
+          }
+        },
+        "row-ltheanine": {
+          "type": "comparison_row",
+          "settings": {
+            "row_type": "comparison",
+            "label": "L-Theanine",
+            "fivepointzero_status": "check",
+            "lmnt_status": "x",
+            "liquidiv_status": "x",
+            "gatorade_status": "x"
+          }
+        },
+        "cat-botanicals": {
+          "type": "comparison_row",
+          "settings": {
+            "row_type": "category",
+            "label": "Botanicals / Performance Support"
+          }
+        },
+        "row-greentea": {
+          "type": "comparison_row",
+          "settings": {
+            "row_type": "comparison",
+            "label": "Green Tea",
+            "fivepointzero_status": "check",
+            "lmnt_status": "x",
+            "liquidiv_status": "x",
+            "gatorade_status": "x"
+          }
+        },
+        "row-yerba": {
+          "type": "comparison_row",
+          "settings": {
+            "row_type": "comparison",
+            "label": "Yerba Mate",
+            "fivepointzero_status": "check",
+            "lmnt_status": "x",
+            "liquidiv_status": "x",
+            "gatorade_status": "x"
+          }
+        },
+        "row-panax": {
+          "type": "comparison_row",
+          "settings": {
+            "row_type": "comparison",
+            "label": "Panax Ginseng Root",
+            "fivepointzero_status": "check",
+            "lmnt_status": "x",
+            "liquidiv_status": "x",
+            "gatorade_status": "x"
+          }
+        },
+        "row-bacopa": {
+          "type": "comparison_row",
+          "settings": {
+            "row_type": "comparison",
+            "label": "Bacopa Monnieri",
+            "fivepointzero_status": "check",
+            "lmnt_status": "x",
+            "liquidiv_status": "x",
+            "gatorade_status": "x"
+          }
+        },
+        "row-rhodiola": {
+          "type": "comparison_row",
+          "settings": {
+            "row_type": "comparison",
+            "label": "Rhodiola Rosea",
+            "fivepointzero_status": "check",
+            "lmnt_status": "x",
+            "liquidiv_status": "x",
+            "gatorade_status": "x"
+          }
+        },
+        "clean-1": {
+          "type": "clean_item",
+          "settings": {
+            "label": "No Artificial Colors"
+          }
+        },
+        "clean-2": {
+          "type": "clean_item",
+          "settings": {
+            "label": "No Artificial Flavors"
+          }
+        },
+        "clean-3": {
+          "type": "clean_item",
+          "settings": {
+            "label": "No Artificial Sweeteners"
+          }
+        },
+        "clean-4": {
+          "type": "clean_item",
+          "settings": {
+            "label": "No Sugar"
+          }
+        },
+        "clean-5": {
+          "type": "clean_item",
+          "settings": {
+            "label": "No Calories"
+          }
+        },
+        "clean-6": {
+          "type": "clean_item",
+          "settings": {
+            "label": "Gluten Free"
+          }
+        }
       },
-      "block_order": ["cat-perf", "row-price", "row-sugar", "row-cal", "row-elytes", "row-artcolor", "row-artflavor", "row-artsweet", "row-madefor", "cat-elytes", "row-sodium", "row-potassium", "row-magnesium", "row-calcium", "row-chloride", "cat-vitamins", "row-vitd3", "row-vitb6", "cat-perf2", "row-taurine", "row-glutamine", "row-ltheanine", "cat-botanicals", "row-greentea", "row-yerba", "row-panax", "row-bacopa", "row-rhodiola", "clean-1", "clean-2", "clean-3", "clean-4", "clean-5", "clean-6"]
+      "block_order": [
+        "cat-elytes",
+        "row-sodium",
+        "row-potassium",
+        "row-magnesium",
+        "row-calcium",
+        "row-chloride",
+        "cat-vitamins",
+        "row-vitd3",
+        "row-vitb6",
+        "cat-perf2",
+        "row-taurine",
+        "row-glutamine",
+        "row-ltheanine",
+        "cat-botanicals",
+        "row-greentea",
+        "row-yerba",
+        "row-panax",
+        "row-bacopa",
+        "row-rhodiola",
+        "clean-1",
+        "clean-2",
+        "clean-3",
+        "clean-4",
+        "clean-5",
+        "clean-6"
+      ]
     },
     "pz_compare_slider": {
       "type": "pz-comparison-slider",
@@ -208,11 +774,33 @@
         "subheading": "Swipe through and see how 5 Point Zero stacks up against the competition, ingredient by ingredient."
       },
       "blocks": {
-        "slide-1": { "type": "slide", "settings": { "fallback_filename": "pz-compare-gatorade.png", "alt_text": "5 Point Zero vs Gatorade ingredient comparison" } },
-        "slide-2": { "type": "slide", "settings": { "fallback_filename": "pz-compare-lmnt.png", "alt_text": "5 Point Zero vs LMNT ingredient comparison" } },
-        "slide-3": { "type": "slide", "settings": { "fallback_filename": "pz-compare-liquid-iv.png", "alt_text": "5 Point Zero vs Liquid IV ingredient comparison" } }
+        "slide-1": {
+          "type": "slide",
+          "settings": {
+            "fallback_filename": "pz-compare-gatorade.png",
+            "alt_text": "5 Point Zero vs Gatorade ingredient comparison"
+          }
+        },
+        "slide-2": {
+          "type": "slide",
+          "settings": {
+            "fallback_filename": "pz-compare-lmnt.png",
+            "alt_text": "5 Point Zero vs LMNT ingredient comparison"
+          }
+        },
+        "slide-3": {
+          "type": "slide",
+          "settings": {
+            "fallback_filename": "pz-compare-liquid-iv.png",
+            "alt_text": "5 Point Zero vs Liquid IV ingredient comparison"
+          }
+        }
       },
-      "block_order": ["slide-1", "slide-2", "slide-3"]
+      "block_order": [
+        "slide-1",
+        "slide-2",
+        "slide-3"
+      ]
     },
     "pz_endorsements": {
       "type": "pz-pro-endorsements",
@@ -222,11 +810,39 @@
         "subheading": "Ranked pickleball players rely on PERFORM on tournament day."
       },
       "blocks": {
-        "pro-1": { "type": "pro", "settings": { "quote": "PERFORM is part of my warm-up routine before every tournament match.", "name": "[Pro Name]", "credential": "[Pro Pickleball Tour, Ranked #00]", "fallback_filename": "pz-pro-1.png" } },
-        "pro-2": { "type": "pro", "settings": { "quote": "I stopped cramping in the third game once I switched to PERFORM.", "name": "[Pro Name]", "credential": "[Pro Pickleball Tour, Ranked #00]", "fallback_filename": "pz-pro-2.png" } },
-        "pro-3": { "type": "pro", "settings": { "quote": "Clean ingredients, real focus. This is what I recommend to my students.", "name": "[Coach Name]", "credential": "[Certified Pickleball Coach]", "fallback_filename": "pz-pro-3.png" } }
+        "pro-1": {
+          "type": "pro",
+          "settings": {
+            "quote": "PERFORM is part of my warm-up routine before every tournament match.",
+            "name": "Marcus Reyes",
+            "credential": "Pro Tour Player · PLACEHOLDER",
+            "fallback_filename": "pz-pro-1.png"
+          }
+        },
+        "pro-2": {
+          "type": "pro",
+          "settings": {
+            "quote": "I stopped cramping in the third game once I switched to PERFORM.",
+            "name": "Danielle Cho",
+            "credential": "Pro Tour Player · PLACEHOLDER",
+            "fallback_filename": "pz-pro-2.png"
+          }
+        },
+        "pro-3": {
+          "type": "pro",
+          "settings": {
+            "quote": "Clean ingredients, real focus. This is what I recommend to my students.",
+            "name": "Andre Whitfield",
+            "credential": "Certified Coach · PLACEHOLDER",
+            "fallback_filename": "pz-pro-3.png"
+          }
+        }
       },
-      "block_order": ["pro-1", "pro-2", "pro-3"]
+      "block_order": [
+        "pro-1",
+        "pro-2",
+        "pro-3"
+      ]
     },
     "pz_faq": {
       "type": "pz-faq",
@@ -236,13 +852,49 @@
         "subheading": "We're here to address any concerns or queries you may have to help you make an informed decision."
       },
       "blocks": {
-        "faq-1": { "type": "faq", "settings": { "question": "How do I use PERFORM sports drink?", "answer": "<p>Take PERFORM 15-30 minutes before you start playing, then continue to sip during play to maintain hydration, energy, endurance, and focus.</p>" } },
-        "faq-2": { "type": "faq", "settings": { "question": "Are 5 Point sports drinks suitable for all athletes?", "answer": "<p>Yes — PERFORM is formulated for anyone looking for clean hydration and focus during activity.</p>" } },
-        "faq-3": { "type": "faq", "settings": { "question": "What makes 5 Point sports drinks different from others on the market?", "answer": "<p>No artificial colors, flavors, or sweeteners — just electrolytes, clean energy, and focus support.</p>" } },
-        "faq-4": { "type": "faq", "settings": { "question": "Can I consume 5 Point Zero sports drinks if I have dietary restrictions?", "answer": "<p>PERFORM is gluten-free, sugar-free, and carb-free. Check the ingredient list for any personal allergens.</p>" } },
-        "faq-5": { "type": "faq", "settings": { "question": "How much caffeine is in PERFORM?", "answer": "<p>Each serving contains a moderate, crash-free dose of natural caffeine.</p>" } }
+        "faq-1": {
+          "type": "faq",
+          "settings": {
+            "question": "How do I use PERFORM sports drink?",
+            "answer": "<p>Take PERFORM 15-30 minutes before you start playing, then continue to sip during play to maintain hydration, energy, endurance, and focus.</p>"
+          }
+        },
+        "faq-2": {
+          "type": "faq",
+          "settings": {
+            "question": "Are 5 Point sports drinks suitable for all athletes?",
+            "answer": "<p>Yes — PERFORM is formulated for anyone looking for clean hydration and focus during activity.</p>"
+          }
+        },
+        "faq-3": {
+          "type": "faq",
+          "settings": {
+            "question": "What makes 5 Point sports drinks different from others on the market?",
+            "answer": "<p>No artificial colors, flavors, or sweeteners — just electrolytes, clean energy, and focus support.</p>"
+          }
+        },
+        "faq-4": {
+          "type": "faq",
+          "settings": {
+            "question": "Can I consume 5 Point Zero sports drinks if I have dietary restrictions?",
+            "answer": "<p>PERFORM is gluten-free, sugar-free, and carb-free. Check the ingredient list for any personal allergens.</p>"
+          }
+        },
+        "faq-5": {
+          "type": "faq",
+          "settings": {
+            "question": "How much caffeine is in PERFORM?",
+            "answer": "<p>Each serving contains a moderate, crash-free dose of natural caffeine.</p>"
+          }
+        }
       },
-      "block_order": ["faq-1", "faq-2", "faq-3", "faq-4", "faq-5"]
+      "block_order": [
+        "faq-1",
+        "faq-2",
+        "faq-3",
+        "faq-4",
+        "faq-5"
+      ]
     }
   },
   "order": [

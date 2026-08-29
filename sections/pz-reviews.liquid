@@ -20,15 +20,32 @@
     .pz-reviews-{{ section.id }} .pz-review-row {
       display: flex; gap: 16px; overflow-x: auto; padding: 4px 16px 12px;
       scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
+      /* Center the row while it still fits, but fall back to normal
+         left-aligned scrolling once the cards overflow (justify-content
+         centering would otherwise clip the first card's scroll range). */
+      justify-content: safe center;
+      max-width: 1280px; margin: 0 auto;
+    }
+    @media (min-width: 600px) {
+      .pz-reviews-{{ section.id }} .pz-review-row { gap: 20px; padding: 4px 24px 12px; }
     }
     .pz-reviews-{{ section.id }} .pz-review-card {
-      flex: 0 0 300px; min-width: 0; scroll-snap-align: start;
-      border: 1px solid {{ section.settings.border_color }}; border-radius: 16px; padding: 20px;
+      flex: 0 0 300px; min-width: 0; scroll-snap-align: center;
+      border: 1px solid {{ section.settings.border_color }}; border-radius: 16px;
       background: {{ section.settings.card_background }}; color: {{ section.settings.text_color }};
+      overflow: hidden; text-align: center;
+      display: flex; flex-direction: column;
     }
     @media (max-width: 600px) {
       .pz-reviews-{{ section.id }} .pz-review-card { flex-basis: 82vw; }
     }
+    .pz-reviews-{{ section.id }} .pz-review-photo {
+      aspect-ratio: 4 / 3; background: #eee; overflow: hidden;
+    }
+    .pz-reviews-{{ section.id }} .pz-review-photo img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+    .pz-reviews-{{ section.id }} .pz-review-body { padding: 20px; }
     .pz-reviews-{{ section.id }} .pz-review-stars { color: {{ section.settings.star_color }}; letter-spacing: 2px; margin-bottom: 10px; }
     .pz-reviews-{{ section.id }} .pz-review-title { font-weight: 800; margin-bottom: 8px; }
     .pz-reviews-{{ section.id }} .pz-review-quote { font-size: 14px; line-height: 1.6; opacity: .85; margin-bottom: 14px; }
@@ -42,12 +59,23 @@
     {% for block in section.blocks %}
       {% if block.type == 'review' %}
         <div class="pz-review-card" {{ block.shopify_attributes }}>
-          <div class="pz-review-stars" aria-hidden="true">
-            {% for i in (1..5) %}{% if i <= block.settings.rating %}★{% else %}☆{% endif %}{% endfor %}
+          {% if block.settings.photo %}
+            <div class="pz-review-photo">
+              {{ block.settings.photo | image_url: width: 600 | image_tag: alt: block.settings.author, loading: 'lazy' }}
+            </div>
+          {% elsif block.settings.fallback_filename != blank %}
+            <div class="pz-review-photo">
+              <img src="{{ block.settings.fallback_filename | asset_url }}" alt="{{ block.settings.author | escape }}" loading="lazy" width="1152" height="896">
+            </div>
+          {% endif %}
+          <div class="pz-review-body">
+            <div class="pz-review-stars" aria-hidden="true">
+              {% for i in (1..5) %}{% if i <= block.settings.rating %}★{% else %}☆{% endif %}{% endfor %}
+            </div>
+            <div class="pz-review-title">{{ block.settings.title }}</div>
+            <div class="pz-review-quote">"{{ block.settings.quote }}"</div>
+            <div class="pz-review-author">{{ block.settings.author }}</div>
           </div>
-          <div class="pz-review-title">{{ block.settings.title }}</div>
-          <div class="pz-review-quote">"{{ block.settings.quote }}"</div>
-          <div class="pz-review-author">{{ block.settings.author }}</div>
         </div>
       {% endif %}
     {% endfor %}
@@ -76,6 +104,8 @@
       "type": "review",
       "name": "Review",
       "settings": [
+        { "type": "image_picker", "id": "photo", "label": "Customer photo", "info": "Optional. Real customer photos work best here." },
+        { "type": "text", "id": "fallback_filename", "label": "Bundled asset filename", "info": "Advanced: filename of an image already in the theme's assets folder, used when no photo is picked above" },
         { "type": "range", "id": "rating", "label": "Rating", "min": 1, "max": 5, "step": 1, "default": 5 },
         { "type": "text", "id": "title", "label": "Title", "default": "Unstoppable energy!" },
         { "type": "textarea", "id": "quote", "label": "Quote", "default": "I played four hours straight and never crashed. This is my new pre-match ritual." },
