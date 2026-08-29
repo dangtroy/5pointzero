@@ -210,8 +210,16 @@
       "type": "pz-benefit-grid",
       "settings": {
         "anchor_id": "pz-benefits",
-        "heading": "5 Benefits",
-        "subheading": "More than just flavored salt water."
+        "heading": "5 Benefits. One Powerful Formula.",
+        "subheading": "More than just flavored salt water.",
+        "show_index": true,
+        "icon_size": 52,
+        "icon_color": "#141414",
+        "accent_color": "#96FF00",
+        "accent_on_light_color": "#457300",
+        "card_background": "#ffffff",
+        "border_color": "#e6e6e6",
+        "background": "#ffffff"
       },
       "blocks": {
         "b-1": {
@@ -219,7 +227,7 @@
           "settings": {
             "icon": "droplet",
             "title": "Hydration",
-            "description": "5 electrolytes to keep you in the game."
+            "description": "Replenish electrolytes and support hydration."
           }
         },
         "b-2": {
@@ -227,15 +235,15 @@
           "settings": {
             "icon": "bolt",
             "title": "Energy",
-            "description": "Crash-free energy from natural caffeine."
+            "description": "Support energy production and help you stay in the game."
           }
         },
         "b-3": {
           "type": "benefit",
           "settings": {
-            "icon": "shield",
+            "icon": "pulse",
             "title": "Endurance",
-            "description": "Fuel for a full session, start to finish."
+            "description": "Support sustained performance during play."
           }
         },
         "b-4": {
@@ -243,15 +251,15 @@
           "settings": {
             "icon": "target",
             "title": "Focus",
-            "description": "L-theanine for smooth, jitter-free clarity."
+            "description": "Support mental clarity and focus."
           }
         },
         "b-5": {
           "type": "benefit",
           "settings": {
-            "icon": "no-cramp",
+            "icon": "shield",
             "title": "Anti-Cramping",
-            "description": "Magnesium and potassium to keep legs loose."
+            "description": "Support muscle function during activity."
           }
         }
       },

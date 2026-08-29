@@ -1,51 +1,105 @@
 {% comment %}
-  PZ Benefit Grid — "5 Benefits" hero-hierarchy section: Hydration, Energy,
-  Endurance, Focus, Anti-Cramping. Icon + title + short description cards,
-  collapsing from 5-across to 2-across to 1-across on smaller screens.
+  PZ Benefit Grid — the "5 Benefits" section.
+  Five distinct benefit cards: large stroke icons in the primary ink color,
+  an indexed 01-05 counter in the accent, minimal card treatment.
+  Desktop: five across. Mobile: a snapping horizontal row (five items do
+  not divide cleanly into two columns, and the rest of the page already
+  uses scroll rows).
 {% endcomment %}
 <section id="{{ section.settings.anchor_id }}" class="pz-benefits pz-benefits-{{ section.id }}">
   {% style %}
     .pz-benefits-{{ section.id }} {
       background: {{ section.settings.background }};
       color: {{ section.settings.text_color }};
-      padding: 48px 16px;
+      padding: 56px 0;
       scroll-margin-top: 80px;
     }
     @media (min-width: 600px) {
-      .pz-benefits-{{ section.id }} { padding: 64px 24px; }
+      .pz-benefits-{{ section.id }} { padding: 88px 0; }
     }
     .pz-benefits-{{ section.id }} .pz-benefits-head {
-      max-width: 1280px; margin: 0 auto 36px; text-align: center;
+      max-width: 1280px; margin: 0 auto 40px; padding: 0 16px; text-align: center;
+    }
+    @media (min-width: 600px) {
+      .pz-benefits-{{ section.id }} .pz-benefits-head { padding: 0 24px; margin-bottom: 56px; }
     }
     .pz-benefits-{{ section.id }} h2 {
-      font-size: clamp(24px, 3vw, 34px); font-weight: 800; margin: 0 0 8px;
+      font-size: clamp(26px, 3.6vw, 42px); font-weight: 900; margin: 0 0 12px;
       color: {{ section.settings.heading_color }};
+      text-transform: uppercase; letter-spacing: -0.02em; line-height: 1.05;
     }
-    .pz-benefits-{{ section.id }} .pz-benefits-sub { opacity: .75; max-width: 60ch; margin: 0 auto; }
+    .pz-benefits-{{ section.id }} .pz-benefits-sub {
+      font-size: clamp(15px, 1.5vw, 17px); opacity: .65; max-width: 46ch; margin: 0 auto;
+    }
+
+    /* Desktop: five across. */
     .pz-benefits-{{ section.id }} .pz-benefits-grid {
-      max-width: 1280px; margin: 0 auto;
-      display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px;
+      max-width: 1280px; margin: 0 auto; padding: 0 24px;
+      display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px;
     }
+    /* Mobile / tablet: one snapping row rather than a 2+2+1 orphan. */
     @media (max-width: 900px) {
-      .pz-benefits-{{ section.id }} .pz-benefits-grid { grid-template-columns: repeat(3, 1fr); }
+      .pz-benefits-{{ section.id }} .pz-benefits-grid {
+        display: flex; gap: 12px; padding: 4px 16px 14px;
+        overflow-x: auto; scroll-snap-type: x mandatory;
+        -webkit-overflow-scrolling: touch; scrollbar-width: none;
+      }
+      .pz-benefits-{{ section.id }} .pz-benefits-grid::-webkit-scrollbar { display: none; }
+      .pz-benefits-{{ section.id }} .pz-benefit-card {
+        flex: 0 0 62vw; max-width: 260px; scroll-snap-align: start;
+      }
     }
-    @media (max-width: 600px) {
-      .pz-benefits-{{ section.id }} .pz-benefits-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
-    }
+
     .pz-benefits-{{ section.id }} .pz-benefit-card {
-      min-width: 0;
-      display: flex; flex-direction: column; align-items: center; text-align: center; gap: 10px;
-      padding: 24px 16px; border-radius: 16px; background: {{ section.settings.card_background }};
+      min-width: 0; position: relative;
+      display: flex; flex-direction: column; align-items: flex-start; text-align: left;
+      padding: 26px 22px 24px;
       border: 1px solid {{ section.settings.border_color }};
+      border-radius: 14px;
+      background: {{ section.settings.card_background }};
+      transition: border-color .2s ease, transform .2s ease;
+    }
+    .pz-benefits-{{ section.id }} .pz-benefit-card:hover {
+      border-color: {{ section.settings.accent_color }};
+      transform: translateY(-2px);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .pz-benefits-{{ section.id }} .pz-benefit-card { transition: none; }
+      .pz-benefits-{{ section.id }} .pz-benefit-card:hover { transform: none; }
+    }
+
+    /* Index counter — the accent lives here and on the rule, not as a
+       large filled shape behind the icon. */
+    .pz-benefits-{{ section.id }} .pz-benefit-index {
+      font-size: 12px; font-weight: 900; letter-spacing: .12em;
+      color: {{ section.settings.accent_on_light_color }};
+      margin-bottom: 18px;
     }
     .pz-benefits-{{ section.id }} .pz-benefit-icon {
-      width: 52px; height: 52px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      background: {{ section.settings.accent_color }}; color: {{ section.settings.accent_text_color }};
-      flex: none;
+      color: {{ section.settings.icon_color }};
+      margin-bottom: 18px; display: block;
     }
-    .pz-benefits-{{ section.id }} .pz-benefit-title { font-weight: 800; font-size: 15px; }
-    .pz-benefits-{{ section.id }} .pz-benefit-desc { font-size: 12px; opacity: .7; line-height: 1.4; }
+    .pz-benefits-{{ section.id }} .pz-benefit-icon svg {
+      width: {{ section.settings.icon_size }}px; height: {{ section.settings.icon_size }}px;
+      display: block;
+    }
+    .pz-benefits-{{ section.id }} .pz-benefit-icon img {
+      width: {{ section.settings.icon_size }}px; height: {{ section.settings.icon_size }}px;
+      object-fit: contain; display: block;
+    }
+    .pz-benefits-{{ section.id }} .pz-benefit-rule {
+      width: 28px; height: 3px; border-radius: 2px;
+      background: {{ section.settings.accent_color }};
+      margin-bottom: 14px;
+    }
+    .pz-benefits-{{ section.id }} .pz-benefit-title {
+      font-weight: 900; font-size: clamp(16px, 1.35vw, 19px);
+      text-transform: uppercase; letter-spacing: .01em;
+      margin-bottom: 8px; line-height: 1.1;
+    }
+    .pz-benefits-{{ section.id }} .pz-benefit-desc {
+      font-size: 14px; opacity: .7; line-height: 1.5;
+    }
   {% endstyle %}
 
   <div class="pz-benefits-head">
@@ -56,25 +110,37 @@
   <div class="pz-benefits-grid">
     {% for block in section.blocks %}
       {% if block.type == 'benefit' %}
+        {%- liquid
+          assign idx = forloop.index
+          if idx < 10
+            assign idx = idx | prepend: '0'
+          endif
+        -%}
         <div class="pz-benefit-card" {{ block.shopify_attributes }}>
-          <div class="pz-benefit-icon">
+          {% if section.settings.show_index %}
+            <div class="pz-benefit-index">{{ idx }}</div>
+          {% endif %}
+          <span class="pz-benefit-icon">
             {% case block.settings.icon %}
               {% when 'droplet' %}
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2s7 8.5 7 13a7 7 0 1 1-14 0c0-4.5 7-13 7-13Z"/></svg>
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M24 4c0 0 13 14.5 13 23a13 13 0 0 1-26 0C11 18.5 24 4 24 4Z"/><path d="M18 27a6 6 0 0 0 6 6"/></svg>
               {% when 'bolt' %}
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 3 14h7l-1 8 11-14h-7l0-6Z"/></svg>
-              {% when 'shield' %}
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5l-8-3Z"/></svg>
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M27 4 10 27h12l-3 17 17-23H24l3-17Z"/></svg>
+              {% when 'pulse' %}
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 24h9l5-13 8 26 6-16 4 3h10"/></svg>
               {% when 'target' %}
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/></svg>
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="24" cy="24" r="19"/><circle cx="24" cy="24" r="11"/><circle cx="24" cy="24" r="3.5" fill="currentColor" stroke="none"/></svg>
+              {% when 'shield' %}
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M24 4 7 11v13c0 11 7.4 18.9 17 21 9.6-2.1 17-10 17-21V11L24 4Z"/><path d="M17 24l5 5 9-10"/></svg>
               {% when 'no-cramp' %}
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6 6 18M6 6l12 12"/></svg>
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M24 4 7 11v13c0 11 7.4 18.9 17 21 9.6-2.1 17-10 17-21V11L24 4Z"/><path d="M17 24l5 5 9-10"/></svg>
               {% when 'image' %}
                 {% if block.settings.custom_icon %}
-                  {{ block.settings.custom_icon | image_url: width: 80 | image_tag: alt: block.settings.title }}
+                  {{ block.settings.custom_icon | image_url: width: 160 | image_tag: alt: block.settings.title }}
                 {% endif %}
             {% endcase %}
-          </div>
+          </span>
+          <span class="pz-benefit-rule" aria-hidden="true"></span>
           <div class="pz-benefit-title">{{ block.settings.title }}</div>
           {% if block.settings.description != blank %}
             <div class="pz-benefit-desc">{{ block.settings.description }}</div>
@@ -92,15 +158,18 @@
   "class": "pz-section",
   "settings": [
     { "type": "text", "id": "anchor_id", "label": "Anchor id", "default": "pz-benefits" },
-    { "type": "text", "id": "heading", "label": "Heading", "default": "5 Benefits" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "5 Benefits. One Powerful Formula." },
     { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "More than just flavored salt water." },
+    { "type": "checkbox", "id": "show_index", "label": "Show 01-05 counters", "default": true },
+    { "type": "range", "id": "icon_size", "label": "Icon size (px)", "min": 28, "max": 88, "step": 2, "default": 52 },
     { "type": "header", "content": "Colors" },
-    { "type": "color", "id": "accent_color", "label": "Icon background", "default": "#96FF00" },
-    { "type": "color", "id": "accent_text_color", "label": "Icon color", "default": "#000000" },
+    { "type": "color", "id": "icon_color", "label": "Icon color", "default": "#141414" },
+    { "type": "color", "id": "accent_color", "label": "Accent (rule / hover)", "default": "#96FF00" },
+    { "type": "color", "id": "accent_on_light_color", "label": "Accent text on light", "info": "Neon green is ~1.3:1 on white — this darker green is used for the counters", "default": "#457300" },
     { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#141414" },
     { "type": "color", "id": "text_color", "label": "Body text color", "default": "#141414" },
-    { "type": "color", "id": "card_background", "label": "Card background", "default": "#fafafa" },
-    { "type": "color", "id": "border_color", "label": "Card border", "default": "#ececec" },
+    { "type": "color", "id": "card_background", "label": "Card background", "default": "#ffffff" },
+    { "type": "color", "id": "border_color", "label": "Card border", "default": "#e6e6e6" },
     { "type": "color", "id": "background", "label": "Section background", "default": "#ffffff" }
   ],
   "blocks": [
@@ -113,18 +182,18 @@
           "id": "icon",
           "label": "Icon",
           "options": [
-            { "value": "droplet", "label": "Droplet" },
-            { "value": "bolt", "label": "Bolt" },
-            { "value": "shield", "label": "Shield" },
-            { "value": "target", "label": "Target" },
-            { "value": "no-cramp", "label": "X (anti-cramping)" },
+            { "value": "droplet", "label": "Droplet (hydration)" },
+            { "value": "bolt", "label": "Bolt (energy)" },
+            { "value": "pulse", "label": "Pulse (endurance)" },
+            { "value": "target", "label": "Target (focus)" },
+            { "value": "shield", "label": "Shield (protection)" },
             { "value": "image", "label": "Custom image" }
           ],
           "default": "droplet"
         },
         { "type": "image_picker", "id": "custom_icon", "label": "Custom icon image", "info": "Only used when Icon is set to Custom image" },
         { "type": "text", "id": "title", "label": "Title", "default": "Hydration" },
-        { "type": "text", "id": "description", "label": "Short description", "default": "5 electrolytes to keep you in the game." }
+        { "type": "textarea", "id": "description", "label": "Description", "default": "Replenish electrolytes and support hydration." }
       ]
     }
   ],
@@ -132,11 +201,11 @@
     {
       "name": "PZ Benefit Grid",
       "blocks": [
-        { "type": "benefit", "settings": { "icon": "droplet", "title": "Hydration", "description": "5 electrolytes to keep you in the game." } },
-        { "type": "benefit", "settings": { "icon": "bolt", "title": "Energy", "description": "Crash-free energy from natural caffeine." } },
-        { "type": "benefit", "settings": { "icon": "shield", "title": "Endurance", "description": "Fuel for a full session, start to finish." } },
-        { "type": "benefit", "settings": { "icon": "target", "title": "Focus", "description": "L-theanine for smooth, jitter-free clarity." } },
-        { "type": "benefit", "settings": { "icon": "no-cramp", "title": "Anti-Cramping", "description": "Magnesium and potassium to keep legs loose." } }
+        { "type": "benefit", "settings": { "icon": "droplet", "title": "Hydration", "description": "Replenish electrolytes and support hydration." } },
+        { "type": "benefit", "settings": { "icon": "bolt", "title": "Energy", "description": "Support energy production and help you stay in the game." } },
+        { "type": "benefit", "settings": { "icon": "pulse", "title": "Endurance", "description": "Support sustained performance during play." } },
+        { "type": "benefit", "settings": { "icon": "target", "title": "Focus", "description": "Support mental clarity and focus." } },
+        { "type": "benefit", "settings": { "icon": "shield", "title": "Anti-Cramping", "description": "Support muscle function during activity." } }
       ]
     }
   ]
