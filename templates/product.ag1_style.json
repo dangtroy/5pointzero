@@ -485,44 +485,113 @@
       "settings": {
         "anchor_id": "pz-reviews",
         "heading": "Straight From Our Customers",
-        "subheading": "5 Point Zero is a game changer. Try it, feel the difference, join the community."
+        "show_rating": true,
+        "rating_score": "4.9",
+        "rating_out_of": "5",
+        "rating_count": "2,431+ Verified Reviews",
+        "link_text": "Read all reviews",
+        "link_url": "/pages/customer-reviews",
+        "note": "Reviews shown are real customer reviews from our reviews app. Quotes shortened with an ellipsis where noted. Incentivized reviews are labelled.",
+        "accent_color": "#96FF00",
+        "accent_on_light_color": "#457300",
+        "star_color": "#141414",
+        "verified_color": "#457300",
+        "heading_color": "#141414",
+        "text_color": "#141414",
+        "card_background": "#ffffff",
+        "border_color": "#e6e6e6",
+        "background": "#fafafa"
       },
       "blocks": {
         "rev-1": {
           "type": "review",
           "settings": {
+            "quote": "This drink is great! I did immediately notice a much clearer head, deeper rest, and less muscle cramping in my neck…",
+            "name": "Brian F.",
+            "verified": true,
             "rating": 5,
-            "title": "Unstoppable energy!",
-            "quote": "I played four hours straight and never crashed. This is my new pre-match ritual.",
-            "author": "Shay",
-            "fallback_filename": "pz-review-1.png"
+            "date": "8/26/2026",
+            "item": "1 PERFORM – 30 Servings",
+            "incentivized": true,
+            "fallback_filename": "pz-candid-1.png"
           }
         },
         "rev-2": {
           "type": "review",
           "settings": {
+            "quote": "I love 5 Point Zero's Perform Pink Lemonade. It's not too sweet, just the right amount of flavor. I take it with me to pickleball every day!!",
+            "name": "Anita O.",
+            "verified": true,
             "rating": 5,
-            "title": "Real difference on court",
-            "quote": "My endurance during matches has noticeably improved. I can push harder and last longer.",
-            "author": "Mathi",
-            "fallback_filename": "pz-review-2.png"
+            "date": "8/10/2026",
+            "item": "1 PERFORM – 30 Servings",
+            "incentivized": true
           }
         },
         "rev-3": {
           "type": "review",
           "settings": {
+            "quote": "The best and healthiest hydration and energy product that taste great and will help you play better longer and recover faster!",
+            "name": "Harris W.",
+            "verified": true,
             "rating": 5,
-            "title": "Tastes great!",
-            "quote": "Delightful drink with all the nutrients to boost energy and focus, made with natural ingredients.",
-            "author": "Michelle",
-            "fallback_filename": "pz-review-3.png"
+            "date": "4/8/2025"
+          }
+        },
+        "rev-4": {
+          "type": "review",
+          "settings": {
+            "quote": "I've been using Perform Pink Lemonade during my pickleball games, and I really like it. It helps me stay hydrated and energized…",
+            "name": "Jared M.",
+            "verified": true,
+            "rating": 5,
+            "date": "8/20/2026",
+            "item": "1 PERFORM – 30 Servings",
+            "incentivized": true
+          }
+        },
+        "rev-5": {
+          "type": "review",
+          "settings": {
+            "quote": "Love the fact that it goes beyond just a baseline electrolyte drink for hydration and includes so many other benefits. It tastes great too…",
+            "name": "Kyle M.",
+            "verified": true,
+            "rating": 5,
+            "date": "8/20/2026",
+            "item": "1 PERFORM – 30 Servings",
+            "incentivized": true
+          }
+        },
+        "rev-6": {
+          "type": "review",
+          "settings": {
+            "quote": "LOVE LOVE LOVE 5.0! It's become part of my pickleball routine each time I play. I truly believe it helps me focus while staying energised and hydrated…",
+            "name": "Christine B.",
+            "verified": true,
+            "rating": 5,
+            "date": "4/7/2025"
+          }
+        },
+        "rev-7": {
+          "type": "review",
+          "settings": {
+            "quote": "I have been using the electrolytes for about 2 weeks now and there is nothing like these! These make my body feel unreal and have helped me so much!",
+            "name": "Riley B.",
+            "verified": false,
+            "rating": 5,
+            "date": "8/20/2025",
+            "identity": "Pro Player"
           }
         }
       },
       "block_order": [
         "rev-1",
         "rev-2",
-        "rev-3"
+        "rev-3",
+        "rev-4",
+        "rev-5",
+        "rev-6",
+        "rev-7"
       ]
     },
     "pz_lifestyle": {

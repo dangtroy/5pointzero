@@ -1,84 +1,242 @@
 {% comment %}
-  PZ Reviews — testimonial card carousel, mirrors AG1's review carousel /
-  the existing straight_customers_YqmXDU section.
+  PZ Reviews — "Straight From Our Customers".
+  Aggregate rating, then one featured testimonial followed by a grid of
+  supporting ones. Quote-led and typographic so the words carry the
+  section rather than a review-widget chrome.
+
+  Every review here should be a real review. The blocks carry the same
+  metadata the reviews app shows — verified status, rating, date,
+  purchased item and incentivised status — so nothing is dropped in the
+  retelling. Incentivised reviews must stay labelled.
 {% endcomment %}
+{%- liquid
+  assign reviews = section.blocks | where: 'type', 'review'
+  assign featured = reviews.first
+-%}
 <section id="{{ section.settings.anchor_id }}" class="pz-reviews pz-reviews-{{ section.id }}">
   {% style %}
     .pz-reviews-{{ section.id }} {
       background: {{ section.settings.background }};
-      padding: 64px 0;
+      color: {{ section.settings.text_color }};
+      padding: 56px 16px;
       scroll-margin-top: 80px;
     }
-    .pz-reviews-{{ section.id }} .pz-reviews-head {
-      max-width: 1280px; margin: 0 auto 32px; padding: 0 16px; text-align: center;
-    }
     @media (min-width: 600px) {
-      .pz-reviews-{{ section.id }} .pz-reviews-head { padding: 0 24px; }
+      .pz-reviews-{{ section.id }} { padding: 88px 24px; }
     }
-    .pz-reviews-{{ section.id }} h2 { font-size: clamp(24px, 3vw, 34px); font-weight: 800; margin: 0 0 8px; color: {{ section.settings.heading_color }}; }
-    .pz-reviews-{{ section.id }} .pz-reviews-sub { opacity: .75; max-width: 60ch; margin: 0 auto; color: {{ section.settings.text_color }}; }
-    .pz-reviews-{{ section.id }} .pz-review-row {
-      display: flex; gap: 16px; overflow-x: auto; padding: 4px 16px 12px;
-      scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
-      /* Center the row while it still fits, but fall back to normal
-         left-aligned scrolling once the cards overflow (justify-content
-         centering would otherwise clip the first card's scroll range). */
-      justify-content: safe center;
-      max-width: 1280px; margin: 0 auto;
+    .pz-reviews-{{ section.id }} .pz-reviews-inner { max-width: 1180px; margin: 0 auto; }
+    .pz-reviews-{{ section.id }} .pz-reviews-head { text-align: center; margin-bottom: 40px; }
+    .pz-reviews-{{ section.id }} h2 {
+      font-size: clamp(28px, 4vw, 46px); font-weight: 900; margin: 0 0 20px;
+      color: {{ section.settings.heading_color }};
+      text-transform: uppercase; letter-spacing: -0.02em; line-height: 1.03;
     }
-    @media (min-width: 600px) {
-      .pz-reviews-{{ section.id }} .pz-review-row { gap: 20px; padding: 4px 24px 12px; }
+
+    /* Aggregate rating */
+    .pz-reviews-{{ section.id }} .pz-rating {
+      display: flex; flex-direction: column; align-items: center; gap: 6px;
     }
-    .pz-reviews-{{ section.id }} .pz-review-card {
-      flex: 0 0 300px; min-width: 0; scroll-snap-align: center;
-      border: 1px solid {{ section.settings.border_color }}; border-radius: 16px;
-      background: {{ section.settings.card_background }}; color: {{ section.settings.text_color }};
-      overflow: hidden; text-align: center;
-      display: flex; flex-direction: column;
+    .pz-reviews-{{ section.id }} .pz-rating-score {
+      font-size: clamp(44px, 6vw, 72px); font-weight: 900; line-height: 1;
+      letter-spacing: -0.03em;
     }
-    @media (max-width: 600px) {
-      .pz-reviews-{{ section.id }} .pz-review-card { flex-basis: 82vw; }
+    .pz-reviews-{{ section.id }} .pz-rating-out { font-size: .45em; opacity: .45; font-weight: 800; }
+    .pz-reviews-{{ section.id }} .pz-rating-stars {
+      color: {{ section.settings.star_color }}; font-size: 22px; letter-spacing: 4px;
     }
-    .pz-reviews-{{ section.id }} .pz-review-photo {
-      aspect-ratio: 4 / 3; background: #eee; overflow: hidden;
+    .pz-reviews-{{ section.id }} .pz-rating-count {
+      font-size: 12px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase; opacity: .6;
     }
-    .pz-reviews-{{ section.id }} .pz-review-photo img {
+
+    /* Featured testimonial */
+    .pz-reviews-{{ section.id }} .pz-review-featured {
+      display: grid; grid-template-columns: 1fr; gap: 0;
+      border: 1px solid {{ section.settings.border_color }};
+      border-radius: 18px; overflow: hidden;
+      background: {{ section.settings.card_background }};
+      margin-bottom: 16px;
+    }
+    .pz-reviews-{{ section.id }} .pz-review-featured.has-photo { grid-template-columns: 1fr; }
+    @media (min-width: 800px) {
+      .pz-reviews-{{ section.id }} .pz-review-featured.has-photo {
+        grid-template-columns: 0.85fr 1.15fr;
+      }
+      .pz-reviews-{{ section.id }} .pz-review-featured { margin-bottom: 20px; }
+    }
+    .pz-reviews-{{ section.id }} .pz-featured-photo {
+      min-width: 0; background: #eee; aspect-ratio: 4 / 3; overflow: hidden;
+    }
+    @media (min-width: 800px) {
+      .pz-reviews-{{ section.id }} .pz-featured-photo { aspect-ratio: auto; height: 100%; }
+    }
+    .pz-reviews-{{ section.id }} .pz-featured-photo img {
       width: 100%; height: 100%; object-fit: cover; display: block;
     }
-    .pz-reviews-{{ section.id }} .pz-review-body { padding: 20px; }
-    .pz-reviews-{{ section.id }} .pz-review-stars { color: {{ section.settings.star_color }}; letter-spacing: 2px; margin-bottom: 10px; }
-    .pz-reviews-{{ section.id }} .pz-review-title { font-weight: 800; margin-bottom: 8px; }
-    .pz-reviews-{{ section.id }} .pz-review-quote { font-size: 14px; line-height: 1.6; opacity: .85; margin-bottom: 14px; }
-    .pz-reviews-{{ section.id }} .pz-review-author { font-size: 12px; text-transform: uppercase; letter-spacing: .04em; font-weight: 700; opacity: .6; }
+    .pz-reviews-{{ section.id }} .pz-featured-body {
+      min-width: 0; padding: 30px 24px;
+      display: flex; flex-direction: column; justify-content: center; gap: 16px;
+    }
+    @media (min-width: 800px) {
+      .pz-reviews-{{ section.id }} .pz-featured-body { padding: 48px 44px; }
+    }
+    .pz-reviews-{{ section.id }} .pz-featured-quote {
+      font-size: clamp(19px, 2.3vw, 29px); font-weight: 700; line-height: 1.3;
+      letter-spacing: -0.01em; margin: 0;
+    }
+
+    /* Supporting grid */
+    .pz-reviews-{{ section.id }} .pz-review-grid {
+      display: grid; grid-template-columns: 1fr; gap: 16px;
+    }
+    @media (min-width: 700px) {
+      .pz-reviews-{{ section.id }} .pz-review-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (min-width: 1000px) {
+      .pz-reviews-{{ section.id }} .pz-review-grid { grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    }
+    .pz-reviews-{{ section.id }} .pz-review-card {
+      min-width: 0; display: flex; flex-direction: column; gap: 12px;
+      border: 1px solid {{ section.settings.border_color }};
+      border-radius: 14px; padding: 22px;
+      background: {{ section.settings.card_background }};
+    }
+    .pz-reviews-{{ section.id }} .pz-review-quote {
+      font-size: 15px; line-height: 1.55; margin: 0; flex: 1 1 auto;
+    }
+
+    /* Shared meta */
+    .pz-reviews-{{ section.id }} .pz-stars {
+      color: {{ section.settings.star_color }}; letter-spacing: 2px; font-size: 15px; line-height: 1;
+    }
+    .pz-reviews-{{ section.id }} .pz-review-meta {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+      font-size: 13px;
+    }
+    .pz-reviews-{{ section.id }} .pz-review-name { font-weight: 800; }
+    .pz-reviews-{{ section.id }} .pz-verified {
+      display: inline-flex; align-items: center; gap: 4px;
+      font-size: 11px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase;
+      color: {{ section.settings.verified_color }};
+    }
+    .pz-reviews-{{ section.id }} .pz-verified svg { flex: none; }
+    .pz-reviews-{{ section.id }} .pz-review-date { font-size: 12px; opacity: .45; }
+    .pz-reviews-{{ section.id }} .pz-review-tags {
+      display: flex; flex-wrap: wrap; gap: 6px;
+    }
+    .pz-reviews-{{ section.id }} .pz-tag {
+      font-size: 10px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase;
+      padding: 4px 8px; border-radius: 4px;
+      border: 1px solid {{ section.settings.border_color }}; opacity: .7;
+    }
+    .pz-reviews-{{ section.id }} .pz-tag--identity {
+      border-color: {{ section.settings.accent_on_light_color }};
+      color: {{ section.settings.accent_on_light_color }};
+      opacity: 1;
+    }
+
+    .pz-reviews-{{ section.id }} .pz-reviews-foot { text-align: center; margin-top: 30px; }
+    .pz-reviews-{{ section.id }} .pz-reviews-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 13px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase;
+      color: {{ section.settings.text_color }}; text-decoration: none;
+      border-bottom: 2px solid {{ section.settings.accent_color }}; padding-bottom: 4px;
+    }
+    .pz-reviews-{{ section.id }} .pz-reviews-link:hover { opacity: .7; }
+    .pz-reviews-{{ section.id }} .pz-reviews-note {
+      margin: 18px auto 0; text-align: center; max-width: 70ch;
+      font-size: 12px; opacity: .45; line-height: 1.5;
+    }
   {% endstyle %}
-  <div class="pz-reviews-head">
-    {% if section.settings.heading != blank %}<h2>{{ section.settings.heading }}</h2>{% endif %}
-    {% if section.settings.subheading != blank %}<p class="pz-reviews-sub">{{ section.settings.subheading }}</p>{% endif %}
-  </div>
-  <div class="pz-review-row">
-    {% for block in section.blocks %}
-      {% if block.type == 'review' %}
-        <div class="pz-review-card" {{ block.shopify_attributes }}>
-          {% if block.settings.photo %}
-            <div class="pz-review-photo">
-              {{ block.settings.photo | image_url: width: 600 | image_tag: alt: block.settings.author, loading: 'lazy' }}
-            </div>
-          {% elsif block.settings.fallback_filename != blank %}
-            <div class="pz-review-photo">
-              <img src="{{ block.settings.fallback_filename | asset_url }}" alt="{{ block.settings.author | escape }}" loading="lazy" width="1152" height="896">
+
+  {%- capture verified_mark -%}
+    <span class="pz-verified">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2 3 6v6c0 5.2 3.8 9.5 9 10 5.2-.5 9-4.8 9-10V6l-9-4Z"/><path d="M10.2 16.2 6.8 12.8l1.4-1.4 2 2 5-5 1.4 1.4-6.4 6.4Z" fill="#fff"/></svg>
+      Verified
+    </span>
+  {%- endcapture -%}
+
+  <div class="pz-reviews-inner">
+    <div class="pz-reviews-head">
+      {% if section.settings.heading != blank %}<h2>{{ section.settings.heading }}</h2>{% endif %}
+      {% if section.settings.show_rating %}
+        <div class="pz-rating">
+          {% if section.settings.rating_score != blank %}
+            <div class="pz-rating-score">
+              {{ section.settings.rating_score }}<span class="pz-rating-out"> / {{ section.settings.rating_out_of }}</span>
             </div>
           {% endif %}
-          <div class="pz-review-body">
-            <div class="pz-review-stars" aria-hidden="true">
-              {% for i in (1..5) %}{% if i <= block.settings.rating %}★{% else %}☆{% endif %}{% endfor %}
-            </div>
-            <div class="pz-review-title">{{ block.settings.title }}</div>
-            <div class="pz-review-quote">"{{ block.settings.quote }}"</div>
-            <div class="pz-review-author">{{ block.settings.author }}</div>
-          </div>
+          <div class="pz-rating-stars" aria-hidden="true">★★★★★</div>
+          {% if section.settings.rating_count != blank %}
+            <div class="pz-rating-count">{{ section.settings.rating_count }}</div>
+          {% endif %}
         </div>
       {% endif %}
-    {% endfor %}
+    </div>
+
+    {% if featured %}
+      <article class="pz-review-featured{% if featured.settings.photo or featured.settings.fallback_filename != blank %} has-photo{% endif %}" {{ featured.shopify_attributes }}>
+        {% if featured.settings.photo %}
+          <div class="pz-featured-photo">
+            {{ featured.settings.photo | image_url: width: 900 | image_tag: alt: featured.settings.name, loading: 'lazy' }}
+          </div>
+        {% elsif featured.settings.fallback_filename != blank %}
+          <div class="pz-featured-photo">
+            <img src="{{ featured.settings.fallback_filename | asset_url }}" alt="" loading="lazy" width="1216" height="896">
+          </div>
+        {% endif %}
+        <div class="pz-featured-body">
+          <div class="pz-stars" aria-label="{{ featured.settings.rating }} out of 5 stars">
+            {% for i in (1..5) %}{% if i <= featured.settings.rating %}★{% else %}☆{% endif %}{% endfor %}
+          </div>
+          <blockquote class="pz-featured-quote">{{ featured.settings.quote }}</blockquote>
+          <div class="pz-review-meta">
+            <span class="pz-review-name">{{ featured.settings.name }}</span>
+            {% if featured.settings.verified %}{{ verified_mark }}{% endif %}
+            {% if featured.settings.date != blank %}<span class="pz-review-date">{{ featured.settings.date }}</span>{% endif %}
+          </div>
+          {% if featured.settings.identity != blank or featured.settings.item != blank or featured.settings.incentivized %}
+            <div class="pz-review-tags">
+              {% if featured.settings.identity != blank %}<span class="pz-tag pz-tag--identity">{{ featured.settings.identity }}</span>{% endif %}
+              {% if featured.settings.item != blank %}<span class="pz-tag">{{ featured.settings.item }}</span>{% endif %}
+              {% if featured.settings.incentivized %}<span class="pz-tag">Incentivized</span>{% endif %}
+            </div>
+          {% endif %}
+        </div>
+      </article>
+    {% endif %}
+
+    <div class="pz-review-grid">
+      {% for block in reviews offset: 1 %}
+        <article class="pz-review-card" {{ block.shopify_attributes }}>
+          <div class="pz-stars" aria-label="{{ block.settings.rating }} out of 5 stars">
+            {% for i in (1..5) %}{% if i <= block.settings.rating %}★{% else %}☆{% endif %}{% endfor %}
+          </div>
+          <blockquote class="pz-review-quote">{{ block.settings.quote }}</blockquote>
+          <div class="pz-review-meta">
+            <span class="pz-review-name">{{ block.settings.name }}</span>
+            {% if block.settings.verified %}{{ verified_mark }}{% endif %}
+            {% if block.settings.date != blank %}<span class="pz-review-date">{{ block.settings.date }}</span>{% endif %}
+          </div>
+          {% if block.settings.identity != blank or block.settings.incentivized %}
+            <div class="pz-review-tags">
+              {% if block.settings.identity != blank %}<span class="pz-tag pz-tag--identity">{{ block.settings.identity }}</span>{% endif %}
+              {% if block.settings.incentivized %}<span class="pz-tag">Incentivized</span>{% endif %}
+            </div>
+          {% endif %}
+        </article>
+      {% endfor %}
+    </div>
+
+    {% if section.settings.link_text != blank and section.settings.link_url != blank %}
+      <div class="pz-reviews-foot">
+        <a class="pz-reviews-link" href="{{ section.settings.link_url }}">
+          {{ section.settings.link_text }} <span aria-hidden="true">&rarr;</span>
+        </a>
+      </div>
+    {% endif %}
+    {% if section.settings.note != blank %}
+      <p class="pz-reviews-note">{{ section.settings.note }}</p>
+    {% endif %}
   </div>
 </section>
 
@@ -90,13 +248,24 @@
   "settings": [
     { "type": "text", "id": "anchor_id", "label": "Anchor id", "default": "pz-reviews" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "Straight From Our Customers" },
-    { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "5 Point Zero is a game changer. Try it, feel the difference, join the community." },
+    { "type": "header", "content": "Aggregate rating" },
+    { "type": "checkbox", "id": "show_rating", "label": "Show aggregate rating", "default": true },
+    { "type": "text", "id": "rating_score", "label": "Score", "info": "Must match your live reviews app — this is a public claim", "default": "4.9" },
+    { "type": "text", "id": "rating_out_of", "label": "Out of", "default": "5" },
+    { "type": "text", "id": "rating_count", "label": "Review count", "info": "Must match your live reviews app", "default": "2,431+ Verified Reviews" },
+    { "type": "header", "content": "Footer" },
+    { "type": "text", "id": "link_text", "label": "Link text", "info": "Only shown when a URL is set" },
+    { "type": "url", "id": "link_url", "label": "Link URL" },
+    { "type": "textarea", "id": "note", "label": "Footnote" },
     { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "accent_color", "label": "Accent", "default": "#96FF00" },
+    { "type": "color", "id": "accent_on_light_color", "label": "Accent on light", "info": "Neon green is unreadable on white; this darker green is used for text", "default": "#457300" },
+    { "type": "color", "id": "star_color", "label": "Star color", "default": "#141414" },
+    { "type": "color", "id": "verified_color", "label": "Verified badge color", "default": "#457300" },
     { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#141414" },
-    { "type": "color", "id": "text_color", "label": "Card text color", "default": "#141414" },
-    { "type": "color", "id": "star_color", "label": "Star color", "default": "#f5a623" },
+    { "type": "color", "id": "text_color", "label": "Body text color", "default": "#141414" },
     { "type": "color", "id": "card_background", "label": "Card background", "default": "#ffffff" },
-    { "type": "color", "id": "border_color", "label": "Card border", "default": "#ececec" },
+    { "type": "color", "id": "border_color", "label": "Card border", "default": "#e6e6e6" },
     { "type": "color", "id": "background", "label": "Section background", "default": "#fafafa" }
   ],
   "blocks": [
@@ -104,12 +273,16 @@
       "type": "review",
       "name": "Review",
       "settings": [
-        { "type": "image_picker", "id": "photo", "label": "Customer photo", "info": "Optional. Real customer photos work best here." },
-        { "type": "text", "id": "fallback_filename", "label": "Bundled asset filename", "info": "Advanced: filename of an image already in the theme's assets folder, used when no photo is picked above" },
+        { "type": "textarea", "id": "quote", "label": "Review text", "info": "Must be a real review, quoted accurately. Use an ellipsis if you shorten it." },
+        { "type": "text", "id": "name", "label": "Reviewer name" },
+        { "type": "checkbox", "id": "verified", "label": "Verified purchaser", "info": "Only tick this if your reviews app marks them verified", "default": true },
         { "type": "range", "id": "rating", "label": "Rating", "min": 1, "max": 5, "step": 1, "default": 5 },
-        { "type": "text", "id": "title", "label": "Title", "default": "Unstoppable energy!" },
-        { "type": "textarea", "id": "quote", "label": "Quote", "default": "I played four hours straight and never crashed. This is my new pre-match ritual." },
-        { "type": "text", "id": "author", "label": "Author", "default": "Shay" }
+        { "type": "text", "id": "date", "label": "Date" },
+        { "type": "text", "id": "identity", "label": "Player identity", "info": "Only where legitimately supported, e.g. Pro Player" },
+        { "type": "text", "id": "item", "label": "Item purchased" },
+        { "type": "checkbox", "id": "incentivized", "label": "Incentivized review", "info": "Required disclosure if the reviewer received anything in exchange. Mirror what your reviews app shows.", "default": false },
+        { "type": "image_picker", "id": "photo", "label": "Reviewer's own photo", "info": "Use the customer's real photo only. Do not substitute stock or generated imagery for a named person." },
+        { "type": "text", "id": "fallback_filename", "label": "Bundled asset filename", "info": "Non-attributed brand imagery only" }
       ]
     }
   ],
@@ -117,9 +290,7 @@
     {
       "name": "PZ Reviews",
       "blocks": [
-        { "type": "review", "settings": { "rating": 5, "title": "Unstoppable energy!", "quote": "I played four hours straight and never crashed. This is my new pre-match ritual.", "author": "Shay" } },
-        { "type": "review", "settings": { "rating": 5, "title": "Real difference on court", "quote": "My endurance during matches has noticeably improved. I can push harder and last longer.", "author": "Mathi" } },
-        { "type": "review", "settings": { "rating": 5, "title": "Tastes great!", "quote": "Delightful drink with all the nutrients to boost energy and focus, made with natural ingredients.", "author": "Michelle" } }
+        { "type": "review", "settings": { "quote": "Add a real review from your reviews app.", "name": "Customer name", "rating": 5 } }
       ]
     }
   ]
