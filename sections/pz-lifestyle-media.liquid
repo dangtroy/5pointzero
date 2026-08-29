@@ -1,98 +1,175 @@
 {% comment %}
-  PZ Lifestyle Media — flexible image/video grid for lifestyle photography or
-  clips (e.g. players on court). Each block can be an image OR a self-hosted
-  video (uploaded via Shopify Files), with an optional caption overlay.
-  Mobile: grid always collapses to a single column.
+  PZ Lifestyle Media — "On the Court".
+  Editorial campaign layout: one large feature image beside a stacked
+  column of supporting images. Text stays off the photography apart from
+  a small brand mark; captions sit underneath as short labels.
+  Mobile stacks to a single column — no horizontal scrolling.
 {% endcomment %}
+{%- liquid
+  assign media = section.blocks | where: 'type', 'media_item'
+-%}
 <section id="{{ section.settings.anchor_id }}" class="pz-lifestyle pz-lifestyle-{{ section.id }}">
   {% style %}
     .pz-lifestyle-{{ section.id }} {
       background: {{ section.settings.background }};
       color: {{ section.settings.text_color }};
-      padding: {{ section.settings.padding_top }}px 16px {{ section.settings.padding_bottom }}px;
+      padding: 56px 16px;
       scroll-margin-top: 80px;
     }
-    @media (min-width: 700px) {
-      .pz-lifestyle-{{ section.id }} { padding-left: 24px; padding-right: 24px; }
+    @media (min-width: 600px) {
+      .pz-lifestyle-{{ section.id }} { padding: 88px 24px; }
     }
-    .pz-lifestyle-{{ section.id }} .pz-lifestyle-head {
-      max-width: 1280px; margin: 0 auto 32px; text-align: center;
-    }
+    .pz-lifestyle-{{ section.id }} .pz-lifestyle-inner { max-width: 1280px; margin: 0 auto; }
+    .pz-lifestyle-{{ section.id }} .pz-lifestyle-head { text-align: center; margin-bottom: 28px; }
     .pz-lifestyle-{{ section.id }} h2 {
-      font-size: clamp(24px, 3vw, 34px); font-weight: 800; margin: 0 0 8px;
+      font-size: clamp(30px, 4.4vw, 52px); font-weight: 900; margin: 0 0 12px;
       color: {{ section.settings.heading_color }};
+      text-transform: uppercase; letter-spacing: -0.02em; line-height: 1.02;
     }
-    .pz-lifestyle-{{ section.id }} .pz-lifestyle-sub { opacity: .75; max-width: 60ch; margin: 0 auto; }
+    .pz-lifestyle-{{ section.id }} .pz-lifestyle-sub {
+      font-size: clamp(15px, 1.5vw, 18px); opacity: .65; max-width: 46ch; margin: 0 auto;
+    }
+
+    /* Court-line motif: a baseline rule with a single accent segment. */
+    .pz-lifestyle-{{ section.id }} .pz-courtline {
+      display: flex; align-items: center; justify-content: center; gap: 0;
+      margin: 22px auto 34px; max-width: 320px;
+    }
+    .pz-lifestyle-{{ section.id }} .pz-courtline span {
+      height: 2px; background: {{ section.settings.rule_color }}; flex: 1 1 auto;
+    }
+    .pz-lifestyle-{{ section.id }} .pz-courtline .pz-courtline-accent {
+      flex: 0 0 72px; background: {{ section.settings.accent_color }};
+    }
+
+    /* Desktop: large feature beside a stacked support column. */
     .pz-lifestyle-{{ section.id }} .pz-lifestyle-grid {
-      max-width: 1280px; margin: 0 auto;
-      display: grid;
-      grid-template-columns: repeat({{ section.settings.columns }}, 1fr);
-      gap: {{ section.settings.gap }}px;
+      display: grid; grid-template-columns: 1fr; gap: 14px;
     }
-    @media (max-width: 900px) {
-      .pz-lifestyle-{{ section.id }} .pz-lifestyle-grid { grid-template-columns: repeat(2, 1fr); }
+    @media (min-width: 900px) {
+      .pz-lifestyle-{{ section.id }} .pz-lifestyle-grid {
+        grid-template-columns: {{ section.settings.feature_ratio }}fr 1fr;
+        gap: 18px;
+        align-items: stretch;
+      }
+      .pz-lifestyle-{{ section.id }} .pz-media-wrap--feature {
+        grid-row: 1 / -1;
+      }
+      .pz-lifestyle-{{ section.id }} .pz-media-wrap--feature .pz-media-item {
+        height: 100%; aspect-ratio: auto;
+      }
     }
-    @media (max-width: 600px) {
-      .pz-lifestyle-{{ section.id }} .pz-lifestyle-grid { grid-template-columns: 1fr; }
-    }
-    .pz-lifestyle-{{ section.id }} .pz-media-wrap { min-width: 0; }
+
+    .pz-lifestyle-{{ section.id }} .pz-media-wrap { min-width: 0; display: flex; flex-direction: column; }
     .pz-lifestyle-{{ section.id }} .pz-media-item {
-      position: relative; overflow: hidden; border-radius: {{ section.settings.corner_radius }}px;
-      background: #eee;
+      position: relative; overflow: hidden; flex: 1 1 auto;
+      border-radius: {{ section.settings.corner_radius }}px;
+      background: #ececec;
+      aspect-ratio: {{ section.settings.support_ratio }};
     }
-    .pz-lifestyle-{{ section.id }} .pz-media-item.pz-ratio-square { aspect-ratio: 1 / 1; }
-    .pz-lifestyle-{{ section.id }} .pz-media-item.pz-ratio-portrait { aspect-ratio: 4 / 5; }
-    .pz-lifestyle-{{ section.id }} .pz-media-item.pz-ratio-landscape { aspect-ratio: 16 / 9; }
-    .pz-lifestyle-{{ section.id }} .pz-media-item.pz-span-2 { grid-column: span 2; }
-    @media (max-width: 600px) {
-      .pz-lifestyle-{{ section.id }} .pz-media-item.pz-span-2 { grid-column: span 1; }
+    .pz-lifestyle-{{ section.id }} .pz-media-wrap--feature .pz-media-item {
+      aspect-ratio: {{ section.settings.feature_aspect }};
     }
     .pz-lifestyle-{{ section.id }} .pz-media-item img,
     .pz-lifestyle-{{ section.id }} .pz-media-item video {
       width: 100%; height: 100%; object-fit: cover; display: block;
+      transition: transform .5s ease;
     }
+    .pz-lifestyle-{{ section.id }} .pz-media-item:hover img { transform: scale(1.03); }
+    @media (prefers-reduced-motion: reduce) {
+      .pz-lifestyle-{{ section.id }} .pz-media-item img { transition: none; }
+      .pz-lifestyle-{{ section.id }} .pz-media-item:hover img { transform: none; }
+    }
+
+    /* Small brand mark, feature image only. */
+    .pz-lifestyle-{{ section.id }} .pz-brandmark {
+      position: absolute; left: 16px; bottom: 14px; z-index: 2;
+      display: inline-flex; align-items: center; gap: 7px;
+      font-size: 11px; font-weight: 900; letter-spacing: .18em; text-transform: uppercase;
+      color: #fff; text-shadow: 0 1px 6px rgba(0,0,0,.5);
+    }
+    .pz-lifestyle-{{ section.id }} .pz-brandmark::before {
+      content: ''; width: 7px; height: 7px; border-radius: 50%;
+      background: {{ section.settings.accent_color }}; flex: none;
+    }
+    .pz-lifestyle-{{ section.id }} .pz-brandmark img {
+      height: 18px; width: auto; object-fit: contain; display: block;
+    }
+
+    /* Captions sit under the image so they never sit on the photograph. */
     .pz-lifestyle-{{ section.id }} .pz-media-caption {
-      font-size: 13px; margin-top: 10px; text-align: center; opacity: .8;
+      font-size: 11px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase;
+      opacity: .5; margin: 10px 2px 0;
     }
-    .pz-lifestyle-{{ section.id }} .pz-media-caption-overlay {
-      position: absolute; left: 0; right: 0; bottom: 0; margin: 0;
-      padding: 24px 16px 16px;
-      background: linear-gradient(to top, rgba(0,0,0,.65), rgba(0,0,0,0));
-      color: #fff; text-align: left; font-weight: 700; font-size: 15px;
+
+    .pz-lifestyle-{{ section.id }} .pz-lifestyle-foot { text-align: center; margin-top: 32px; }
+    .pz-lifestyle-{{ section.id }} .pz-social-link {
+      display: inline-flex; align-items: center; gap: 9px;
+      font-size: 12px; font-weight: 800; letter-spacing: .14em; text-transform: uppercase;
+      color: {{ section.settings.text_color }}; text-decoration: none; opacity: .75;
     }
+    .pz-lifestyle-{{ section.id }} .pz-social-link:hover { opacity: 1; }
+    .pz-lifestyle-{{ section.id }} .pz-social-link svg { flex: none; }
   {% endstyle %}
 
-  <div class="pz-lifestyle-head">
-    {% if section.settings.heading != blank %}<h2>{{ section.settings.heading }}</h2>{% endif %}
-    {% if section.settings.subheading != blank %}<p class="pz-lifestyle-sub">{{ section.settings.subheading }}</p>{% endif %}
-  </div>
+  <div class="pz-lifestyle-inner">
+    <div class="pz-lifestyle-head">
+      {% if section.settings.heading != blank %}<h2>{{ section.settings.heading }}</h2>{% endif %}
+      {% if section.settings.subheading != blank %}<p class="pz-lifestyle-sub">{{ section.settings.subheading }}</p>{% endif %}
+    </div>
 
-  <div class="pz-lifestyle-grid">
-    {% for block in section.blocks %}
-      {% if block.type == 'media_item' %}
-        <div class="pz-media-wrap" {{ block.shopify_attributes }}>
-          <div class="pz-media-item pz-ratio-{{ block.settings.aspect_ratio }} {% if block.settings.wide %}pz-span-2{% endif %}">
+    {% if section.settings.show_courtline %}
+      <div class="pz-courtline" aria-hidden="true">
+        <span></span><span class="pz-courtline-accent"></span><span></span>
+      </div>
+    {% endif %}
+
+    <div class="pz-lifestyle-grid">
+      {% for block in media %}
+        {%- liquid
+          assign is_feature = false
+          if forloop.first
+            assign is_feature = true
+          endif
+          assign alt_text = block.settings.caption | default: section.settings.heading
+        -%}
+        <div class="pz-media-wrap{% if is_feature %} pz-media-wrap--feature{% endif %}" {{ block.shopify_attributes }}>
+          <div class="pz-media-item">
             {% if block.settings.media_type == 'video' and block.settings.video != blank %}
-              {{ block.settings.video | video_tag: image_size: '1000x', autoplay: true, loop: true, muted: true, controls: false, playsinline: true }}
-            {% elsif block.settings.image != blank %}
-              {% assign lifestyle_alt = block.settings.caption | default: 'Lifestyle image' %}
-              {{ block.settings.image | image_url: width: 1600 | image_tag: widths: '400, 600, 900, 1200, 1600', sizes: '(max-width: 600px) 100vw, (max-width: 900px) 50vw, 33vw', alt: lifestyle_alt, loading: 'lazy' }}
+              {{ block.settings.video | video_tag: image_size: '1200x', autoplay: true, loop: true, muted: true, controls: false, playsinline: true }}
+            {% elsif block.settings.image %}
+              {{ block.settings.image | image_url: width: 1600 | image_tag: widths: '600, 900, 1200, 1600', sizes: '(max-width: 900px) 100vw, 60vw', alt: alt_text, loading: 'lazy' }}
             {% elsif block.settings.fallback_filename != blank %}
-              {% assign lifestyle_alt = block.settings.caption | default: 'Lifestyle image' %}
-              <img src="{{ block.settings.fallback_filename | asset_url }}" alt="{{ lifestyle_alt | escape }}" loading="lazy" width="896" height="1152">
+              <img src="{{ block.settings.fallback_filename | asset_url }}" alt="{{ alt_text | escape }}" loading="lazy" width="896" height="1152">
             {% else %}
               {{ 'lifestyle-1' | placeholder_svg_tag }}
             {% endif %}
-            {% if block.settings.caption != blank and block.settings.caption_style == 'overlay' %}
-              <p class="pz-media-caption-overlay">{{ block.settings.caption }}</p>
+
+            {% if is_feature and section.settings.show_brandmark %}
+              <span class="pz-brandmark">
+                {% if section.settings.brandmark_image %}
+                  {{ section.settings.brandmark_image | image_url: width: 160 | image_tag: alt: section.settings.brandmark_text }}
+                {% else %}
+                  {{ section.settings.brandmark_text }}
+                {% endif %}
+              </span>
             {% endif %}
           </div>
-          {% if block.settings.caption != blank and block.settings.caption_style == 'below' %}
+          {% if block.settings.caption != blank %}
             <p class="pz-media-caption">{{ block.settings.caption }}</p>
           {% endif %}
         </div>
-      {% endif %}
-    {% endfor %}
+      {% endfor %}
+    </div>
+
+    {% if section.settings.social_text != blank and section.settings.social_url != blank %}
+      <div class="pz-lifestyle-foot">
+        <a class="pz-social-link" href="{{ section.settings.social_url }}" target="_blank" rel="noopener">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1.2" fill="currentColor" stroke="none"/></svg>
+          {{ section.settings.social_text }}
+        </a>
+      </div>
+    {% endif %}
   </div>
 </section>
 
@@ -104,56 +181,42 @@
   "settings": [
     { "type": "text", "id": "anchor_id", "label": "Anchor id", "default": "pz-lifestyle" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "On the Court" },
-    { "type": "textarea", "id": "subheading", "label": "Subheading" },
+    { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "Fuel for the players who keep playing." },
+    { "type": "checkbox", "id": "show_courtline", "label": "Show court-line accent", "default": true },
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "feature_ratio", "label": "Feature column width", "info": "Relative to the support column", "min": 1, "max": 3, "step": 1, "default": 2 },
     {
-      "type": "range",
-      "id": "columns",
-      "label": "Columns (desktop)",
-      "min": 1,
-      "max": 4,
-      "step": 1,
-      "default": 3
+      "type": "select", "id": "feature_aspect", "label": "Feature aspect (mobile)",
+      "options": [
+        { "value": "4 / 5", "label": "Portrait 4:5" },
+        { "value": "1 / 1", "label": "Square" },
+        { "value": "3 / 2", "label": "Landscape 3:2" }
+      ],
+      "default": "4 / 5"
     },
     {
-      "type": "range",
-      "id": "gap",
-      "label": "Grid gap (px)",
-      "min": 0,
-      "max": 40,
-      "step": 2,
-      "default": 16
+      "type": "select", "id": "support_ratio", "label": "Support image aspect",
+      "options": [
+        { "value": "4 / 3", "label": "Landscape 4:3" },
+        { "value": "1 / 1", "label": "Square" },
+        { "value": "4 / 5", "label": "Portrait 4:5" }
+      ],
+      "default": "4 / 3"
     },
-    {
-      "type": "range",
-      "id": "corner_radius",
-      "label": "Corner radius (px)",
-      "min": 0,
-      "max": 32,
-      "step": 2,
-      "default": 16
-    },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "label": "Padding top (px)",
-      "min": 0,
-      "max": 120,
-      "step": 4,
-      "default": 64
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom",
-      "label": "Padding bottom (px)",
-      "min": 0,
-      "max": 120,
-      "step": 4,
-      "default": 64
-    },
+    { "type": "range", "id": "corner_radius", "label": "Corner radius (px)", "min": 0, "max": 28, "step": 2, "default": 16 },
+    { "type": "header", "content": "Brand mark" },
+    { "type": "checkbox", "id": "show_brandmark", "label": "Show brand mark on feature image", "default": true },
+    { "type": "text", "id": "brandmark_text", "label": "Brand mark text", "default": "5 Point Zero" },
+    { "type": "image_picker", "id": "brandmark_image", "label": "Brand mark image", "info": "Optional. Replaces the text mark." },
+    { "type": "header", "content": "Social" },
+    { "type": "text", "id": "social_text", "label": "Social link text", "default": "Follow @5pointzeropb" },
+    { "type": "url", "id": "social_url", "label": "Social URL" },
     { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "accent_color", "label": "Accent", "default": "#96FF00" },
+    { "type": "color", "id": "rule_color", "label": "Court line color", "default": "#e0e0e0" },
     { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#141414" },
     { "type": "color", "id": "text_color", "label": "Body text color", "default": "#141414" },
-    { "type": "color", "id": "background", "label": "Background", "default": "#ffffff" }
+    { "type": "color", "id": "background", "label": "Section background", "default": "#ffffff" }
   ],
   "blocks": [
     {
@@ -161,41 +224,17 @@
       "name": "Image or video",
       "settings": [
         {
-          "type": "select",
-          "id": "media_type",
-          "label": "Media type",
+          "type": "select", "id": "media_type", "label": "Media type",
           "options": [
             { "value": "image", "label": "Image" },
             { "value": "video", "label": "Video" }
           ],
           "default": "image"
         },
-        { "type": "image_picker", "id": "image", "label": "Image", "info": "Used when media type is Image, and as a fallback if no video is set" },
-        { "type": "text", "id": "fallback_filename", "label": "Bundled asset filename", "info": "Advanced: filename of an image already uploaded to the theme's assets folder, used when no Image is picked above" },
-        { "type": "video", "id": "video", "label": "Video", "info": "Uploaded via Shopify Files. Plays muted, looping, no controls." },
-        {
-          "type": "select",
-          "id": "aspect_ratio",
-          "label": "Aspect ratio",
-          "options": [
-            { "value": "square", "label": "Square (1:1)" },
-            { "value": "portrait", "label": "Portrait (4:5)" },
-            { "value": "landscape", "label": "Landscape (16:9)" }
-          ],
-          "default": "portrait"
-        },
-        { "type": "checkbox", "id": "wide", "label": "Span 2 columns on desktop/tablet", "default": false },
-        { "type": "text", "id": "caption", "label": "Caption (optional)" },
-        {
-          "type": "select",
-          "id": "caption_style",
-          "label": "Caption style",
-          "options": [
-            { "value": "overlay", "label": "Overlay on media" },
-            { "value": "below", "label": "Below media" }
-          ],
-          "default": "overlay"
-        }
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "video", "id": "video", "label": "Video" },
+        { "type": "text", "id": "fallback_filename", "label": "Bundled asset filename" },
+        { "type": "text", "id": "caption", "label": "Caption", "info": "Shown as a small label beneath the image, not over it" }
       ]
     }
   ],
@@ -203,9 +242,9 @@
     {
       "name": "PZ Lifestyle Media",
       "blocks": [
-        { "type": "media_item", "settings": { "media_type": "image", "aspect_ratio": "portrait", "caption": "Game day ready" } },
-        { "type": "media_item", "settings": { "media_type": "image", "aspect_ratio": "portrait", "caption": "Between points" } },
-        { "type": "media_item", "settings": { "media_type": "image", "aspect_ratio": "portrait", "caption": "Post-match recovery" } }
+        { "type": "media_item", "settings": { "media_type": "image", "caption": "Game day" } },
+        { "type": "media_item", "settings": { "media_type": "image", "caption": "Between points" } },
+        { "type": "media_item", "settings": { "media_type": "image", "caption": "After the match" } }
       ]
     }
   ]

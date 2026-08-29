@@ -599,40 +599,45 @@
       "settings": {
         "anchor_id": "pz-lifestyle",
         "heading": "On the Court",
-        "subheading": "Real players, real matches. Add your own photos or clips here.",
-        "columns": 3,
-        "gap": 16,
-        "corner_radius": 16
+        "subheading": "Fuel for the players who keep playing.",
+        "show_courtline": true,
+        "feature_ratio": 2,
+        "feature_aspect": "4 / 5",
+        "support_ratio": "4 / 3",
+        "corner_radius": 16,
+        "show_brandmark": true,
+        "brandmark_text": "5 Point Zero",
+        "social_text": "Follow @5pointzeropb",
+        "social_url": "https://www.instagram.com/5pointzeropb",
+        "accent_color": "#96FF00",
+        "rule_color": "#e0e0e0",
+        "heading_color": "#141414",
+        "text_color": "#141414",
+        "background": "#ffffff"
       },
       "blocks": {
         "media-1": {
           "type": "media_item",
           "settings": {
             "media_type": "image",
-            "aspect_ratio": "portrait",
-            "caption": "Game day ready",
-            "caption_style": "overlay",
-            "fallback_filename": "pz-lifestyle-1.png"
+            "fallback_filename": "pz-lifestyle-1.png",
+            "caption": "Game day"
           }
         },
         "media-2": {
           "type": "media_item",
           "settings": {
             "media_type": "image",
-            "aspect_ratio": "portrait",
-            "caption": "Between points",
-            "caption_style": "overlay",
-            "fallback_filename": "pz-lifestyle-2.png"
+            "fallback_filename": "pz-lifestyle-2.png",
+            "caption": "Between points"
           }
         },
         "media-3": {
           "type": "media_item",
           "settings": {
             "media_type": "image",
-            "aspect_ratio": "portrait",
-            "caption": "Post-match recovery",
-            "caption_style": "overlay",
-            "fallback_filename": "pz-lifestyle-3.png"
+            "fallback_filename": "pz-lifestyle-3.png",
+            "caption": "After the match"
           }
         }
       },
