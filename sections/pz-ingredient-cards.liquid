@@ -1,75 +1,214 @@
 {% comment %}
-  PZ Ingredient Cards — horizontal scroll cards, AG1-style ingredient deep-dive
-  (category eyebrow + name + description + optional image).
+  PZ Ingredient Cards — "What's Inside PERFORM".
+  Editorial ingredient cards: image with an eyebrow over it, then title,
+  constituent list and a short factual role line.
+  Optionally auto-scrolls as a premium marquee (duplicated track, CSS
+  transform, pauses on hover/focus, disabled under reduced-motion).
 {% endcomment %}
+{%- liquid
+  assign cards = section.blocks | where: 'type', 'ingredient'
+  assign autoscroll = section.settings.enable_autoscroll
+  if cards.size < 3
+    assign autoscroll = false
+  endif
+-%}
 <section id="{{ section.settings.anchor_id }}" class="pz-ingredients pz-ingredients-{{ section.id }}">
   {% style %}
     .pz-ingredients-{{ section.id }} {
       background: {{ section.settings.background }};
-      padding: 64px 0;
+      color: {{ section.settings.text_color }};
+      padding: 56px 0;
       scroll-margin-top: 80px;
     }
+    @media (min-width: 600px) {
+      .pz-ingredients-{{ section.id }} { padding: 88px 0; }
+    }
     .pz-ingredients-{{ section.id }} .pz-ingredients-head {
-      max-width: 1280px; margin: 0 auto 32px; padding: 0 16px; text-align: center;
+      max-width: 1280px; margin: 0 auto 36px; padding: 0 16px; text-align: center;
     }
     @media (min-width: 600px) {
-      .pz-ingredients-{{ section.id }} .pz-ingredients-head { padding: 0 24px; }
+      .pz-ingredients-{{ section.id }} .pz-ingredients-head { padding: 0 24px; margin-bottom: 52px; }
     }
-    .pz-ingredients-{{ section.id }} h2 { font-size: clamp(24px, 3vw, 34px); font-weight: 800; margin: 0 0 8px; color: {{ section.settings.heading_color }}; }
-    .pz-ingredients-{{ section.id }} .pz-ingredients-sub { opacity: .75; max-width: 60ch; margin: 0 auto; color: {{ section.settings.text_color }}; }
-    .pz-ingredients-{{ section.id }} .pz-card-row {
-      display: flex; gap: 16px; overflow-x: auto; padding: 4px 16px 12px;
-      scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch;
-      justify-content: safe center; max-width: 1280px; margin: 0 auto;
+    .pz-ingredients-{{ section.id }} h2 {
+      font-size: clamp(26px, 3.6vw, 42px); font-weight: 900; margin: 0 0 12px;
+      color: {{ section.settings.heading_color }};
+      text-transform: uppercase; letter-spacing: -0.02em; line-height: 1.05;
     }
+    .pz-ingredients-{{ section.id }} .pz-ingredients-sub {
+      font-size: clamp(15px, 1.5vw, 17px); opacity: .65; max-width: 54ch; margin: 0 auto;
+    }
+
+    /* Viewport clips the track; the track itself holds the cards. */
+    .pz-ingredients-{{ section.id }} .pz-card-viewport {
+      overflow-x: {% if autoscroll %}hidden{% else %}auto{% endif %};
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      {% unless autoscroll %}scroll-snap-type: x mandatory;{% endunless %}
+    }
+    .pz-ingredients-{{ section.id }} .pz-card-viewport::-webkit-scrollbar { display: none; }
+    .pz-ingredients-{{ section.id }} .pz-card-track {
+      display: flex; gap: 16px; padding: 4px 16px 14px;
+      {% if autoscroll %}width: max-content;{% endif %}
+    }
+    @media (min-width: 600px) {
+      .pz-ingredients-{{ section.id }} .pz-card-track { gap: 20px; padding: 4px 24px 16px; }
+    }
+
+    {% if autoscroll %}
+      .pz-ingredients-{{ section.id }} .pz-card-track {
+        animation: pz-ing-scroll-{{ section.id }} {{ section.settings.scroll_speed }}s linear infinite;
+      }
+      /* Pause so a shopper can actually read a card. */
+      .pz-ingredients-{{ section.id }} .pz-card-viewport:hover .pz-card-track,
+      .pz-ingredients-{{ section.id }} .pz-card-track:focus-within {
+        animation-play-state: paused;
+      }
+      @keyframes pz-ing-scroll-{{ section.id }} {
+        from { transform: translateX(0); }
+        to { transform: translateX(-50%); }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .pz-ingredients-{{ section.id }} .pz-card-track { animation: none; width: auto; }
+        .pz-ingredients-{{ section.id }} .pz-card-viewport { overflow-x: auto; }
+        .pz-ingredients-{{ section.id }} .pz-card-dupe { display: none; }
+      }
+    {% endif %}
+
     .pz-ingredients-{{ section.id }} .pz-card {
-      flex: 0 0 260px; min-width: 0; scroll-snap-align: start;
-      border: 1px solid {{ section.settings.border_color }}; border-radius: 16px; overflow: hidden;
-      background: {{ section.settings.card_background }}; display: flex; flex-direction: column;
-      color: {{ section.settings.text_color }};
+      flex: 0 0 260px; min-width: 0;
+      {% unless autoscroll %}scroll-snap-align: start;{% endunless %}
+      border-radius: 16px; overflow: hidden;
+      background: {{ section.settings.card_background }};
+      border: 1px solid {{ section.settings.border_color }};
+      display: flex; flex-direction: column;
+      transition: transform .25s ease, border-color .25s ease;
     }
-    @media (max-width: 600px) {
-      .pz-ingredients-{{ section.id }} .pz-card { flex-basis: 78vw; }
+    @media (min-width: 600px) {
+      .pz-ingredients-{{ section.id }} .pz-card { flex-basis: 300px; }
     }
+    @media (max-width: 599px) {
+      .pz-ingredients-{{ section.id }} .pz-card { flex-basis: 76vw; max-width: 300px; }
+    }
+    .pz-ingredients-{{ section.id }} .pz-card:hover {
+      transform: translateY(-4px);
+      border-color: {{ section.settings.accent_color }};
+    }
+    .pz-ingredients-{{ section.id }} .pz-card:hover .pz-card-img img {
+      transform: scale(1.04);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .pz-ingredients-{{ section.id }} .pz-card,
+      .pz-ingredients-{{ section.id }} .pz-card-img img { transition: none; }
+      .pz-ingredients-{{ section.id }} .pz-card:hover { transform: none; }
+      .pz-ingredients-{{ section.id }} .pz-card:hover .pz-card-img img { transform: none; }
+    }
+
     .pz-ingredients-{{ section.id }} .pz-card-img {
-      aspect-ratio: 4 / 3; background: #f4f4f4; overflow: hidden;
+      position: relative; aspect-ratio: 4 / 3; overflow: hidden; background: #efefef;
     }
-    .pz-ingredients-{{ section.id }} .pz-card-img img,
-    .pz-ingredients-{{ section.id }} .pz-card-img video { width: 100%; height: 100%; object-fit: cover; display: block; }
-    .pz-ingredients-{{ section.id }} .pz-card-body { padding: 18px; text-align: center; }
+    .pz-ingredients-{{ section.id }} .pz-card-img img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      transition: transform .35s ease;
+    }
+    /* Eyebrow sits over the image, AG1-style. */
     .pz-ingredients-{{ section.id }} .pz-card-eyebrow {
-      font-size: 11px; text-transform: uppercase; letter-spacing: .05em; font-weight: 700;
-      color: {{ section.settings.accent_color }}; margin-bottom: 6px;
+      position: absolute; top: 12px; left: 12px; z-index: 2;
+      display: inline-flex; align-items: center; gap: 6px;
+      background: {{ section.settings.eyebrow_bg_color }};
+      color: {{ section.settings.eyebrow_text_color }};
+      font-size: 10px; font-weight: 800; letter-spacing: .12em; text-transform: uppercase;
+      padding: 6px 9px; border-radius: 4px;
     }
-    .pz-ingredients-{{ section.id }} .pz-card-name { font-size: 17px; font-weight: 800; margin-bottom: 6px; }
-    .pz-ingredients-{{ section.id }} .pz-card-desc { font-size: 13px; opacity: .75; line-height: 1.5; }
+    .pz-ingredients-{{ section.id }} .pz-card-amount {
+      opacity: .75; font-weight: 700;
+    }
+
+    .pz-ingredients-{{ section.id }} .pz-card-body {
+      padding: 18px; display: flex; flex-direction: column; gap: 8px; flex: 1 1 auto;
+    }
+    .pz-ingredients-{{ section.id }} .pz-card-name {
+      font-size: 19px; font-weight: 900; line-height: 1.15;
+      text-transform: uppercase; letter-spacing: -0.01em;
+    }
+    .pz-ingredients-{{ section.id }} .pz-card-items {
+      font-size: 13px; font-weight: 600; opacity: .85; line-height: 1.45;
+    }
+    .pz-ingredients-{{ section.id }} .pz-card-desc {
+      font-size: 13px; opacity: .6; line-height: 1.5;
+    }
+
+    .pz-ingredients-{{ section.id }} .pz-ingredients-foot {
+      text-align: center; margin-top: 22px; padding: 0 16px;
+    }
+    .pz-ingredients-{{ section.id }} .pz-formula-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 13px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase;
+      color: {{ section.settings.link_color }}; text-decoration: none;
+      border-bottom: 2px solid {{ section.settings.accent_color }};
+      padding-bottom: 4px;
+    }
+    .pz-ingredients-{{ section.id }} .pz-formula-link:hover { opacity: .7; }
   {% endstyle %}
+
   <div class="pz-ingredients-head">
     {% if section.settings.heading != blank %}<h2>{{ section.settings.heading }}</h2>{% endif %}
     {% if section.settings.subheading != blank %}<p class="pz-ingredients-sub">{{ section.settings.subheading }}</p>{% endif %}
   </div>
-  <div class="pz-card-row">
-    {% for block in section.blocks %}
-      {% if block.type == 'ingredient' %}
-        <div class="pz-card" {{ block.shopify_attributes }}>
-          {% if block.settings.image %}
+
+  <div class="pz-card-viewport">
+    <div class="pz-card-track">
+      {%- assign passes = 1 -%}
+      {%- if autoscroll -%}{%- assign passes = 2 -%}{%- endif -%}
+      {% for i in (1..passes) %}
+        {% for block in cards %}
+          <div
+            class="pz-card{% if i == 2 %} pz-card-dupe{% endif %}"
+            {% if i == 2 %}aria-hidden="true"{% endif %}
+            {% if i == 1 %}{{ block.shopify_attributes }}{% endif %}
+          >
             <div class="pz-card-img">
-              {{ block.settings.image | image_url: width: 520 | image_tag: alt: block.settings.name, loading: 'lazy' }}
+              {% if block.settings.eyebrow != blank %}
+                <span class="pz-card-eyebrow">
+                  {{ block.settings.eyebrow }}
+                  {% if block.settings.amount != blank %}
+                    <span class="pz-card-amount">{{ block.settings.amount }}</span>
+                  {% endif %}
+                </span>
+              {% endif %}
+              {% if block.settings.image %}
+                {{ block.settings.image | image_url: width: 640 | image_tag: alt: block.settings.name, loading: 'lazy' }}
+              {% elsif block.settings.fallback_filename != blank %}
+                <img src="{{ block.settings.fallback_filename | asset_url }}" alt="{{ block.settings.name | escape }}" loading="lazy" width="1216" height="896">
+              {% endif %}
             </div>
-          {% elsif block.settings.fallback_filename != blank %}
-            <div class="pz-card-img">
-              <img src="{{ block.settings.fallback_filename | asset_url }}" alt="{{ block.settings.name | escape }}" loading="lazy" width="1216" height="896">
+            <div class="pz-card-body">
+              <div class="pz-card-name">{{ block.settings.name }}</div>
+              {% if block.settings.items != blank %}
+                <div class="pz-card-items">{{ block.settings.items }}</div>
+              {% endif %}
+              {% if block.settings.description != blank %}
+                <div class="pz-card-desc">{{ block.settings.description }}</div>
+              {% endif %}
             </div>
-          {% endif %}
-          <div class="pz-card-body">
-            {% if block.settings.eyebrow != blank %}<div class="pz-card-eyebrow">{{ block.settings.eyebrow }}</div>{% endif %}
-            <div class="pz-card-name">{{ block.settings.name }}</div>
-            <div class="pz-card-desc">{{ block.settings.description }}</div>
           </div>
-        </div>
-      {% endif %}
-    {% endfor %}
+        {% endfor %}
+      {% endfor %}
+    </div>
   </div>
+
+  {% if section.settings.formula_link_text != blank %}
+    <div class="pz-ingredients-foot">
+      {% if section.settings.formula_link_url != blank %}
+        <a class="pz-formula-link" href="{{ section.settings.formula_link_url }}">
+          {{ section.settings.formula_link_text }} <span aria-hidden="true">&rarr;</span>
+        </a>
+      {% else %}
+        <span class="pz-formula-link">
+          {{ section.settings.formula_link_text }} <span aria-hidden="true">&rarr;</span>
+        </span>
+      {% endif %}
+    </div>
+  {% endif %}
 </section>
 
 {% schema %}
@@ -80,25 +219,36 @@
   "settings": [
     { "type": "text", "id": "anchor_id", "label": "Anchor id", "default": "pz-ingredients" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "What's Inside PERFORM" },
-    { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "Every ingredient is chosen for one job: keeping you sharp for all five points." },
+    { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "A performance-focused formula built for the demands of the court." },
+    { "type": "header", "content": "Auto-scroll marquee" },
+    { "type": "checkbox", "id": "enable_autoscroll", "label": "Auto-scroll cards", "info": "Pauses on hover. Automatically disabled for visitors who prefer reduced motion.", "default": true },
+    { "type": "range", "id": "scroll_speed", "label": "Seconds per loop", "info": "Higher is slower", "min": 20, "max": 120, "step": 5, "default": 60 },
+    { "type": "header", "content": "Formula link" },
+    { "type": "text", "id": "formula_link_text", "label": "Link text", "default": "View full formula" },
+    { "type": "url", "id": "formula_link_url", "label": "Link URL", "info": "Point this at your Supplement Facts image or an ingredients page" },
     { "type": "header", "content": "Colors" },
-    { "type": "color", "id": "accent_color", "label": "Accent color", "info": "Category eyebrow text", "default": "#96FF00" },
+    { "type": "color", "id": "accent_color", "label": "Accent", "default": "#96FF00" },
+    { "type": "color", "id": "eyebrow_bg_color", "label": "Eyebrow background", "default": "#111111" },
+    { "type": "color", "id": "eyebrow_text_color", "label": "Eyebrow text", "default": "#ffffff" },
+    { "type": "color", "id": "link_color", "label": "Link text color", "default": "#141414" },
     { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#141414" },
     { "type": "color", "id": "text_color", "label": "Card text color", "default": "#141414" },
     { "type": "color", "id": "card_background", "label": "Card background", "default": "#ffffff" },
-    { "type": "color", "id": "border_color", "label": "Card border", "default": "#ececec" },
+    { "type": "color", "id": "border_color", "label": "Card border", "default": "#e6e6e6" },
     { "type": "color", "id": "background", "label": "Section background", "default": "#fafafa" }
   ],
   "blocks": [
     {
       "type": "ingredient",
-      "name": "Ingredient",
+      "name": "Ingredient group",
       "settings": [
         { "type": "image_picker", "id": "image", "label": "Image" },
-        { "type": "text", "id": "fallback_filename", "label": "Bundled asset filename", "info": "Advanced: filename of an image already in the theme's assets folder, used when no Image is picked above" },
-        { "type": "text", "id": "eyebrow", "label": "Category", "default": "Electrolytes" },
-        { "type": "text", "id": "name", "label": "Name", "default": "Sodium & Potassium" },
-        { "type": "textarea", "id": "description", "label": "Description", "default": "Replaces what you sweat out on the court to prevent cramping and keep you hydrated." }
+        { "type": "text", "id": "fallback_filename", "label": "Bundled asset filename", "info": "Used when no Image is picked above" },
+        { "type": "text", "id": "eyebrow", "label": "Eyebrow / category", "default": "Electrolytes" },
+        { "type": "text", "id": "amount", "label": "Amount", "info": "Optional, e.g. 389mg — must match the Supplement Facts panel" },
+        { "type": "text", "id": "name", "label": "Name", "default": "Electrolytes" },
+        { "type": "text", "id": "items", "label": "What's in it", "info": "The actual constituents, as listed on the label" },
+        { "type": "textarea", "id": "description", "label": "Role", "info": "Keep this factual — describe what it is, not what it does for the body" }
       ]
     }
   ],
@@ -106,10 +256,11 @@
     {
       "name": "PZ Ingredient Cards",
       "blocks": [
-        { "type": "ingredient", "settings": { "eyebrow": "Electrolytes", "name": "Sodium & Potassium", "description": "Replaces what you sweat out on the court to prevent cramping." } },
-        { "type": "ingredient", "settings": { "eyebrow": "Focus", "name": "L-Theanine", "description": "Smooth, jitter-free focus for long rallies and tournament days." } },
-        { "type": "ingredient", "settings": { "eyebrow": "Energy", "name": "Natural Caffeine", "description": "Crash-free energy sourced from green tea, not synthetic stimulants." } },
-        { "type": "ingredient", "settings": { "eyebrow": "Hydration", "name": "Coconut Water", "description": "Organic coconut water for real, whole-food hydration." } }
+        { "type": "ingredient", "settings": { "eyebrow": "Electrolytes", "amount": "389mg", "name": "Electrolytes", "items": "Sodium, Potassium, Magnesium, Calcium, Chloride", "description": "The five electrolytes in the formula, listed per 4.2g serving." } },
+        { "type": "ingredient", "settings": { "eyebrow": "Vitamins", "name": "Vitamins", "items": "Vitamin D3, Vitamin B6", "description": "Vitamin D3 at 75% DV and Vitamin B6 at 118% DV per serving." } },
+        { "type": "ingredient", "settings": { "eyebrow": "Energy Blend", "amount": "60mg", "name": "Energy Blend", "items": "Green Tea Extract (50% EGCG), Yerba Mate", "description": "The formula's proprietary Energy Blend." } },
+        { "type": "ingredient", "settings": { "eyebrow": "Endurance Blend", "amount": "750mg", "name": "Endurance Blend", "items": "Taurine, Panax Ginseng Root, Glutamine", "description": "The formula's proprietary Endurance Blend." } },
+        { "type": "ingredient", "settings": { "eyebrow": "Focus Blend", "amount": "750mg", "name": "Focus Blend", "items": "L-Theanine, Bacopa Monnieri, Rhodiola Rosea, Organic Coconut Water Powder", "description": "The formula's proprietary Focus Blend." } }
       ]
     }
   ]

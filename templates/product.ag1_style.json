@@ -335,43 +335,69 @@
       "settings": {
         "anchor_id": "pz-ingredients",
         "heading": "What's Inside PERFORM",
-        "subheading": "Every ingredient is chosen for one job: keeping you sharp for all five points."
+        "subheading": "A performance-focused formula built for the demands of the court.",
+        "enable_autoscroll": true,
+        "scroll_speed": 60,
+        "formula_link_text": "View full formula",
+        "formula_link_url": "https://cdn.shopify.com/s/files/1/0644/0763/4125/files/FinalSupplementFacts_002_-square.png?v=1744390481",
+        "accent_color": "#96FF00",
+        "eyebrow_bg_color": "#111111",
+        "eyebrow_text_color": "#ffffff",
+        "background": "#fafafa"
       },
       "blocks": {
         "ing-1": {
           "type": "ingredient",
           "settings": {
+            "fallback_filename": "pz-ingredient-electrolytes.png",
             "eyebrow": "Electrolytes",
-            "name": "Sodium & Potassium",
-            "description": "Replaces what you sweat out on the court to prevent cramping.",
-            "fallback_filename": "pz-ingredient-electrolytes.png"
+            "name": "Electrolytes",
+            "items": "Sodium, Potassium, Magnesium, Calcium, Chloride",
+            "description": "The five electrolytes in the formula, listed per 4.2g serving.",
+            "amount": "389mg"
           }
         },
         "ing-2": {
           "type": "ingredient",
           "settings": {
-            "eyebrow": "Focus",
-            "name": "L-Theanine",
-            "description": "Smooth, jitter-free focus for long rallies and tournament days.",
-            "fallback_filename": "pz-ingredient-ltheanine.png"
+            "fallback_filename": "pz-ingredient-vitamins.png",
+            "eyebrow": "Vitamins",
+            "name": "Vitamins",
+            "items": "Vitamin D3, Vitamin B6",
+            "description": "Vitamin D3 at 75% DV and Vitamin B6 at 118% DV per serving."
           }
         },
         "ing-3": {
           "type": "ingredient",
           "settings": {
-            "eyebrow": "Energy",
-            "name": "Natural Caffeine",
-            "description": "Crash-free energy sourced from green tea, not synthetic stimulants.",
-            "fallback_filename": "pz-ingredient-caffeine.png"
+            "fallback_filename": "pz-ingredient-caffeine.png",
+            "eyebrow": "Energy Blend",
+            "name": "Energy Blend",
+            "items": "Green Tea Extract (50% EGCG), Yerba Mate",
+            "description": "The formula's proprietary Energy Blend.",
+            "amount": "60mg"
           }
         },
         "ing-4": {
           "type": "ingredient",
           "settings": {
-            "eyebrow": "Hydration",
-            "name": "Coconut Water",
-            "description": "Organic coconut water for real, whole-food hydration.",
-            "fallback_filename": "pz-ingredient-coconut.png"
+            "fallback_filename": "pz-ingredient-endurance.png",
+            "eyebrow": "Endurance Blend",
+            "name": "Endurance Blend",
+            "items": "Taurine, Panax Ginseng Root, Glutamine",
+            "description": "The formula's proprietary Endurance Blend.",
+            "amount": "750mg"
+          }
+        },
+        "ing-5": {
+          "type": "ingredient",
+          "settings": {
+            "fallback_filename": "pz-ingredient-coconut.png",
+            "eyebrow": "Focus Blend",
+            "name": "Focus Blend",
+            "items": "L-Theanine, Bacopa Monnieri, Rhodiola Rosea, Organic Coconut Water Powder",
+            "description": "The formula's proprietary Focus Blend.",
+            "amount": "750mg"
           }
         }
       },
@@ -379,7 +405,8 @@
         "ing-1",
         "ing-2",
         "ing-3",
-        "ing-4"
+        "ing-4",
+        "ing-5"
       ]
     },
     "pz_freeof": {
