@@ -1,0 +1,235 @@
+{% comment %}
+  PZ Product Cards — compact buy cards, a few across.
+
+  Each card reads a real product, so price and availability come from the
+  store. Add to cart is the theme's <product-form>, which needs
+  product-form.js: that file is loaded by the product template rather than
+  globally, so a page template has to bring it itself. It guards its own
+  definition, so loading it once here covers every card.
+
+  A product with no available variant renders as a label rather than a
+  dead button, which is what a "coming soon" item should do.
+{% endcomment %}
+<script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+
+<section id="{{ section.settings.anchor_id }}" class="pzpc pzpc-{{ section.id }}">
+  {% style %}
+    .pzpc-{{ section.id }} {
+      --pzpc-accent: {{ section.settings.accent_color }};
+      background: {{ section.settings.background }};
+      color: {{ section.settings.text_color }};
+      padding: 48px 16px;
+      scroll-margin-top: 80px;
+    }
+    @media (min-width: 750px) { .pzpc-{{ section.id }} { padding: 76px 32px; } }
+    .pzpc-{{ section.id }} .pzpc-inner { max-width: {{ section.settings.max_width }}px; margin: 0 auto; }
+
+    .pzpc-{{ section.id }} .pzpc-head { text-align: center; margin-bottom: 34px; }
+    .pzpc-{{ section.id }} h2 {
+      font-size: clamp(26px, 3.6vw, 42px); font-weight: 900; margin: 0 0 10px;
+      text-transform: uppercase; letter-spacing: -0.02em; line-height: 1.05;
+      color: {{ section.settings.heading_color }};
+    }
+    .pzpc-{{ section.id }} .pzpc-sub {
+      font-size: clamp(15px, 1.4vw, 17px); line-height: 1.5; opacity: .7; margin: 0 auto; max-width: 56ch;
+    }
+
+    .pzpc-{{ section.id }} .pzpc-grid {
+      display: grid; gap: {{ section.settings.gap }}px;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 700px) {
+      .pzpc-{{ section.id }} .pzpc-grid {
+        grid-template-columns: repeat({{ section.blocks.size | at_most: 4 }}, minmax(0, 1fr));
+      }
+    }
+
+    .pzpc-{{ section.id }} .pzpc-card {
+      min-width: 0; display: flex; flex-direction: column;
+      background: {{ section.settings.card_background }};
+      border: 1px solid {{ section.settings.border_color }};
+      border-radius: {{ section.settings.card_radius }}px;
+      overflow: hidden;
+    }
+    .pzpc-{{ section.id }} .pzpc-media {
+      position: relative; aspect-ratio: {{ section.settings.media_ratio }};
+      background: {{ section.settings.media_background }};
+    }
+    .pzpc-{{ section.id }} .pzpc-media img {
+      width: 100%; height: 100%; object-fit: {{ section.settings.media_fit }}; display: block;
+    }
+    .pzpc-{{ section.id }} .pzpc-flag {
+      position: absolute; top: 12px; left: 12px;
+      padding: 6px 12px; border-radius: 999px;
+      background: var(--pzpc-accent); color: #000;
+      font-size: 11px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+    }
+
+    .pzpc-{{ section.id }} .pzpc-body { padding: 20px 18px 22px; display: flex; flex-direction: column; flex: 1; }
+    .pzpc-{{ section.id }} .pzpc-eyebrow {
+      font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+      opacity: .5; margin: 0 0 8px;
+    }
+    .pzpc-{{ section.id }} .pzpc-title {
+      font-size: clamp(20px, 2vw, 26px); font-weight: 900; margin: 0 0 8px;
+      text-transform: uppercase; letter-spacing: -0.02em; line-height: 1.05;
+    }
+    .pzpc-{{ section.id }} .pzpc-price {
+      font-size: 22px; font-weight: 900; letter-spacing: -0.02em; line-height: 1.1; margin: 0 0 4px;
+    }
+    .pzpc-{{ section.id }} .pzpc-note { font-size: 13px; font-weight: 700; opacity: .7; margin: 0 0 16px; }
+    .pzpc-{{ section.id }} .pzpc-desc { font-size: 14px; line-height: 1.5; opacity: .78; margin: 0 0 18px; }
+    .pzpc-{{ section.id }} .pzpc-spacer { flex: 1; }
+
+    .pzpc-{{ section.id }} .product-form__error-message-wrapper { margin-bottom: 10px; font-size: 13px; color: #c0392b; }
+
+    /* Same overrides the product page layers on the theme's button, so this
+       renders as the same control rather than a ghost variant. */
+    .pzpc-{{ section.id }} .pzpc-atc {
+      position: relative; width: 100%; min-height: 44px; gap: 10px;
+      background: var(--pzpc-accent) !important;
+      color: #000 !important;
+      border-color: var(--pzpc-accent) !important;
+      border-radius: {{ section.settings.button_radius }}px !important;
+      padding-top: 22px !important; padding-bottom: 22px !important;
+      font-size: 19px !important; font-weight: 900 !important;
+      text-transform: uppercase; letter-spacing: .06em;
+    }
+    .pzpc-{{ section.id }} .pzpc-atc:hover { filter: brightness(1.06); }
+    .pzpc-{{ section.id }} .pzpc-atc .loading__spinner { position: absolute; right: 18px; width: 18px; height: 18px; }
+    .pzpc-{{ section.id }} .pzpc-atc .loading__spinner.hidden { display: none; }
+
+    .pzpc-{{ section.id }} .pzpc-soon {
+      width: 100%; min-height: 44px; padding: 22px 25px;
+      border: 1px dashed {{ section.settings.border_color }};
+      border-radius: {{ section.settings.button_radius }}px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px; font-weight: 900; letter-spacing: .12em; text-transform: uppercase;
+      opacity: .6;
+    }
+  {% endstyle %}
+
+  <div class="pzpc-inner">
+    {% if section.settings.heading != blank or section.settings.subheading != blank %}
+      <div class="pzpc-head">
+        {% if section.settings.heading != blank %}<h2>{{ section.settings.heading }}</h2>{% endif %}
+        {% if section.settings.subheading != blank %}<p class="pzpc-sub">{{ section.settings.subheading }}</p>{% endif %}
+      </div>
+    {% endif %}
+
+    <div class="pzpc-grid">
+      {% for block in section.blocks %}
+        {% if block.type == 'item' %}
+          {%- liquid
+            assign p = block.settings.product
+            assign v = p.selected_or_first_available_variant
+            assign form_id = 'pzpc-form-' | append: section.id | append: '-' | append: forloop.index
+            assign buyable = false
+            if p != blank and v and v.available
+              assign buyable = true
+            endif
+          -%}
+          <div class="pzpc-card" {{ block.shopify_attributes }}>
+            <div class="pzpc-media">
+              {% if block.settings.image %}
+                {{ block.settings.image | image_url: width: 900 | image_tag: alt: p.title | default: block.settings.title,
+                   loading: 'lazy', sizes: '(min-width: 700px) 45vw, 92vw', widths: '400, 650, 900' }}
+              {% elsif p != blank and p.featured_image %}
+                {{ p.featured_image | image_url: width: 900 | image_tag: alt: p.title,
+                   loading: 'lazy', sizes: '(min-width: 700px) 45vw, 92vw', widths: '400, 650, 900' }}
+              {% endif %}
+              {% if block.settings.flag != blank %}
+                <span class="pzpc-flag">{{ block.settings.flag }}</span>
+              {% endif %}
+            </div>
+
+            <div class="pzpc-body">
+              {% if block.settings.eyebrow != blank %}
+                <p class="pzpc-eyebrow">{{ block.settings.eyebrow }}</p>
+              {% endif %}
+              <h3 class="pzpc-title">{{ block.settings.title | default: p.title }}</h3>
+
+              {% if buyable %}
+                <p class="pzpc-price">{{ v.price | money }}</p>
+                {% if section.settings.price_note != blank %}
+                  <p class="pzpc-note">{{ section.settings.price_note }}</p>
+                {% endif %}
+              {% endif %}
+
+              {% if block.settings.description != blank %}
+                <div class="pzpc-desc">{{ block.settings.description }}</div>
+              {% endif %}
+
+              <div class="pzpc-spacer"></div>
+
+              {% if buyable %}
+                <product-form class="product-form" data-hide-errors="false" data-section-id="{{ section.id }}">
+                  <div class="product-form__error-message-wrapper" role="alert" hidden>
+                    <span class="product-form__error-message"></span>
+                  </div>
+                  {%- form 'product', p, id: form_id, class: 'form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+                    <input type="hidden" name="id" value="{{ v.id }}" class="product-variant-id">
+                    <button type="submit" name="add"
+                            class="pzpc-atc button button--full-width button--secondary"
+                            aria-haspopup="dialog">
+                      <span>{{ section.settings.button_text }}</span>
+                      {%- render 'loading-spinner' -%}
+                    </button>
+                  {%- endform -%}
+                </product-form>
+              {% else %}
+                <div class="pzpc-soon">{{ block.settings.unavailable_text | default: section.settings.unavailable_text }}</div>
+              {% endif %}
+            </div>
+          </div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "PZ Product Cards",
+  "tag": "section",
+  "class": "pz-section",
+  "settings": [
+    { "type": "text", "id": "anchor_id", "label": "Anchor id", "default": "pz-product-cards" },
+    { "type": "textarea", "id": "heading", "label": "Heading" },
+    { "type": "textarea", "id": "subheading", "label": "Subheading" },
+    { "type": "text", "id": "price_note", "label": "Note under the price", "default": "Discount calculated at checkout with Referral Code." },
+    { "type": "text", "id": "button_text", "label": "Button text", "default": "Add to cart" },
+    { "type": "text", "id": "unavailable_text", "label": "Text when a product cannot be bought", "default": "Coming soon" },
+    { "type": "range", "id": "max_width", "label": "Max width (px)", "min": 600, "max": 1280, "step": 20, "default": 900 },
+    { "type": "range", "id": "gap", "label": "Gap (px)", "min": 8, "max": 40, "step": 2, "default": 20 },
+    { "type": "text", "id": "media_ratio", "label": "Image ratio", "default": "1 / 1" },
+    { "type": "select", "id": "media_fit", "label": "Image fit", "options": [{"value":"cover","label":"Fill"},{"value":"contain","label":"Fit inside"}], "default": "cover" },
+    { "type": "range", "id": "card_radius", "label": "Card radius (px)", "min": 0, "max": 24, "step": 2, "default": 6 },
+    { "type": "range", "id": "button_radius", "label": "Button radius (px)", "min": 0, "max": 60, "step": 2, "default": 60 },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "accent_color", "label": "Accent", "default": "#96FF00" },
+    { "type": "color", "id": "heading_color", "label": "Heading", "default": "#ffffff" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#ffffff" },
+    { "type": "color", "id": "card_background", "label": "Card background", "default": "#141416" },
+    { "type": "color", "id": "media_background", "label": "Image background", "default": "#1c1c1f" },
+    { "type": "color", "id": "border_color", "label": "Border", "default": "rgba(255,255,255,0.14)" },
+    { "type": "color", "id": "background", "label": "Section background", "default": "#0A0A0B" }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Product",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Product" },
+        { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+        { "type": "text", "id": "title", "label": "Title override" },
+        { "type": "richtext", "id": "description", "label": "Description" },
+        { "type": "image_picker", "id": "image", "label": "Image override" },
+        { "type": "text", "id": "flag", "label": "Corner flag" },
+        { "type": "text", "id": "unavailable_text", "label": "Text when this one cannot be bought" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "PZ Product Cards" }]
+}
+{% endschema %}

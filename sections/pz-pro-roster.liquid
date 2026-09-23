@@ -1,0 +1,302 @@
+{% comment %}
+  PZ Pro Roster — the athlete grid, with key stats behind a reveal.
+
+  The reveal is driven by a real <button>, not by hover alone. Hover is an
+  enhancement layered on top for pointer devices; the button is what makes
+  it work on touch, where there is no hover, and by keyboard. Cards with no
+  stats entered get no button and no panel.
+{% endcomment %}
+<section id="{{ section.settings.anchor_id }}" class="pzpr pzpr-{{ section.id }}">
+  {% style %}
+    .pzpr-{{ section.id }} {
+      --pzpr-accent: {{ section.settings.accent_color }};
+      background: {{ section.settings.background }};
+      color: {{ section.settings.text_color }};
+      padding: 48px 16px;
+      scroll-margin-top: 80px;
+    }
+    @media (min-width: 750px) {
+      .pzpr-{{ section.id }} { padding: 76px 32px; }
+    }
+    .pzpr-{{ section.id }} .pzpr-inner { max-width: 1280px; margin: 0 auto; }
+
+    .pzpr-{{ section.id }} .pzpr-head { text-align: center; margin-bottom: 38px; }
+    .pzpr-{{ section.id }} .pzpr-eyebrow {
+      display: block; margin-bottom: 12px;
+      font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--pzpr-accent);
+    }
+    .pzpr-{{ section.id }} h2 {
+      font-size: clamp(26px, 3.6vw, 42px); font-weight: 900; margin: 0 0 12px;
+      text-transform: uppercase; letter-spacing: -0.02em; line-height: 1.05;
+      color: {{ section.settings.heading_color }};
+    }
+    .pzpr-{{ section.id }} .pzpr-sub {
+      font-size: clamp(15px, 1.4vw, 17px); line-height: 1.5; opacity: .7;
+      margin: 0 auto; max-width: 60ch;
+    }
+
+    /* Grid ------------------------------------------------------------- */
+    .pzpr-{{ section.id }} .pzpr-grid {
+      display: grid; gap: {{ section.settings.gap }}px;
+      grid-template-columns: repeat({{ section.settings.columns_mobile }}, minmax(0, 1fr));
+    }
+    @media (min-width: 700px) {
+      .pzpr-{{ section.id }} .pzpr-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    @media (min-width: 1000px) {
+      .pzpr-{{ section.id }} .pzpr-grid {
+        grid-template-columns: repeat({{ section.settings.columns }}, minmax(0, 1fr));
+      }
+    }
+
+    .pzpr-{{ section.id }} .pzpr-card {
+      position: relative; min-width: 0;
+      background: {{ section.settings.card_background }};
+      border-radius: {{ section.settings.card_radius }}px;
+      overflow: hidden;
+      aspect-ratio: {{ section.settings.card_ratio }};
+    }
+    .pzpr-{{ section.id }} .pzpr-media { position: absolute; inset: 0; }
+    .pzpr-{{ section.id }} .pzpr-media img {
+      width: 100%; height: 100%; object-fit: cover; object-position: {{ section.settings.focal }};
+      display: block;
+    }
+    /* Keeps the name legible over any photo without dimming the whole frame. */
+    .pzpr-{{ section.id }} .pzpr-media::after {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,.82) 0%, rgba(0,0,0,.35) 26%, transparent 52%);
+    }
+
+    .pzpr-{{ section.id }} .pzpr-bar {
+      position: absolute; left: 0; right: 0; bottom: 0; z-index: 2;
+      padding: 18px 18px 20px;
+    }
+    .pzpr-{{ section.id }} .pzpr-name {
+      display: block; margin: 0 0 5px;
+      font-size: clamp(16px, 1.5vw, 20px); font-weight: 900;
+      text-transform: uppercase; letter-spacing: -0.01em; line-height: 1.1;
+      color: #fff;
+    }
+    .pzpr-{{ section.id }} .pzpr-cred {
+      display: block; margin: 0;
+      font-size: 13px; line-height: 1.35; color: rgba(255,255,255,.78);
+    }
+    .pzpr-{{ section.id }} .pzpr-rule {
+      display: block; width: 34px; height: 3px; margin: 9px 0 0;
+      background: var(--pzpr-accent);
+    }
+
+    /* Reveal ----------------------------------------------------------- */
+    .pzpr-{{ section.id }} .pzpr-panel {
+      position: absolute; inset: 0; z-index: 3;
+      background: {{ section.settings.panel_background }};
+      color: #fff;
+      padding: 20px 18px;
+      display: flex; flex-direction: column; justify-content: center; gap: 12px;
+      opacity: 0; visibility: hidden;
+      transition: opacity .28s ease, visibility .28s ease;
+      overflow-y: auto;
+    }
+    @media (hover: hover) and (pointer: fine) {
+      .pzpr-{{ section.id }} .pzpr-card:hover .pzpr-panel { opacity: 1; visibility: visible; }
+    }
+    /* Driven by the toggle's state, not :focus-within. focus-within would
+       re-show the panel the instant focus returned to the button, so
+       Escape and a second click both appeared to do nothing. Keyboard
+       users are served by the button itself, and the panel holds no
+       focusable content. */
+    .pzpr-{{ section.id }} .pzpr-card.is-open .pzpr-panel { opacity: 1; visibility: visible; }
+    @media (prefers-reduced-motion: reduce) {
+      .pzpr-{{ section.id }} .pzpr-panel { transition: none; }
+    }
+
+    .pzpr-{{ section.id }} .pzpr-panel-name {
+      font-size: 13px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--pzpr-accent); margin: 0;
+    }
+    .pzpr-{{ section.id }} .pzpr-stats { list-style: none; margin: 0; padding: 0; display: grid; gap: 9px; }
+    .pzpr-{{ section.id }} .pzpr-stat {
+      position: relative; padding-left: 16px;
+      font-size: 13px; line-height: 1.42; color: rgba(255,255,255,.9);
+    }
+    .pzpr-{{ section.id }} .pzpr-stat::before {
+      content: ''; position: absolute; left: 0; top: 7px;
+      width: 5px; height: 5px; border-radius: 50%; background: var(--pzpr-accent);
+    }
+    .pzpr-{{ section.id }} .pzpr-quote {
+      margin: 2px 0 0; padding-top: 12px;
+      border-top: 1px solid rgba(255,255,255,.18);
+      font-size: 13px; line-height: 1.45; font-style: italic; color: rgba(255,255,255,.82);
+    }
+
+    /* The affordance: a real control, so touch and keyboard both work. */
+    .pzpr-{{ section.id }} .pzpr-toggle {
+      position: absolute; top: 12px; right: 12px; z-index: 4;
+      width: 34px; height: 34px; border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.4);
+      background: rgba(0,0,0,.5); color: #fff;
+      cursor: pointer; padding: 0;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .18s ease, border-color .18s ease;
+    }
+    .pzpr-{{ section.id }} .pzpr-toggle:hover,
+    .pzpr-{{ section.id }} .pzpr-toggle[aria-expanded="true"] {
+      background: var(--pzpr-accent); color: #000; border-color: var(--pzpr-accent);
+    }
+    .pzpr-{{ section.id }} .pzpr-toggle:focus-visible { outline: 3px solid var(--pzpr-accent); outline-offset: 2px; }
+    .pzpr-{{ section.id }} .pzpr-toggle svg { width: 15px; height: 15px; stroke: currentColor; fill: none; stroke-width: 2.2; }
+    .pzpr-{{ section.id }} .pzpr-toggle .pzpr-ico-close { display: none; }
+    .pzpr-{{ section.id }} .pzpr-toggle[aria-expanded="true"] .pzpr-ico-open { display: none; }
+    .pzpr-{{ section.id }} .pzpr-toggle[aria-expanded="true"] .pzpr-ico-close { display: block; }
+    @media (prefers-reduced-motion: reduce) {
+      .pzpr-{{ section.id }} .pzpr-toggle { transition: none; }
+    }
+  {% endstyle %}
+
+  <div class="pzpr-inner">
+    <div class="pzpr-head">
+      {% if section.settings.eyebrow != blank %}
+        <span class="pzpr-eyebrow">{{ section.settings.eyebrow }}</span>
+      {% endif %}
+      {% if section.settings.heading != blank %}
+        <h2>{{ section.settings.heading | newline_to_br }}</h2>
+      {% endif %}
+      {% if section.settings.subheading != blank %}
+        <p class="pzpr-sub">{{ section.settings.subheading }}</p>
+      {% endif %}
+    </div>
+
+    <div class="pzpr-grid">
+      {% for block in section.blocks %}
+        {% if block.type == 'pro' %}
+          {%- liquid
+            assign stats = block.settings.stats | newline_to_br | split: '<br />'
+            assign has_panel = false
+            if block.settings.stats != blank or block.settings.quote != blank
+              assign has_panel = true
+            endif
+            assign panel_id = 'pzpr-panel-' | append: section.id | append: '-' | append: forloop.index
+          -%}
+          <article class="pzpr-card" data-pzpr-card {{ block.shopify_attributes }}>
+            <div class="pzpr-media">
+              {% if block.settings.photo %}
+                {{ block.settings.photo | image_url: width: 900 | image_tag:
+                   alt: block.settings.name, loading: 'lazy',
+                   sizes: '(min-width: 1000px) 30vw, (min-width: 700px) 45vw, 90vw',
+                   widths: '300, 500, 700, 900' }}
+              {% elsif block.settings.photo_filename != blank %}
+                <img src="{{ block.settings.photo_filename | asset_url }}"
+                     alt="{{ block.settings.name | escape }}"
+                     width="{{ block.settings.photo_width | default: 600 }}"
+                     height="{{ block.settings.photo_height | default: 800 }}"
+                     loading="lazy" decoding="async">
+              {% endif %}
+            </div>
+
+            <div class="pzpr-bar">
+              <span class="pzpr-name">{{ block.settings.name }}</span>
+              {% if block.settings.credential != blank %}
+                <span class="pzpr-cred">{{ block.settings.credential }}</span>
+              {% endif %}
+              <span class="pzpr-rule" aria-hidden="true"></span>
+            </div>
+
+            {% if has_panel %}
+              <button type="button" class="pzpr-toggle" data-pzpr-toggle
+                      aria-expanded="false" aria-controls="{{ panel_id }}">
+                <span class="visually-hidden">Key stats for {{ block.settings.name | escape }}</span>
+                <svg class="pzpr-ico-open" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke-linecap="round"/></svg>
+                <svg class="pzpr-ico-close" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18" stroke-linecap="round"/></svg>
+              </button>
+
+              <div class="pzpr-panel" id="{{ panel_id }}">
+                <p class="pzpr-panel-name">{{ block.settings.name }}</p>
+                {% if block.settings.stats != blank %}
+                  <ul class="pzpr-stats">
+                    {% for s in stats %}
+                      {% assign line = s | strip_newlines | strip %}
+                      {% if line != blank %}<li class="pzpr-stat">{{ line }}</li>{% endif %}
+                    {% endfor %}
+                  </ul>
+                {% endif %}
+                {% if block.settings.quote != blank %}
+                  <blockquote class="pzpr-quote">{{ block.settings.quote }}</blockquote>
+                {% endif %}
+              </div>
+            {% endif %}
+          </article>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var root = document.getElementById({{ section.settings.anchor_id | json }});
+      if (!root || root.dataset.pzprInit === '1') return;
+      root.dataset.pzprInit = '1';
+      root.querySelectorAll('[data-pzpr-toggle]').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          var card = btn.closest('[data-pzpr-card]');
+          var open = btn.getAttribute('aria-expanded') === 'true';
+          btn.setAttribute('aria-expanded', open ? 'false' : 'true');
+          card.classList.toggle('is-open', !open);
+        });
+      });
+      // Escape closes whichever card is open, matching the usual expectation.
+      root.addEventListener('keydown', function (e) {
+        if (e.key !== 'Escape') return;
+        var card = e.target.closest('[data-pzpr-card].is-open');
+        if (!card) return;
+        var btn = card.querySelector('[data-pzpr-toggle]');
+        card.classList.remove('is-open');
+        if (btn) { btn.setAttribute('aria-expanded', 'false'); btn.focus(); }
+      });
+    })();
+  </script>
+</section>
+
+{% schema %}
+{
+  "name": "PZ Pro Roster",
+  "tag": "section",
+  "class": "pz-section",
+  "settings": [
+    { "type": "text", "id": "anchor_id", "label": "Anchor id", "default": "pz-pro-roster" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow" },
+    { "type": "textarea", "id": "heading", "label": "Heading", "info": "Line breaks are kept" },
+    { "type": "textarea", "id": "subheading", "label": "Subheading" },
+    { "type": "range", "id": "columns", "label": "Columns (desktop)", "info": "Fewer columns means larger cards, which shows softness in lower-resolution photos", "min": 2, "max": 4, "step": 1, "default": 3 },
+    { "type": "select", "id": "columns_mobile", "label": "Columns (mobile)", "options": [{"value":"1","label":"1"},{"value":"2","label":"2"}], "default": "1" },
+    { "type": "range", "id": "gap", "label": "Gap (px)", "min": 4, "max": 32, "step": 2, "default": 14 },
+    { "type": "text", "id": "card_ratio", "label": "Card ratio", "info": "For example 3 / 4", "default": "3 / 4" },
+    { "type": "text", "id": "focal", "label": "Photo focal point", "info": "For example \"center top\" to favour faces", "default": "center top" },
+    { "type": "range", "id": "card_radius", "label": "Card radius (px)", "min": 0, "max": 24, "step": 2, "default": 4 },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "accent_color", "label": "Accent", "default": "#96FF00" },
+    { "type": "color", "id": "heading_color", "label": "Heading", "default": "#ffffff" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#ffffff" },
+    { "type": "color", "id": "card_background", "label": "Card background", "default": "#141416" },
+    { "type": "color", "id": "panel_background", "label": "Reveal background", "default": "rgba(10,10,11,0.95)" },
+    { "type": "color", "id": "background", "label": "Section background", "default": "#0A0A0B" }
+  ],
+  "blocks": [
+    {
+      "type": "pro",
+      "name": "Player",
+      "settings": [
+        { "type": "text", "id": "name", "label": "Name", "default": "Player name" },
+        { "type": "text", "id": "credential", "label": "One-line description" },
+        { "type": "image_picker", "id": "photo", "label": "Photo", "info": "Preferred. Falls back to the theme asset below." },
+        { "type": "text", "id": "photo_filename", "label": "Fallback photo asset" },
+        { "type": "number", "id": "photo_width", "label": "Fallback photo width (px)" },
+        { "type": "number", "id": "photo_height", "label": "Fallback photo height (px)" },
+        { "type": "textarea", "id": "stats", "label": "Key stats", "info": "One per line. Shown on hover, tap or keyboard focus." },
+        { "type": "textarea", "id": "quote", "label": "Quote" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "PZ Pro Roster" }]
+}
+{% endschema %}
