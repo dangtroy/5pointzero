@@ -1,0 +1,356 @@
+{% comment %}
+  PZ Wholesale Application — native Shopify contact form.
+
+  Built on the platform's own contact form tag rather than a hand-rolled
+  <form>, so the CSRF token, action and success/error state come from
+  Shopify instead of being reimplemented here. Field
+  keys are human-readable because Shopify prints every contact[*] param
+  into the notification email verbatim, and whoever reads it should not
+  have to decode snake_case.
+
+  Delivery note: Shopify sends this to the address configured under
+  Settings > Notifications. A recipient cannot be set per-form in Liquid,
+  so routing to a specific inbox is an admin setting, not markup.
+{% endcomment %}
+{%- liquid
+  assign form_id = 'pz-wholesale-form-' | append: section.id
+  assign positions = section.settings.position_options | newline_to_br | split: '<br />'
+-%}
+<section
+  id="{{ section.settings.anchor_id }}"
+  class="pz-wsform pz-wsform-{{ section.id }}"
+>
+  {% style %}
+    .pz-wsform-{{ section.id }} {
+      --pzw-accent: {{ section.settings.accent_color }};
+      --pzw-field: {{ section.settings.field_background }};
+      --pzw-border: {{ section.settings.field_border }};
+      position: relative;
+      background: {{ section.settings.background }};
+      color: {{ section.settings.text_color }};
+      padding: 56px 16px;
+      scroll-margin-top: 80px;
+      overflow: hidden;
+      isolation: isolate;
+    }
+    @media (min-width: 750px) {
+      .pz-wsform-{{ section.id }} { padding: 92px 32px; }
+    }
+    .pz-wsform-{{ section.id }} .pz-wsform-bg {
+      position: absolute; inset: 0; z-index: 0; pointer-events: none;
+      opacity: {{ section.settings.background_image_opacity | divided_by: 100.0 }};
+    }
+    .pz-wsform-{{ section.id }} .pz-wsform-bg img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+    }
+    .pz-wsform-{{ section.id }} .pz-wsform-bg::after {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(75% 60% at 50% 45%, transparent, {{ section.settings.background }} 88%);
+    }
+
+    .pz-wsform-{{ section.id }} .pz-wsform-inner {
+      position: relative; z-index: 1;
+      max-width: {{ section.settings.max_width }}px; margin: 0 auto;
+    }
+    .pz-wsform-{{ section.id }} .pz-wsform-head { text-align: center; margin-bottom: 38px; }
+    .pz-wsform-{{ section.id }} .pz-wsform-eyebrow {
+      display: block; margin-bottom: 14px;
+      font-size: 12px; font-weight: 900; letter-spacing: .3em; text-transform: uppercase;
+      color: var(--pzw-accent);
+    }
+    .pz-wsform-{{ section.id }} h2 {
+      font-size: clamp(27px, 3.8vw, 46px); font-weight: 900; margin: 0 0 14px;
+      text-transform: uppercase; letter-spacing: -0.025em; line-height: 1.04;
+      color: {{ section.settings.heading_color }};
+    }
+    .pz-wsform-{{ section.id }} .pz-wsform-sub {
+      font-size: clamp(14px, 1.3vw, 17px); line-height: 1.55; opacity: .7;
+      margin: 0 auto; max-width: 54ch;
+    }
+
+    /* Two columns once there is room; one column on phones so no field
+       is ever too narrow to read its own placeholder. */
+    .pz-wsform-{{ section.id }} .pz-wsform-grid {
+      display: grid; grid-template-columns: 1fr; gap: 18px;
+    }
+    @media (min-width: 700px) {
+      .pz-wsform-{{ section.id }} .pz-wsform-grid { grid-template-columns: 1fr 1fr; gap: 20px; }
+      .pz-wsform-{{ section.id }} .pz-wsform-field--full { grid-column: 1 / -1; }
+    }
+
+    .pz-wsform-{{ section.id }} .pz-wsform-field { min-width: 0; display: flex; flex-direction: column; }
+    .pz-wsform-{{ section.id }} label {
+      font-size: 11px; font-weight: 900; letter-spacing: .16em; text-transform: uppercase;
+      margin-bottom: 9px; opacity: .78;
+    }
+    .pz-wsform-{{ section.id }} .pz-wsform-req { color: var(--pzw-accent); margin-left: 3px; }
+
+    .pz-wsform-{{ section.id }} input,
+    .pz-wsform-{{ section.id }} select,
+    .pz-wsform-{{ section.id }} textarea {
+      width: 100%; box-sizing: border-box;
+      padding: 15px 16px;
+      background: var(--pzw-field);
+      color: {{ section.settings.text_color }};
+      border: 1px solid var(--pzw-border);
+      border-radius: {{ section.settings.field_radius }}px;
+      font-size: 16px; /* 16px stops iOS Safari zooming on focus */
+      font-family: inherit; line-height: 1.35;
+      transition: border-color .15s ease, box-shadow .15s ease;
+      -webkit-appearance: none; appearance: none;
+    }
+    .pz-wsform-{{ section.id }} textarea { min-height: 120px; resize: vertical; }
+    .pz-wsform-{{ section.id }} select {
+      background-image: linear-gradient(45deg, transparent 50%, currentColor 50%),
+                        linear-gradient(135deg, currentColor 50%, transparent 50%);
+      background-position: calc(100% - 20px) 52%, calc(100% - 14px) 52%;
+      background-size: 6px 6px, 6px 6px;
+      background-repeat: no-repeat;
+      padding-right: 44px;
+    }
+    .pz-wsform-{{ section.id }} input::placeholder,
+    .pz-wsform-{{ section.id }} textarea::placeholder { color: currentColor; opacity: .36; }
+    .pz-wsform-{{ section.id }} input:focus,
+    .pz-wsform-{{ section.id }} select:focus,
+    .pz-wsform-{{ section.id }} textarea:focus {
+      outline: none;
+      border-color: var(--pzw-accent);
+      box-shadow: 0 0 0 3px {{ section.settings.accent_color }}33;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .pz-wsform-{{ section.id }} input,
+      .pz-wsform-{{ section.id }} select,
+      .pz-wsform-{{ section.id }} textarea { transition: none; }
+    }
+
+    /* Honeypot: off-screen rather than display:none, which some bots skip. */
+    .pz-wsform-{{ section.id }} .pz-wsform-hp {
+      position: absolute !important; left: -9999px !important;
+      width: 1px; height: 1px; overflow: hidden;
+    }
+
+    .pz-wsform-{{ section.id }} .pz-wsform-submit {
+      grid-column: 1 / -1;
+      margin-top: 8px; padding: 18px 34px;
+      border: none; border-radius: {{ section.settings.button_radius }}px;
+      background: var(--pzw-accent); color: #000;
+      font-size: 14px; font-weight: 900; letter-spacing: .16em; text-transform: uppercase;
+      font-family: inherit; cursor: pointer;
+      transition: transform .18s ease, filter .18s ease;
+    }
+    .pz-wsform-{{ section.id }} .pz-wsform-submit:hover { transform: translateY(-2px); filter: brightness(1.08); }
+    .pz-wsform-{{ section.id }} .pz-wsform-submit:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+    @media (prefers-reduced-motion: reduce) {
+      .pz-wsform-{{ section.id }} .pz-wsform-submit { transition: none; }
+      .pz-wsform-{{ section.id }} .pz-wsform-submit:hover { transform: none; }
+    }
+
+    .pz-wsform-{{ section.id }} .pz-wsform-helper {
+      grid-column: 1 / -1; margin: 4px 0 0; font-size: 13px; line-height: 1.55; opacity: .55; text-align: center;
+    }
+    .pz-wsform-{{ section.id }} .pz-wsform-helper a { color: var(--pzw-accent); }
+
+    /* Status panels */
+    .pz-wsform-{{ section.id }} .pz-wsform-status {
+      border-radius: 6px; padding: 22px 24px; margin-bottom: 26px;
+      font-size: 15px; line-height: 1.55;
+    }
+    .pz-wsform-{{ section.id }} .pz-wsform-status--ok {
+      border: 1px solid var(--pzw-accent);
+      background: {{ section.settings.accent_color }}14;
+    }
+    .pz-wsform-{{ section.id }} .pz-wsform-status--err {
+      border: 1px solid #ff6b6b; background: rgba(255,107,107,.1);
+    }
+    .pz-wsform-{{ section.id }} .pz-wsform-status h3 {
+      margin: 0 0 8px; font-size: 18px; font-weight: 900; text-transform: uppercase; letter-spacing: -0.01em;
+      color: {{ section.settings.heading_color }};
+    }
+    .pz-wsform-{{ section.id }} .pz-wsform-status ul { margin: 8px 0 0; padding-left: 20px; }
+  {% endstyle %}
+
+  {% if section.settings.background_image or section.settings.background_image_filename != blank %}
+    <div class="pz-wsform-bg" aria-hidden="true">
+      {% if section.settings.background_image %}
+        {{ section.settings.background_image | image_url: width: 2000 | image_tag:
+           alt: '', loading: 'lazy', sizes: '100vw', widths: '750, 1100, 1500, 2000' }}
+      {% else %}
+        <img src="{{ section.settings.background_image_filename | asset_url }}"
+             {% if section.settings.background_image_filename_sm != blank %}
+               srcset="{{ section.settings.background_image_filename_sm | asset_url }} 900w,
+                       {{ section.settings.background_image_filename | asset_url }} 1800w"
+               sizes="100vw"
+             {% endif %}
+             alt="" width="{{ section.settings.background_image_width }}"
+             height="{{ section.settings.background_image_height }}" loading="lazy" decoding="async">
+      {% endif %}
+    </div>
+  {% endif %}
+
+  <div class="pz-wsform-inner">
+    <div class="pz-wsform-head">
+      {% if section.settings.eyebrow != blank %}
+        <span class="pz-wsform-eyebrow">{{ section.settings.eyebrow }}</span>
+      {% endif %}
+      {% if section.settings.heading != blank %}
+        <h2>{{ section.settings.heading }}</h2>
+      {% endif %}
+      {% if section.settings.subheading != blank %}
+        <p class="pz-wsform-sub">{{ section.settings.subheading }}</p>
+      {% endif %}
+    </div>
+
+    {% form 'contact', id: form_id %}
+      {% if form.posted_successfully? %}
+        <div class="pz-wsform-status pz-wsform-status--ok" role="status" tabindex="-1">
+          <h3>{{ section.settings.success_heading }}</h3>
+          <div>{{ section.settings.success_body }}</div>
+        </div>
+      {% elsif form.errors %}
+        <div class="pz-wsform-status pz-wsform-status--err" role="alert" tabindex="-1">
+          <h3>We couldn't send that</h3>
+          <ul>
+            {% for field in form.errors %}
+              <li>
+                {%- if field == 'form' -%}
+                  {{ form.errors.messages[field] }}
+                {%- else -%}
+                  {{ form.errors.translated_fields[field] }} {{ form.errors.messages[field] }}
+                {%- endif -%}
+              </li>
+            {% endfor %}
+          </ul>
+        </div>
+      {% endif %}
+
+      {% unless form.posted_successfully? %}
+        <div class="pz-wsform-grid">
+          <div class="pz-wsform-field">
+            <label for="{{ form_id }}-first">First Name<span class="pz-wsform-req" aria-hidden="true">*</span></label>
+            <input id="{{ form_id }}-first" type="text" name="contact[First name]" autocomplete="given-name" required>
+          </div>
+
+          <div class="pz-wsform-field">
+            <label for="{{ form_id }}-last">Last Name<span class="pz-wsform-req" aria-hidden="true">*</span></label>
+            <input id="{{ form_id }}-last" type="text" name="contact[Last name]" autocomplete="family-name" required>
+          </div>
+
+          <div class="pz-wsform-field">
+            <label for="{{ form_id }}-position">Position</label>
+            <select id="{{ form_id }}-position" name="contact[Position]">
+              {% for opt in positions %}
+                {% assign opt_clean = opt | strip_newlines | strip %}
+                {% if opt_clean != blank %}
+                  <option value="{{ opt_clean | escape }}">{{ opt_clean }}</option>
+                {% endif %}
+              {% endfor %}
+            </select>
+          </div>
+
+          <div class="pz-wsform-field">
+            <label for="{{ form_id }}-business">Business Name<span class="pz-wsform-req" aria-hidden="true">*</span></label>
+            <input id="{{ form_id }}-business" type="text" name="contact[Business name]" autocomplete="organization" required>
+          </div>
+
+          <div class="pz-wsform-field">
+            <label for="{{ form_id }}-email">Business Email<span class="pz-wsform-req" aria-hidden="true">*</span></label>
+            <input id="{{ form_id }}-email" type="email" name="contact[email]" autocomplete="email" spellcheck="false" autocapitalize="off" required>
+          </div>
+
+          <div class="pz-wsform-field">
+            <label for="{{ form_id }}-phone">Business Phone</label>
+            <input id="{{ form_id }}-phone" type="tel" name="contact[Business phone]" autocomplete="tel">
+          </div>
+
+          <div class="pz-wsform-field">
+            <label for="{{ form_id }}-website">Website</label>
+            <input id="{{ form_id }}-website" type="text" inputmode="url" name="contact[Website]" autocomplete="url" placeholder="yourfacility.com" spellcheck="false" autocapitalize="off">
+          </div>
+
+          <div class="pz-wsform-field">
+            <label for="{{ form_id }}-address">Address</label>
+            <input id="{{ form_id }}-address" type="text" name="contact[Address]" autocomplete="street-address">
+          </div>
+
+          {% if section.settings.show_message %}
+            <div class="pz-wsform-field pz-wsform-field--full">
+              <label for="{{ form_id }}-body">{{ section.settings.message_label }}</label>
+              <textarea id="{{ form_id }}-body" name="contact[body]"></textarea>
+            </div>
+          {% endif %}
+
+          <div class="pz-wsform-hp" aria-hidden="true">
+            <label for="{{ form_id }}-company2">Do not fill this in</label>
+            <input id="{{ form_id }}-company2" type="text" name="contact[Company website confirm]" tabindex="-1" autocomplete="off">
+          </div>
+
+          <button type="submit" class="pz-wsform-submit">{{ section.settings.button_text }}</button>
+
+          {% if section.settings.helper_text != blank %}
+            <p class="pz-wsform-helper">{{ section.settings.helper_text }}</p>
+          {% endif %}
+        </div>
+      {% endunless %}
+    {% endform %}
+  </div>
+
+  <script>
+    (function () {
+      var form = document.getElementById({{ form_id | json }});
+      if (!form || form.dataset.pzwsInit === '1') return;
+      form.dataset.pzwsInit = '1';
+      form.addEventListener('submit', function (e) {
+        // Honeypot: a human never sees this field, so anything in it is a bot.
+        var hp = form.querySelector('.pz-wsform-hp input');
+        if (hp && hp.value !== '') { e.preventDefault(); return; }
+        var btn = form.querySelector('.pz-wsform-submit');
+        if (btn) { btn.disabled = true; btn.style.opacity = '.6'; }
+      });
+      // Move focus to the result so it is announced and not scrolled past.
+      var status = form.querySelector('.pz-wsform-status');
+      if (status) { status.focus(); }
+    })();
+  </script>
+</section>
+
+{% schema %}
+{
+  "name": "PZ Wholesale Form",
+  "tag": "section",
+  "class": "pz-section",
+  "settings": [
+    { "type": "text", "id": "anchor_id", "label": "Anchor id", "info": "Buttons elsewhere on the page link to this", "default": "pz-wholesale-application" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Wholesale Application" },
+    { "type": "textarea", "id": "heading", "label": "Heading", "default": "Start Application" },
+    { "type": "textarea", "id": "subheading", "label": "Subheading" },
+    { "type": "textarea", "id": "position_options", "label": "Position options", "info": "One per line", "default": "Owner\nManager\nBuyer\nOther" },
+    { "type": "text", "id": "button_text", "label": "Submit button text", "default": "Submit" },
+    { "type": "richtext", "id": "helper_text", "label": "Helper text", "info": "Shown under the submit button" },
+    { "type": "header", "content": "Optional message field" },
+    { "type": "checkbox", "id": "show_message", "label": "Show a message field", "default": false },
+    { "type": "text", "id": "message_label", "label": "Message label", "default": "Anything else we should know?" },
+    { "type": "header", "content": "After submitting" },
+    { "type": "text", "id": "success_heading", "label": "Success heading", "default": "Application received" },
+    { "type": "richtext", "id": "success_body", "label": "Success message", "default": "<p>Thanks — we've got your details and will be in touch shortly.</p>" },
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "max_width", "label": "Form max width (px)", "min": 520, "max": 1100, "step": 20, "default": 800 },
+    { "type": "range", "id": "field_radius", "label": "Field radius (px)", "min": 0, "max": 20, "step": 1, "default": 4 },
+    { "type": "range", "id": "button_radius", "label": "Button radius (px)", "min": 0, "max": 60, "step": 2, "default": 60 },
+    { "type": "header", "content": "Background" },
+    { "type": "image_picker", "id": "background_image", "label": "Background image", "info": "Faded behind the form. Falls back to the theme asset below." },
+    { "type": "text", "id": "background_image_filename", "label": "Fallback background asset" },
+    { "type": "text", "id": "background_image_filename_sm", "label": "Fallback background asset (small)" },
+    { "type": "number", "id": "background_image_width", "label": "Fallback background width (px)" },
+    { "type": "number", "id": "background_image_height", "label": "Fallback background height (px)" },
+    { "type": "range", "id": "background_image_opacity", "label": "Background opacity (%)", "min": 0, "max": 100, "step": 5, "default": 35 },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "accent_color", "label": "Accent", "default": "#96FF00" },
+    { "type": "color", "id": "heading_color", "label": "Heading", "default": "#ffffff" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#ffffff" },
+    { "type": "color", "id": "field_background", "label": "Field background", "default": "#141416" },
+    { "type": "color", "id": "field_border", "label": "Field border", "default": "rgba(255,255,255,0.18)" },
+    { "type": "color", "id": "background", "label": "Section background", "default": "#0A0A0B" }
+  ],
+  "presets": [{ "name": "PZ Wholesale Form" }]
+}
+{% endschema %}

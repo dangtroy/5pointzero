@@ -1,0 +1,234 @@
+{% comment %}
+  PZ Wholesale Pitch — the case for carrying the brand, on a light ground.
+
+  Statement lines are blocks so the order and emphasis stay editable. An
+  "emphasis" flag promotes a line to the large weight rather than
+  hardcoding which lines are big.
+{% endcomment %}
+<section
+  id="{{ section.settings.anchor_id }}"
+  class="pz-wspitch pz-wspitch-{{ section.id }}"
+>
+  {% style %}
+    .pz-wspitch-{{ section.id }} {
+      --pzw-accent: {{ section.settings.accent_color }};
+      --pzw-accent-ink: {{ section.settings.accent_on_light_color }};
+      background: {{ section.settings.background }};
+      color: {{ section.settings.text_color }};
+      padding: 56px 16px;
+      scroll-margin-top: 80px;
+    }
+    @media (min-width: 750px) {
+      .pz-wspitch-{{ section.id }} { padding: 92px 32px; }
+    }
+    .pz-wspitch-{{ section.id }} .pz-wspitch-inner {
+      max-width: 1180px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr; gap: 40px; align-items: center;
+    }
+    @media (min-width: 950px) {
+      .pz-wspitch-{{ section.id }} .pz-wspitch-inner {
+        grid-template-columns: {{ section.settings.media_width }}fr {{ 100 | minus: section.settings.media_width }}fr;
+        gap: 64px;
+      }
+      .pz-wspitch-{{ section.id }}.pz-wspitch--media-right .pz-wspitch-media { order: 2; }
+    }
+
+    /* Media column: the main photo, with an optional inset product shot
+       overlapping its lower corner. min-width:0 keeps the grid honest. */
+    .pz-wspitch-{{ section.id }} .pz-wspitch-media { position: relative; min-width: 0; }
+    .pz-wspitch-{{ section.id }} .pz-wspitch-media-main img {
+      display: block; width: 100%; height: auto; border-radius: 4px;
+    }
+    .pz-wspitch-{{ section.id }} .pz-wspitch-media-inset {
+      position: absolute; right: -14px; bottom: -26px;
+      width: 33%; max-width: 190px;
+      border: 6px solid {{ section.settings.background }};
+      border-radius: 4px; overflow: hidden;
+      box-shadow: 0 16px 34px rgba(0,0,0,.22);
+    }
+    .pz-wspitch-{{ section.id }} .pz-wspitch-media-inset img {
+      display: block; width: 100%; height: auto;
+    }
+    /* The overlapping inset is a two-column treatment. Once the layout
+       stacks at 950px the photo goes full width and the inset would hang
+       into the copy below it, so it becomes a plain stacked image at the
+       same breakpoint the grid collapses. */
+    @media (max-width: 949px) {
+      .pz-wspitch-{{ section.id }} .pz-wspitch-media-inset {
+        position: static; width: 100%; max-width: none;
+        border: none; box-shadow: none; margin-top: 12px;
+      }
+    }
+
+    .pz-wspitch-{{ section.id }} .pz-wspitch-copy { min-width: 0; }
+    .pz-wspitch-{{ section.id }} .pz-wspitch-eyebrow {
+      display: block; margin: 0 0 14px;
+      font-size: 12px; font-weight: 900; letter-spacing: .3em; text-transform: uppercase;
+      color: var(--pzw-accent-ink);
+    }
+    .pz-wspitch-{{ section.id }} h2 {
+      font-size: clamp(27px, 3.8vw, 46px); font-weight: 900; margin: 0 0 24px;
+      text-transform: uppercase; letter-spacing: -0.025em; line-height: 1.04;
+      color: {{ section.settings.heading_color }};
+    }
+    .pz-wspitch-{{ section.id }} .pz-wspitch-lines {
+      margin: 0; padding: 0; list-style: none;
+      display: flex; flex-direction: column; gap: 14px;
+    }
+    .pz-wspitch-{{ section.id }} .pz-wspitch-line {
+      font-size: clamp(15px, 1.4vw, 18px); line-height: 1.5; opacity: .82;
+    }
+    .pz-wspitch-{{ section.id }} .pz-wspitch-line--emphasis {
+      font-size: clamp(18px, 2vw, 25px); font-weight: 900; line-height: 1.25;
+      opacity: 1; letter-spacing: -0.01em;
+    }
+    .pz-wspitch-{{ section.id }} .pz-wspitch-line--emphasis strong,
+    .pz-wspitch-{{ section.id }} .pz-wspitch-line strong {
+      color: var(--pzw-accent-ink); font-weight: 900;
+    }
+    .pz-wspitch-{{ section.id }} .pz-wspitch-note {
+      margin: 26px 0 0; font-size: 13px; line-height: 1.55; opacity: .58;
+    }
+    .pz-wspitch-{{ section.id }} .pz-wspitch-cta {
+      display: inline-flex; align-items: center; gap: 10px; margin-top: 30px;
+      padding: 16px 32px; border-radius: {{ section.settings.button_radius }}px;
+      background: {{ section.settings.button_bg }}; color: {{ section.settings.button_text }};
+      font-size: 14px; font-weight: 900; letter-spacing: .14em; text-transform: uppercase;
+      text-decoration: none;
+      transition: transform .18s ease, filter .18s ease;
+    }
+    .pz-wspitch-{{ section.id }} .pz-wspitch-cta:hover {
+      transform: translateY(-2px); filter: brightness(1.1);
+    }
+    .pz-wspitch-{{ section.id }} .pz-wspitch-cta:focus-visible {
+      outline: 3px solid {{ section.settings.text_color }}; outline-offset: 3px;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .pz-wspitch-{{ section.id }} .pz-wspitch-cta { transition: none; }
+      .pz-wspitch-{{ section.id }} .pz-wspitch-cta:hover { transform: none; }
+    }
+    @media (max-width: 749px) {
+      .pz-wspitch-{{ section.id }} .pz-wspitch-cta { width: 100%; justify-content: center; }
+    }
+  {% endstyle %}
+
+  <div class="pz-wspitch-inner">
+    {% if section.settings.image or section.settings.image_filename != blank %}
+      <div class="pz-wspitch-media">
+        <div class="pz-wspitch-media-main">
+          {% if section.settings.image %}
+            {{ section.settings.image | image_url: width: 1600 | image_tag:
+               alt: section.settings.image_alt, loading: 'lazy',
+               sizes: '(min-width: 950px) 48vw, 100vw', widths: '500, 800, 1100, 1600' }}
+          {% else %}
+            <img
+              src="{{ section.settings.image_filename | asset_url }}"
+              {% if section.settings.image_filename_sm != blank %}
+                srcset="{{ section.settings.image_filename_sm | asset_url }} 800w,
+                        {{ section.settings.image_filename | asset_url }} 1600w"
+                sizes="(min-width: 950px) 48vw, 100vw"
+              {% endif %}
+              alt="{{ section.settings.image_alt | escape }}"
+              width="{{ section.settings.image_width }}" height="{{ section.settings.image_height }}"
+              loading="lazy" decoding="async">
+          {% endif %}
+        </div>
+        {% if section.settings.inset_image or section.settings.inset_image_filename != blank %}
+          <div class="pz-wspitch-media-inset">
+            {% if section.settings.inset_image %}
+              {{ section.settings.inset_image | image_url: width: 600 | image_tag:
+                 alt: section.settings.inset_image_alt, loading: 'lazy',
+                 sizes: '(min-width: 950px) 16vw, 100vw', widths: '300, 450, 600' }}
+            {% else %}
+              <img src="{{ section.settings.inset_image_filename | asset_url }}"
+                   alt="{{ section.settings.inset_image_alt | escape }}"
+                   width="{{ section.settings.inset_image_width }}" height="{{ section.settings.inset_image_height }}"
+                   loading="lazy" decoding="async">
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <div class="pz-wspitch-copy">
+      {% if section.settings.eyebrow != blank %}
+        <span class="pz-wspitch-eyebrow">{{ section.settings.eyebrow }}</span>
+      {% endif %}
+      {% if section.settings.heading != blank %}
+        <h2>{{ section.settings.heading }}</h2>
+      {% endif %}
+
+      {% if section.blocks.size > 0 %}
+        <ul class="pz-wspitch-lines">
+          {% for block in section.blocks %}
+            {% if block.type == 'line' and block.settings.text != blank %}
+              <li
+                class="pz-wspitch-line{% if block.settings.emphasis %} pz-wspitch-line--emphasis{% endif %}"
+                {{ block.shopify_attributes }}
+              >{{ block.settings.text }}</li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      {% endif %}
+
+      {% if section.settings.note != blank %}
+        <p class="pz-wspitch-note">{{ section.settings.note }}</p>
+      {% endif %}
+      {% if section.settings.cta_text != blank %}
+        <a class="pz-wspitch-cta" href="{{ section.settings.cta_url | default: '#pz-wholesale-application' }}">
+          {{ section.settings.cta_text }}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "PZ Wholesale Pitch",
+  "tag": "section",
+  "class": "pz-section",
+  "settings": [
+    { "type": "text", "id": "anchor_id", "label": "Anchor id", "default": "pz-wholesale-why" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "The Wholesale Program" },
+    { "type": "textarea", "id": "heading", "label": "Heading", "default": "Stock the drink your players already want." },
+    { "type": "textarea", "id": "note", "label": "Footnote" },
+    { "type": "range", "id": "media_width", "label": "Image column width (%)", "min": 35, "max": 60, "step": 5, "default": 50 },
+    { "type": "header", "content": "Call to action" },
+    { "type": "text", "id": "cta_text", "label": "Button text", "default": "Start Application" },
+    { "type": "text", "id": "cta_url", "label": "Button link", "default": "#pz-wholesale-application" },
+    { "type": "range", "id": "button_radius", "label": "Button radius (px)", "min": 0, "max": 60, "step": 2, "default": 60 },
+    { "type": "header", "content": "Images" },
+    { "type": "image_picker", "id": "image", "label": "Main image", "info": "Preferred. Falls back to the theme asset below." },
+    { "type": "text", "id": "image_filename", "label": "Fallback main image asset" },
+    { "type": "text", "id": "image_filename_sm", "label": "Fallback main image asset (small)" },
+    { "type": "number", "id": "image_width", "label": "Fallback main image width (px)" },
+    { "type": "number", "id": "image_height", "label": "Fallback main image height (px)" },
+    { "type": "text", "id": "image_alt", "label": "Main image alt text", "default": "The 5 Point Zero team sampling PERFORM at a pickleball facility" },
+    { "type": "image_picker", "id": "inset_image", "label": "Inset image", "info": "Optional. Overlaps the main image on desktop, stacks below it on mobile." },
+    { "type": "text", "id": "inset_image_filename", "label": "Fallback inset image asset" },
+    { "type": "number", "id": "inset_image_width", "label": "Fallback inset image width (px)" },
+    { "type": "number", "id": "inset_image_height", "label": "Fallback inset image height (px)" },
+    { "type": "text", "id": "inset_image_alt", "label": "Inset image alt text", "default": "5 Point Zero PERFORM pouch, stick packs, bottle and pickleball" },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "accent_color", "label": "Accent", "default": "#96FF00" },
+    { "type": "color", "id": "accent_on_light_color", "label": "Accent for text on light", "info": "Neon green is unreadable on white (~1.3:1). This darker green meets AA.", "default": "#457300" },
+    { "type": "color", "id": "heading_color", "label": "Heading", "default": "#111111" },
+    { "type": "color", "id": "text_color", "label": "Body text", "default": "#141414" },
+    { "type": "color", "id": "button_bg", "label": "Button background", "default": "#111111" },
+    { "type": "color", "id": "button_text", "label": "Button text", "default": "#96FF00" },
+    { "type": "color", "id": "background", "label": "Section background", "default": "#ffffff" }
+  ],
+  "blocks": [
+    {
+      "type": "line",
+      "name": "Statement line",
+      "settings": [
+        { "type": "richtext", "id": "text", "label": "Text" },
+        { "type": "checkbox", "id": "emphasis", "label": "Large emphasis", "default": false }
+      ]
+    }
+  ],
+  "presets": [{ "name": "PZ Wholesale Pitch" }]
+}
+{% endschema %}

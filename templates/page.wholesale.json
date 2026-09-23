@@ -1,1 +1,203 @@
-{"sections":{"main":{"type":"main-page","disabled":true,"settings":{"padding_top":28,"padding_bottom":28}},"custom_image_with_text_g3WQGa":{"type":"custom_image_with_text","name":"Custom Image With Text","settings":{"image_first":false,"color_scheme":"scheme-3","padding_top":0,"padding_bottom":0,"caption":"","heading":"PROVIDE THE #1 PERFORMANCE DRINK FOR PICKLEBALL PLAYERS IN YOUR FACILITY","heading_size":"h1","hilight":"","content":"","button_label":"","button_link":"","button_style_secondary":false,"button_green":false,"img":"shopify:\/\/shop_images\/Screenshot_2025-05-29_at_3.31.51_AM.png"}},"image_banner_WWjQFn":{"type":"image-banner","blocks":{"heading_YpANLk":{"type":"heading","disabled":true,"settings":{"heading":"Image banner","heading_size":"h1"}},"text_8Lcpxm":{"type":"text","disabled":true,"settings":{"text":"Give customers details about the banner image(s) or content on the template.","text_style":"body"}},"buttons_PMBJyn":{"type":"buttons","disabled":true,"settings":{"button_label_1":"Button label","button_link_1":"","button_style_secondary_1":false,"button_label_2":"Button label","button_link_2":"","button_style_secondary_2":false}}},"block_order":["heading_YpANLk","text_8Lcpxm","buttons_PMBJyn"],"disabled":true,"name":"t:sections.image-banner.presets.name","settings":{"image":"shopify:\/\/shop_images\/Screenshot_2025-05-29_at_3.31.51_AM.png","image_overlay_opacity":0,"image_height":"adapt","desktop_content_position":"middle-center","show_text_box":true,"desktop_content_alignment":"center","color_scheme":"","image_behavior":"none","mobile_content_alignment":"center","stack_images_on_mobile":true,"show_text_below":true}},"custom_image_with_text_HgiPJp":{"type":"custom_image_with_text","custom_css":["@media screen and (min-width: 1200px) {.custom_iwt_text {white-space: nowrap; }}"],"settings":{"image_first":true,"color_scheme":"scheme-e56d8ea7-ff15-48ce-a75c-8d331735d485","padding_top":0,"padding_bottom":0,"caption":"","heading":"","heading_size":"h1","hilight":"","content":"<p>Every 5 Point Zero product has 5 BENEFITS and ZERO ARTIFICIAL INGREDIENTS.<br\/><br\/>No artificial colors.<\/p><p>No artificial flavors.<\/p><p>No artificial sweeteners<br\/><br\/>Our products keep your customers satisfied.<\/p><p>Our brand elevates your brand.<br\/><br\/>And, you can earn <strong>incremental income<\/strong> with another pickleball-related product.<br\/><br\/>Want to make <strong>100% profit<\/strong> on a consumable drink?<\/p><p>Want to earn income outside the four walls of your facility?<\/p><p>Let us show you how our <strong>Wholesale Program<\/strong> can work for you!<\/p><p>(We also have branded water bottles, towels, and hats at wholesale prices.)<\/p>","button_label":"","button_link":"","button_style_secondary":false,"button_green":false,"img":"shopify:\/\/shop_images\/Screenshot_2025-05-28_at_11.43.35_PM.png"}},"17489501813b4d74e1":{"type":"apps","blocks":{"forms_inline_mGPzq6":{"type":"shopify:\/\/apps\/forms\/blocks\/inline\/8744a304-fcb1-4347-b211-bb6b4759a76a","settings":{"form_id":"494072","text_color":"#202020","button_background_color":"#202020","button_label_color":"#ffffff","links_color":"#1878b9","errors_color":"#e02229","text_alignment":"center","form_alignment":"center","padding_top":30,"padding_bottom":30,"padding_right":0,"padding_left":0}}},"block_order":["forms_inline_mGPzq6"],"custom_css":[],"settings":{"include_margins":true}}},"order":["main","custom_image_with_text_g3WQGa","image_banner_WWjQFn","custom_image_with_text_HgiPJp","17489501813b4d74e1"]}
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "padding_top": 28,
+        "padding_bottom": 28
+      }
+    },
+    "pz_ws_hero": {
+      "type": "pz-wholesale-hero",
+      "blocks": {
+        "point-1": {
+          "type": "point",
+          "settings": {
+            "text": "High Margins."
+          }
+        },
+        "point-2": {
+          "type": "point",
+          "settings": {
+            "text": "Low Minimums."
+          }
+        }
+      },
+      "block_order": [
+        "point-1",
+        "point-2"
+      ],
+      "settings": {
+        "anchor_id": "pz-wholesale-top",
+        "eyebrow": "Wholesale",
+        "heading": "The #1 brand of performance drinks for pickleball players!",
+        "cta_text": "Start Application",
+        "cta_url": "#pz-wholesale-application",
+        "button_radius": 60,
+        "image_filename": "pz-ws-hero.jpg",
+        "image_filename_sm": "pz-ws-hero-sm.jpg",
+        "image_alt": "A player drinking 5 Point Zero from a branded bottle between games at an indoor pickleball facility",
+        "min_height": 80,
+        "image_blur": 3,
+        "image_brightness": 95,
+        "scrim_strength": 75,
+        "focal_x": 65,
+        "focal_y": 40,
+        "accent_color": "#96FF00",
+        "text_color": "#ffffff",
+        "image_width": 2200,
+        "image_height": 1438,
+        "copy_width": 660
+      }
+    },
+    "pz_ws_pitch": {
+      "type": "pz-wholesale-pitch",
+      "blocks": {
+        "line-1": {
+          "type": "line",
+          "settings": {
+            "text": "<p>Your players are looking for better performance.</p>",
+            "emphasis": true
+          }
+        },
+        "line-2": {
+          "type": "line",
+          "settings": {
+            "text": "<p>Now they can get it directly from your Pro Shop.</p>",
+            "emphasis": false
+          }
+        },
+        "line-3": {
+          "type": "line",
+          "settings": {
+            "text": "<p>Our products keep your customers satisfied.</p>",
+            "emphasis": false
+          }
+        },
+        "line-4": {
+          "type": "line",
+          "settings": {
+            "text": "<p>Our brand elevates your brand.</p>",
+            "emphasis": false
+          }
+        },
+        "line-5": {
+          "type": "line",
+          "settings": {
+            "text": "<p>Want to make <strong>100% profit</strong> on a consumable drink?</p>",
+            "emphasis": true
+          }
+        },
+        "line-6": {
+          "type": "line",
+          "settings": {
+            "text": "<p>Let us show you how our <strong>Wholesale Program</strong> can work for you!</p>",
+            "emphasis": false
+          }
+        }
+      },
+      "block_order": [
+        "line-1",
+        "line-2",
+        "line-3",
+        "line-4",
+        "line-5",
+        "line-6"
+      ],
+      "settings": {
+        "anchor_id": "pz-wholesale-why",
+        "eyebrow": "The Wholesale Program",
+        "heading": "High margins. Low minimums.",
+        "note": "We also have branded water bottles, towels, and hats at wholesale prices.",
+        "media_width": 50,
+        "cta_text": "Start Application",
+        "cta_url": "#pz-wholesale-application",
+        "button_radius": 60,
+        "image_filename": "pz-ws-demo.jpg",
+        "image_filename_sm": "pz-ws-demo-sm.jpg",
+        "image_alt": "The 5 Point Zero team pouring PERFORM samples for players at a pickleball facility",
+        "inset_image_filename": "pz-ws-product.jpg",
+        "inset_image_alt": "5 Point Zero PERFORM pouch, stick packs, branded bottle and a pickleball",
+        "accent_color": "#96FF00",
+        "accent_on_light_color": "#457300",
+        "heading_color": "#111111",
+        "text_color": "#141414",
+        "button_bg": "#111111",
+        "button_text": "#96FF00",
+        "background": "#ffffff",
+        "image_width": 1600,
+        "image_height": 1188,
+        "inset_image_width": 695,
+        "inset_image_height": 700
+      }
+    },
+    "pz_ws_form": {
+      "type": "pz-wholesale-form",
+      "settings": {
+        "anchor_id": "pz-wholesale-application",
+        "eyebrow": "Wholesale Application",
+        "heading": "Start Application",
+        "subheading": "Tell us about your facility and we'll be in touch with pricing and minimums.",
+        "position_options": "Owner\nManager\nBuyer\nOther",
+        "button_text": "Submit",
+        "helper_text": "",
+        "show_message": false,
+        "message_label": "Anything else we should know?",
+        "success_heading": "Application received",
+        "success_body": "<p>Thanks — we've got your details and will be in touch shortly.</p>",
+        "max_width": 800,
+        "field_radius": 4,
+        "button_radius": 60,
+        "background_image_filename": "pz-ws-bg-court.jpg",
+        "background_image_filename_sm": "pz-ws-bg-court-sm.jpg",
+        "background_image_opacity": 35,
+        "accent_color": "#96FF00",
+        "heading_color": "#ffffff",
+        "text_color": "#ffffff",
+        "field_background": "#141416",
+        "field_border": "rgba(255,255,255,0.18)",
+        "background": "#0A0A0B",
+        "background_image_width": 1800,
+        "background_image_height": 1028
+      }
+    },
+    "legacy_app_form": {
+      "type": "apps",
+      "blocks": {
+        "forms_inline_mGPzq6": {
+          "type": "shopify://apps/forms/blocks/inline/8744a304-fcb1-4347-b211-bb6b4759a76a",
+          "settings": {
+            "form_id": "494072",
+            "text_color": "#202020",
+            "button_background_color": "#202020",
+            "button_label_color": "#ffffff",
+            "links_color": "#1878b9",
+            "errors_color": "#e02229",
+            "text_alignment": "center",
+            "form_alignment": "center",
+            "padding_top": 30,
+            "padding_bottom": 30,
+            "padding_right": 0,
+            "padding_left": 0
+          }
+        }
+      },
+      "block_order": [
+        "forms_inline_mGPzq6"
+      ],
+      "custom_css": [],
+      "settings": {
+        "include_margins": true
+      },
+      "disabled": true
+    }
+  },
+  "order": [
+    "main",
+    "pz_ws_hero",
+    "pz_ws_pitch",
+    "pz_ws_form",
+    "legacy_app_form"
+  ]
+}

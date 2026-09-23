@@ -1,0 +1,218 @@
+{% comment %}
+  PZ Wholesale Hero — full-bleed brand photo with the wholesale pitch over it.
+
+  The supplied photo puts the subject on the right, so the scrim is a
+  directional gradient: heaviest behind the copy on the left, clearing
+  toward the subject rather than flattening the whole frame. Blur and
+  lift are exposed as settings because how much each photo needs varies.
+{% endcomment %}
+<section
+  id="{{ section.settings.anchor_id }}"
+  class="pz-wshero pz-wshero-{{ section.id }}"
+>
+  {% style %}
+    .pz-wshero-{{ section.id }} {
+      --pzw-accent: {{ section.settings.accent_color }};
+      --pzw-ink: {{ section.settings.text_color }};
+      position: relative;
+      display: flex; align-items: center;
+      min-height: {{ section.settings.min_height }}svh;
+      padding: 72px 16px;
+      box-sizing: border-box;
+      background: #000;
+      color: var(--pzw-ink);
+      overflow: hidden;
+      isolation: isolate;
+    }
+    @media (min-width: 750px) {
+      .pz-wshero-{{ section.id }} { padding: 96px 32px; }
+    }
+    .pz-wshero-{{ section.id }} .pz-wshero-media {
+      position: absolute; inset: 0; z-index: 0;
+    }
+    .pz-wshero-{{ section.id }} .pz-wshero-media img {
+      width: 100%; height: 100%; object-fit: cover;
+      object-position: {{ section.settings.focal_x }}% {{ section.settings.focal_y }}%;
+      filter: blur({{ section.settings.image_blur }}px)
+              brightness({{ section.settings.image_brightness | divided_by: 100.0 }});
+      transform: scale(1.06); /* hides the soft edge the blur creates */
+    }
+    /* Directional scrim: dense behind the copy, clearing toward the subject. */
+    .pz-wshero-{{ section.id }} .pz-wshero-media::after {
+      content: ''; position: absolute; inset: 0;
+      background:
+        linear-gradient(100deg,
+          rgba(0,0,0,{{ section.settings.scrim_strength | divided_by: 100.0 }}) 0%,
+          rgba(0,0,0,{{ section.settings.scrim_strength | divided_by: 100.0 | times: 0.8 }}) 38%,
+          rgba(0,0,0,.15) 78%),
+        linear-gradient(to top, rgba(0,0,0,.6), transparent 42%);
+    }
+    @media (max-width: 749px) {
+      /* No room to dodge the subject on a phone, so carry the scrim across. */
+      .pz-wshero-{{ section.id }} .pz-wshero-media::after {
+        background: linear-gradient(to top,
+          rgba(0,0,0,.88) 0%, rgba(0,0,0,.72) 55%, rgba(0,0,0,.58) 100%);
+      }
+    }
+
+    .pz-wshero-{{ section.id }} .pz-wshero-inner {
+      position: relative; z-index: 1;
+      width: 100%; max-width: 1180px; margin: 0 auto;
+    }
+    /* Sized in px, not ch: a ch cap here resolves against the BODY font
+       size, not the heading's, so it collapsed the 56px headline to about
+       six characters per line. */
+    .pz-wshero-{{ section.id }} .pz-wshero-copy { max-width: {{ section.settings.copy_width }}px; }
+    @media (max-width: 749px) {
+      .pz-wshero-{{ section.id }} .pz-wshero-copy { max-width: none; }
+    }
+
+    .pz-wshero-{{ section.id }} .pz-wshero-eyebrow {
+      display: inline-block; margin: 0 0 18px;
+      font-size: clamp(11px, 1.1vw, 13px); font-weight: 900;
+      letter-spacing: .34em; text-transform: uppercase;
+      color: var(--pzw-accent);
+    }
+    .pz-wshero-{{ section.id }} .pz-wshero-heading {
+      font-size: clamp(27px, 4.4vw, 56px); font-weight: 900; margin: 0 0 26px;
+      text-transform: uppercase; letter-spacing: -0.025em; line-height: 1.03;
+      color: var(--pzw-ink);
+    }
+
+    .pz-wshero-{{ section.id }} .pz-wshero-points {
+      display: flex; flex-wrap: wrap; gap: 10px 28px; margin: 0 0 30px; padding: 0; list-style: none;
+    }
+    .pz-wshero-{{ section.id }} .pz-wshero-point {
+      font-size: clamp(19px, 2.6vw, 33px); font-weight: 900;
+      text-transform: uppercase; letter-spacing: -0.02em; line-height: 1;
+      color: var(--pzw-accent);
+    }
+
+    .pz-wshero-{{ section.id }} .pz-wshero-cta {
+      display: inline-flex; align-items: center; gap: 10px;
+      padding: 17px 34px; border-radius: {{ section.settings.button_radius }}px;
+      background: var(--pzw-accent); color: #000;
+      font-size: clamp(13px, 1.3vw, 15px); font-weight: 900;
+      letter-spacing: .14em; text-transform: uppercase;
+      text-decoration: none; border: none;
+      transition: transform .18s ease, filter .18s ease;
+    }
+    .pz-wshero-{{ section.id }} .pz-wshero-cta:hover {
+      transform: translateY(-2px); filter: brightness(1.08);
+    }
+    .pz-wshero-{{ section.id }} .pz-wshero-cta:focus-visible {
+      outline: 3px solid #fff; outline-offset: 3px;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .pz-wshero-{{ section.id }} .pz-wshero-cta { transition: none; }
+      .pz-wshero-{{ section.id }} .pz-wshero-cta:hover { transform: none; }
+    }
+    @media (max-width: 749px) {
+      .pz-wshero-{{ section.id }} .pz-wshero-cta { width: 100%; justify-content: center; }
+    }
+  {% endstyle %}
+
+  {%- liquid
+    assign use_picker = false
+    if section.settings.image
+      assign use_picker = true
+    endif
+  -%}
+  {% if use_picker or section.settings.image_filename != blank %}
+    <div class="pz-wshero-media">
+      {% if use_picker %}
+        {{ section.settings.image | image_url: width: 2200 | image_tag:
+           alt: section.settings.image_alt, loading: 'eager', fetchpriority: 'high', sizes: '100vw',
+           widths: '750, 1100, 1500, 1900, 2200' }}
+      {% else %}
+        <img
+          src="{{ section.settings.image_filename | asset_url }}"
+          {% if section.settings.image_filename_sm != blank %}
+            srcset="{{ section.settings.image_filename_sm | asset_url }} 1100w,
+                    {{ section.settings.image_filename | asset_url }} 2200w"
+            sizes="100vw"
+          {% endif %}
+          alt="{{ section.settings.image_alt | escape }}"
+          width="{{ section.settings.image_width }}" height="{{ section.settings.image_height }}"
+          loading="eager" fetchpriority="high" decoding="async">
+      {% endif %}
+    </div>
+  {% endif %}
+
+  <div class="pz-wshero-inner">
+    <div class="pz-wshero-copy">
+      {% if section.settings.eyebrow != blank %}
+        <span class="pz-wshero-eyebrow">{{ section.settings.eyebrow }}</span>
+      {% endif %}
+      {% if section.settings.heading != blank %}
+        <h1 class="pz-wshero-heading">{{ section.settings.heading }}</h1>
+      {% endif %}
+      {% if section.blocks.size > 0 %}
+        <ul class="pz-wshero-points">
+          {% for block in section.blocks %}
+            {% if block.type == 'point' and block.settings.text != blank %}
+              <li class="pz-wshero-point" {{ block.shopify_attributes }}>{{ block.settings.text }}</li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      {% endif %}
+      {% if section.settings.cta_text != blank %}
+        <a class="pz-wshero-cta" href="{{ section.settings.cta_url | default: '#pz-wholesale-application' }}">
+          {{ section.settings.cta_text }}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "PZ Wholesale Hero",
+  "tag": "section",
+  "class": "pz-section",
+  "settings": [
+    { "type": "text", "id": "anchor_id", "label": "Anchor id", "default": "pz-wholesale-top" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Wholesale" },
+    { "type": "textarea", "id": "heading", "label": "Heading", "default": "The #1 brand of performance drinks for pickleball players!" },
+    { "type": "header", "content": "Call to action" },
+    { "type": "text", "id": "cta_text", "label": "Button text", "default": "Start Application" },
+    { "type": "text", "id": "cta_url", "label": "Button link", "info": "Defaults to the application form on this page", "default": "#pz-wholesale-application" },
+    { "type": "range", "id": "button_radius", "label": "Button radius (px)", "min": 0, "max": 60, "step": 2, "default": 60 },
+    { "type": "header", "content": "Background image" },
+    { "type": "image_picker", "id": "image", "label": "Image", "info": "Preferred \u2014 gives Shopify's responsive sizes. Falls back to the theme asset below." },
+    { "type": "text", "id": "image_filename", "label": "Fallback image asset", "info": "Filename in the theme's assets folder" },
+    { "type": "text", "id": "image_filename_sm", "label": "Fallback image asset (small)", "info": "Smaller copy of the same photo, served to phones" },
+    { "type": "number", "id": "image_width", "label": "Fallback image width (px)", "info": "Intrinsic size of the asset, so the browser can reserve space" },
+    { "type": "number", "id": "image_height", "label": "Fallback image height (px)" },
+    { "type": "text", "id": "image_alt", "label": "Image alt text", "info": "Describe the photo for screen readers", "default": "A player drinking 5 Point Zero between games at an indoor pickleball facility" },
+    { "type": "range", "id": "min_height", "label": "Minimum height (svh)", "min": 40, "max": 95, "step": 5, "default": 80 },
+    { "type": "range", "id": "copy_width", "label": "Copy column width (px)", "info": "How wide the headline is allowed to run on desktop", "min": 360, "max": 900, "step": 20, "default": 660 },
+    { "type": "range", "id": "image_blur", "label": "Image blur (px)", "info": "Softens the photo so the copy stays legible", "min": 0, "max": 12, "step": 1, "default": 3 },
+    { "type": "range", "id": "image_brightness", "label": "Image brightness (%)", "min": 40, "max": 130, "step": 5, "default": 95 },
+    { "type": "range", "id": "scrim_strength", "label": "Scrim strength (%)", "info": "Darkens the side the copy sits on", "min": 20, "max": 95, "step": 5, "default": 75 },
+    { "type": "range", "id": "focal_x", "label": "Image focal point X (%)", "min": 0, "max": 100, "step": 5, "default": 65 },
+    { "type": "range", "id": "focal_y", "label": "Image focal point Y (%)", "min": 0, "max": 100, "step": 5, "default": 40 },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "accent_color", "label": "Accent", "default": "#96FF00" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#ffffff" }
+  ],
+  "blocks": [
+    {
+      "type": "point",
+      "name": "Headline point",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Text", "default": "High Margins." }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "PZ Wholesale Hero",
+      "blocks": [
+        { "type": "point", "settings": { "text": "High Margins." } },
+        { "type": "point", "settings": { "text": "Low Minimums." } }
+      ]
+    }
+  ]
+}
+{% endschema %}
