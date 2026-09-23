@@ -35,7 +35,10 @@
       object-position: {{ section.settings.focal_x }}% {{ section.settings.focal_y }}%;
       filter: blur({{ section.settings.image_blur }}px)
               brightness({{ section.settings.image_brightness | divided_by: 100.0 }});
-      transform: scale(1.06); /* hides the soft edge the blur creates */
+      /* The 6% overscan exists only to hide the soft edge blur creates.
+         With no blur it would enlarge the photo for nothing, which costs
+         real detail on high-density displays. */
+      {% if section.settings.image_blur > 0 %}transform: scale(1.06);{% endif %}
     }
     /* Directional scrim: dense behind the copy, clearing toward the subject. */
     .pz-wshero-{{ section.id }} .pz-wshero-media::after {
@@ -187,7 +190,7 @@
     { "type": "text", "id": "image_alt", "label": "Image alt text", "info": "Describe the photo for screen readers", "default": "A player drinking 5 Point Zero between games at an indoor pickleball facility" },
     { "type": "range", "id": "min_height", "label": "Minimum height (svh)", "min": 40, "max": 95, "step": 5, "default": 80 },
     { "type": "range", "id": "copy_width", "label": "Copy column width (px)", "info": "How wide the headline is allowed to run on desktop", "min": 360, "max": 900, "step": 20, "default": 660 },
-    { "type": "range", "id": "image_blur", "label": "Image blur (px)", "info": "Softens the photo so the copy stays legible", "min": 0, "max": 12, "step": 1, "default": 3 },
+    { "type": "range", "id": "image_blur", "label": "Image blur (px)", "info": "Leave at 0 unless the photo is busy behind the copy \u2014 blur costs real detail", "min": 0, "max": 12, "step": 1, "default": 0 },
     { "type": "range", "id": "image_brightness", "label": "Image brightness (%)", "min": 40, "max": 130, "step": 5, "default": 95 },
     { "type": "range", "id": "scrim_strength", "label": "Scrim strength (%)", "info": "Darkens the side the copy sits on", "min": 20, "max": 95, "step": 5, "default": 75 },
     { "type": "range", "id": "focal_x", "label": "Image focal point X (%)", "min": 0, "max": 100, "step": 5, "default": 65 },
