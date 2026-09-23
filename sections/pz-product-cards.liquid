@@ -12,7 +12,7 @@
 {% endcomment %}
 <script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
 
-<section id="{{ section.settings.anchor_id }}" class="pzpc pzpc-{{ section.id }}">
+<section id="{{ section.settings.anchor_id }}" class="pzpc pzpc-{{ section.id }} pzpc--m{{ section.settings.columns_mobile }}">
   {% style %}
     .pzpc-{{ section.id }} {
       --pzpc-accent: {{ section.settings.accent_color }};
@@ -36,7 +36,26 @@
 
     .pzpc-{{ section.id }} .pzpc-grid {
       display: grid; gap: {{ section.settings.gap }}px;
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat({{ section.settings.columns_mobile }}, minmax(0, 1fr));
+    }
+    /* Two across on a phone only works if the card contents come down with
+       it — at full size the button alone overflows a 160px column. */
+    @media (max-width: 699px) {
+      .pzpc-{{ section.id }}.pzpc--m2 .pzpc-grid { gap: 10px; }
+      .pzpc-{{ section.id }}.pzpc--m2 .pzpc-body { padding: 14px 12px 16px; }
+      .pzpc-{{ section.id }}.pzpc--m2 .pzpc-eyebrow { font-size: 10px; letter-spacing: .1em; margin-bottom: 6px; }
+      .pzpc-{{ section.id }}.pzpc--m2 .pzpc-title { font-size: 17px; }
+      .pzpc-{{ section.id }}.pzpc--m2 .pzpc-price { font-size: 17px; }
+      .pzpc-{{ section.id }}.pzpc--m2 .pzpc-note { font-size: 11px; margin-bottom: 12px; }
+      .pzpc-{{ section.id }}.pzpc--m2 .pzpc-desc { font-size: 13px; margin-bottom: 14px; }
+      .pzpc-{{ section.id }}.pzpc--m2 .pzpc-atc {
+        font-size: 13px !important;
+        padding: 16px 8px !important;
+        letter-spacing: .04em; gap: 6px;
+      }
+      .pzpc-{{ section.id }}.pzpc--m2 .pzpc-atc .loading__spinner { right: 8px; }
+      .pzpc-{{ section.id }}.pzpc--m2 .pzpc-soon { font-size: 12px; padding: 16px 8px; letter-spacing: .06em; }
+      .pzpc-{{ section.id }}.pzpc--m2 .pzpc-flag { font-size: 10px; padding: 5px 9px; top: 8px; left: 8px; }
     }
     @media (min-width: 700px) {
       .pzpc-{{ section.id }} .pzpc-grid {
@@ -201,6 +220,7 @@
     { "type": "text", "id": "button_text", "label": "Button text", "default": "Add to cart" },
     { "type": "text", "id": "unavailable_text", "label": "Text when a product cannot be bought", "default": "Coming soon" },
     { "type": "range", "id": "max_width", "label": "Max width (px)", "min": 600, "max": 1280, "step": 20, "default": 900 },
+    { "type": "select", "id": "columns_mobile", "label": "Columns (mobile)", "options": [{"value":"1","label":"1"},{"value":"2","label":"2"}], "default": "2" },
     { "type": "range", "id": "gap", "label": "Gap (px)", "min": 8, "max": 40, "step": 2, "default": 20 },
     { "type": "text", "id": "media_ratio", "label": "Image ratio", "default": "1 / 1" },
     { "type": "select", "id": "media_fit", "label": "Image fit", "options": [{"value":"cover","label":"Fill"},{"value":"contain","label":"Fit inside"}], "default": "cover" },
