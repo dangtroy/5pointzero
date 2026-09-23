@@ -130,30 +130,33 @@
 
     /* Add to cart */
     .pzgp-{{ section.id }} .product-form__error-message-wrapper { margin-bottom: 12px; font-size: 14px; color: #c0392b; }
+    /* The theme's .button supplies the condensed face, the ring and the
+       focus state. These overrides are the same ones the product page
+       applies on top of it, so the two buttons match: the theme's own
+       colours and metrics would otherwise render this as a ghost button. */
     .pzgp-{{ section.id }} .pzgp-atc {
-      width: 100%; border: none; cursor: pointer;
-      display: inline-flex; align-items: center; justify-content: center; gap: 12px;
-      padding: 22px 25px; border-radius: {{ section.settings.button_radius }}px;
-      background: var(--pzgp-accent); color: #000;
-      font-family: inherit; font-size: 19px; font-weight: 900;
-      letter-spacing: .06em; text-transform: uppercase;
-      transition: transform .18s ease, filter .18s ease;
       position: relative;
+      gap: 12px;
+      width: 100%;
+      min-height: 44px;
+      background: var(--pzgp-accent) !important;
+      color: #000 !important;
+      border-color: var(--pzgp-accent) !important;
+      border-radius: {{ section.settings.button_radius }}px !important;
+      padding-top: 22px !important; padding-bottom: 22px !important;
+      font-size: 19px !important;
+      font-weight: 900 !important;
+      text-transform: uppercase;
+      letter-spacing: .06em;
     }
     .pzgp-{{ section.id }} .pzgp-atc:hover:not([aria-disabled="true"]):not(:disabled) {
-      transform: translateY(-2px); filter: brightness(1.08);
+      filter: brightness(1.06);
     }
-    .pzgp-{{ section.id }} .pzgp-atc:focus-visible { outline: 3px solid var(--pzgp-ink); outline-offset: 3px; }
     .pzgp-{{ section.id }} .pzgp-atc[aria-disabled="true"],
     .pzgp-{{ section.id }} .pzgp-atc:disabled { opacity: .5; cursor: not-allowed; }
     .pzgp-{{ section.id }} .pzgp-atc .loading__spinner { position: absolute; right: 18px; width: 18px; height: 18px; }
     .pzgp-{{ section.id }} .pzgp-atc .loading__spinner.hidden { display: none; }
     .pzgp-{{ section.id }} .pzgp-atc svg.pzgp-arrow-ico { width: 20px; height: 12px; stroke: currentColor; fill: none; stroke-width: 1.8; }
-    @media (prefers-reduced-motion: reduce) {
-      .pzgp-{{ section.id }} .pzgp-atc { transition: none; }
-      .pzgp-{{ section.id }} .pzgp-atc:hover { transform: none; }
-    }
-
     /* Numbered features, two columns once there is room. */
     .pzgp-{{ section.id }} .pzgp-features {
       list-style: none; margin: 26px 0 0; padding: 0;
@@ -242,7 +245,7 @@
           {%- form 'product', p, id: form_id, class: 'form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
             <input type="hidden" name="id" value="{{ v.id }}" class="product-variant-id"
                    {% unless v.available %}disabled{% endunless %}>
-            <button type="submit" name="add" class="pzgp-atc"
+            <button type="submit" name="add" class="pzgp-atc button button--full-width button--secondary"
                     {% unless v.available %}disabled{% endunless %}
                     aria-haspopup="dialog">
               <span>{% if v.available %}{{ section.settings.button_text }}{% else %}{{ section.settings.sold_out_text }}{% endif %}</span>

@@ -105,27 +105,26 @@
       margin: 0 0 28px; max-width: 52ch;
     }
     .pzhb-{{ section.id }}.pzhb--center .pzhb-sub { margin-left: auto; margin-right: auto; }
+    /* The theme's .button supplies the condensed face, the ring and the
+       focus state. These overrides are the same ones the product page
+       applies on top of it, so the two buttons match: the theme's own
+       colours and metrics would otherwise render this as a ghost button. */
     .pzhb-{{ section.id }} .pzhb-cta {
-      display: inline-flex; align-items: center; gap: 10px;
-      padding: 22px 25px; border-radius: {{ section.settings.button_radius }}px;
-      background: var(--pzw-accent); color: #000;
-      font-size: 19px; font-weight: 900;
-      letter-spacing: .06em; text-transform: uppercase;
-      text-decoration: none; border: none;
-      transition: transform .18s ease, filter .18s ease;
+      min-height: 44px;
+      text-decoration: none;
+      background: var(--pzw-accent) !important;
+      color: #000 !important;
+      border-color: var(--pzw-accent) !important;
+      border-radius: {{ section.settings.button_radius }}px !important;
+      padding-top: 22px !important; padding-bottom: 22px !important;
+      font-size: 19px !important;
+      font-weight: 900 !important;
+      text-transform: uppercase;
+      letter-spacing: .06em;
     }
-    .pzhb-{{ section.id }} .pzhb-cta:hover {
-      transform: translateY(-2px); filter: brightness(1.08);
-    }
-    .pzhb-{{ section.id }} .pzhb-cta:focus-visible {
-      outline: 3px solid #fff; outline-offset: 3px;
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .pzhb-{{ section.id }} .pzhb-cta { transition: none; }
-      .pzhb-{{ section.id }} .pzhb-cta:hover { transform: none; }
-    }
+    .pzhb-{{ section.id }} .pzhb-cta:hover { filter: brightness(1.06); }
     @media (max-width: 749px) {
-      .pzhb-{{ section.id }} .pzhb-cta { width: 100%; justify-content: center; }
+      .pzhb-{{ section.id }} .pzhb-cta { width: 100%; }
     }
   {% endstyle %}
 
@@ -177,7 +176,7 @@
         <p class="pzhb-sub">{{ section.settings.subheading }}</p>
       {% endif %}
       {% if section.settings.cta_text != blank %}
-        <a class="pzhb-cta" href="{{ section.settings.cta_url | default: '#pz-wholesale-application' }}">
+        <a class="pzhb-cta button button--secondary" href="{{ section.settings.cta_url | default: '#pz-wholesale-application' }}">
           {{ section.settings.cta_text }}
         </a>
       {% endif %}

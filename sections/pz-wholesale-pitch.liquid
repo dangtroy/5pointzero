@@ -89,26 +89,27 @@
     .pz-wspitch-{{ section.id }} .pz-wspitch-note {
       margin: 26px 0 0; font-size: 13px; line-height: 1.55; opacity: .58;
     }
+    /* The theme's .button supplies the condensed face, the ring and the
+       focus state. These overrides are the same ones the product page
+       applies on top of it, so the two buttons match: the theme's own
+       colours and metrics would otherwise render this as a ghost button. */
     .pz-wspitch-{{ section.id }} .pz-wspitch-cta {
-      display: inline-flex; align-items: center; gap: 10px; margin-top: 30px;
-      padding: 22px 25px; border-radius: {{ section.settings.button_radius }}px;
-      background: {{ section.settings.button_bg }}; color: {{ section.settings.button_text }};
-      font-size: 19px; font-weight: 900; letter-spacing: .06em; text-transform: uppercase;
+      margin-top: 30px;
+      min-height: 44px;
       text-decoration: none;
-      transition: transform .18s ease, filter .18s ease;
+      background: {{ section.settings.button_bg }} !important;
+      color: {{ section.settings.button_text }} !important;
+      border-color: {{ section.settings.button_bg }} !important;
+      border-radius: {{ section.settings.button_radius }}px !important;
+      padding-top: 22px !important; padding-bottom: 22px !important;
+      font-size: 19px !important;
+      font-weight: 900 !important;
+      text-transform: uppercase;
+      letter-spacing: .06em;
     }
-    .pz-wspitch-{{ section.id }} .pz-wspitch-cta:hover {
-      transform: translateY(-2px); filter: brightness(1.1);
-    }
-    .pz-wspitch-{{ section.id }} .pz-wspitch-cta:focus-visible {
-      outline: 3px solid {{ section.settings.text_color }}; outline-offset: 3px;
-    }
-    @media (prefers-reduced-motion: reduce) {
-      .pz-wspitch-{{ section.id }} .pz-wspitch-cta { transition: none; }
-      .pz-wspitch-{{ section.id }} .pz-wspitch-cta:hover { transform: none; }
-    }
+    .pz-wspitch-{{ section.id }} .pz-wspitch-cta:hover { filter: brightness(1.15); }
     @media (max-width: 749px) {
-      .pz-wspitch-{{ section.id }} .pz-wspitch-cta { width: 100%; justify-content: center; }
+      .pz-wspitch-{{ section.id }} .pz-wspitch-cta { width: 100%; }
     }
   {% endstyle %}
 
@@ -175,7 +176,7 @@
         <p class="pz-wspitch-note">{{ section.settings.note }}</p>
       {% endif %}
       {% if section.settings.cta_text != blank %}
-        <a class="pz-wspitch-cta" href="{{ section.settings.cta_url | default: '#pz-wholesale-application' }}">
+        <a class="pz-wspitch-cta button button--secondary" href="{{ section.settings.cta_url | default: '#pz-wholesale-application' }}">
           {{ section.settings.cta_text }}
         </a>
       {% endif %}

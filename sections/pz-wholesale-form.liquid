@@ -129,21 +129,26 @@
       width: 1px; height: 1px; overflow: hidden;
     }
 
+    /* The theme's .button supplies the condensed face, the ring and the
+       focus state. These overrides are the same ones the product page
+       applies on top of it, so the two buttons match: the theme's own
+       colours and metrics would otherwise render this as a ghost button. */
     .pz-wsform-{{ section.id }} .pz-wsform-submit {
       grid-column: 1 / -1;
-      margin-top: 8px; padding: 22px 25px;
-      border: none; border-radius: {{ section.settings.button_radius }}px;
-      background: var(--pzw-accent); color: #000;
-      font-size: 19px; font-weight: 900; letter-spacing: .06em; text-transform: uppercase;
-      font-family: inherit; cursor: pointer;
-      transition: transform .18s ease, filter .18s ease;
+      margin-top: 8px;
+      width: 100%;
+      min-height: 44px;
+      background: var(--pzw-accent) !important;
+      color: #000 !important;
+      border-color: var(--pzw-accent) !important;
+      border-radius: {{ section.settings.button_radius }}px !important;
+      padding-top: 22px !important; padding-bottom: 22px !important;
+      font-size: 19px !important;
+      font-weight: 900 !important;
+      text-transform: uppercase;
+      letter-spacing: .06em;
     }
-    .pz-wsform-{{ section.id }} .pz-wsform-submit:hover { transform: translateY(-2px); filter: brightness(1.08); }
-    .pz-wsform-{{ section.id }} .pz-wsform-submit:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
-    @media (prefers-reduced-motion: reduce) {
-      .pz-wsform-{{ section.id }} .pz-wsform-submit { transition: none; }
-      .pz-wsform-{{ section.id }} .pz-wsform-submit:hover { transform: none; }
-    }
+    .pz-wsform-{{ section.id }} .pz-wsform-submit:hover { filter: brightness(1.06); }
 
     .pz-wsform-{{ section.id }} .pz-wsform-helper {
       grid-column: 1 / -1; margin: 4px 0 0; font-size: 13px; line-height: 1.55; opacity: .55; text-align: center;
@@ -284,7 +289,7 @@
             <input id="{{ form_id }}-company2" type="text" name="contact[Company website confirm]" tabindex="-1" autocomplete="off">
           </div>
 
-          <button type="submit" class="pz-wsform-submit">{{ section.settings.button_text }}</button>
+          <button type="submit" class="pz-wsform-submit button button--full-width button--secondary">{{ section.settings.button_text }}</button>
 
           {% if section.settings.helper_text != blank %}
             <p class="pz-wsform-helper">{{ section.settings.helper_text }}</p>
