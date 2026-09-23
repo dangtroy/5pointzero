@@ -227,7 +227,7 @@
           "settings": {
             "icon": "droplet",
             "title": "Hydration",
-            "description": "Replenish electrolytes and support hydration."
+            "description": "When you sweat, your body needs more than just water … it needs electrolytes!\nPERFORM has them all: Sodium, Potassium, Calcium, and Chloride."
           }
         },
         "b-2": {
@@ -235,7 +235,7 @@
           "settings": {
             "icon": "bolt",
             "title": "Energy",
-            "description": "Support energy production and help you stay in the game."
+            "description": "We’ve added some pure, natural “pop” into PERFORM … and into your game!\nGreen Tea and Yerba Mate will get you going and keep you rolling."
           }
         },
         "b-3": {
@@ -243,23 +243,23 @@
           "settings": {
             "icon": "pulse",
             "title": "Endurance",
-            "description": "Support sustained performance during play."
+            "description": "Don’t let fatigue become another opponent on the court.\nTaurine, Panax Ginseng, and L‑Glutamine help you stay on your “A” game into hour 2, 3, and 4!"
           }
         },
         "b-4": {
           "type": "benefit",
           "settings": {
-            "icon": "target",
-            "title": "Focus",
-            "description": "Support mental clarity and focus."
+            "icon": "shield",
+            "title": "Anti-Cramping",
+            "description": "You feel a bit of tightening and then … BAM … your leg is locked up. Not anymore!\nMagnesium, Vitamin B6, and Vitamin D is your new “cramp insurance.”"
           }
         },
         "b-5": {
           "type": "benefit",
           "settings": {
-            "icon": "shield",
-            "title": "Anti-Cramping",
-            "description": "Support muscle function during activity."
+            "icon": "target",
+            "title": "Focus",
+            "description": "When your brain is processing faster, you see the game better.\nTheanine, Bacopa Monnieri, and Rhodiola Rosea is the winning combination!"
           }
         }
       },
@@ -275,10 +275,10 @@
       "type": "pz-nutrition-strip",
       "settings": {
         "anchor_id": "pz-nutrition",
-        "heading": "In Every Serving of PERFORM",
-        "subheading": "A performance formula built to fuel a full session on the court.",
+        "heading": "In Every Serving of PERFORM.",
+        "subheading": "Everything you need. Nothing you don’t.",
         "columns": 5,
-        "note": "Figures per 1 packet (4.2g) serving, taken from the product's Supplement Facts panel. Sugar, calorie and carb claims per the product description.",
+        "note": "Figures per single-serve packet, taken from the product’s Supplement Facts panel.",
         "accent_color": "#96FF00",
         "heading_color": "#ffffff",
         "text_color": "#ffffff",
@@ -289,36 +289,71 @@
         "fact-1": {
           "type": "fact",
           "settings": {
-            "value": "1,949mg",
-            "label": "Active Ingredients"
+            "value": "1,946",
+            "label": "Active Ingredients – mg"
           }
         },
         "fact-2": {
           "type": "fact",
           "settings": {
-            "value": "389mg",
-            "label": "Total Electrolytes"
+            "value": "389",
+            "label": "Electrolytes – mg"
           }
         },
         "fact-3": {
           "type": "fact",
           "settings": {
-            "value": "0g",
-            "label": "Sugar"
+            "value": "7",
+            "label": "Vitamins & Minerals"
           }
         },
         "fact-4": {
           "type": "fact",
           "settings": {
-            "value": "0",
-            "label": "Calories"
+            "value": "5",
+            "label": "Plant Extracts"
           }
         },
         "fact-5": {
           "type": "fact",
           "settings": {
-            "value": "30",
-            "label": "Single-Serve Packs"
+            "value": "3",
+            "label": "Amino Acids"
+          }
+        },
+        "fact-6": {
+          "type": "fact",
+          "settings": {
+            "value": "0",
+            "label": "Artificial Colors"
+          }
+        },
+        "fact-7": {
+          "type": "fact",
+          "settings": {
+            "value": "0",
+            "label": "Artificial Flavors"
+          }
+        },
+        "fact-8": {
+          "type": "fact",
+          "settings": {
+            "value": "0",
+            "label": "Artificial Sweeteners"
+          }
+        },
+        "fact-9": {
+          "type": "fact",
+          "settings": {
+            "value": "0",
+            "label": "Sugar"
+          }
+        },
+        "fact-10": {
+          "type": "fact",
+          "settings": {
+            "value": "0",
+            "label": "Gluten"
           }
         }
       },
@@ -327,7 +362,12 @@
         "fact-2",
         "fact-3",
         "fact-4",
-        "fact-5"
+        "fact-5",
+        "fact-6",
+        "fact-7",
+        "fact-8",
+        "fact-9",
+        "fact-10"
       ]
     },
     "pz_ingredients": {

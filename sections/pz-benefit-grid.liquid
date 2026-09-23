@@ -143,7 +143,7 @@
           <span class="pz-benefit-rule" aria-hidden="true"></span>
           <div class="pz-benefit-title">{{ block.settings.title }}</div>
           {% if block.settings.description != blank %}
-            <div class="pz-benefit-desc">{{ block.settings.description }}</div>
+            <div class="pz-benefit-desc">{{ block.settings.description | newline_to_br }}</div>
           {% endif %}
         </div>
       {% endif %}

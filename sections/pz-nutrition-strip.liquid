@@ -42,7 +42,15 @@
       min-width: 0; text-align: center; padding: 34px 14px;
       border-left: 1px solid {{ section.settings.rule_color }};
     }
-    .pz-nutrition-{{ section.id }} .pz-fact:first-child { border-left: none; }
+    /* Dividers are per-row, so any number of stats wraps cleanly: the first
+       cell of each row drops its left rule, and every row after the first
+       gains a top rule. */
+    .pz-nutrition-{{ section.id }} .pz-fact:nth-child({{ section.settings.columns }}n + 1) {
+      border-left: none;
+    }
+    .pz-nutrition-{{ section.id }} .pz-fact:nth-child(n + {{ section.settings.columns | plus: 1 }}) {
+      border-top: 1px solid {{ section.settings.rule_color }};
+    }
     .pz-nutrition-{{ section.id }} .pz-fact-value {
       font-size: clamp(34px, 4.4vw, 62px); font-weight: 900; line-height: 1;
       color: {{ section.settings.accent_color }};
