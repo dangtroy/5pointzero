@@ -1,0 +1,387 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page",
+      "disabled": true,
+      "settings": {
+        "padding_top": 28,
+        "padding_bottom": 28
+      }
+    },
+    "gear_hero": {
+      "type": "pz-hero-banner",
+      "blocks": {},
+      "block_order": [],
+      "settings": {
+        "anchor_id": "pz-gear-top",
+        "eyebrow": "5 Point Zero: Play your best and look your best.",
+        "heading": "Gear Up.\nGame On!",
+        "subheading": "",
+        "text_align": "left",
+        "cta_text": "Shop Gear",
+        "cta_url": "#pz-gear-bottle",
+        "button_radius": 60,
+        "image_filename": "pz-gear-hero.jpg",
+        "image_filename_sm": "pz-gear-hero-sm.jpg",
+        "image_width": 1700,
+        "image_height": 1133,
+        "image_alt": "Four players in 5 Point Zero hats, shirts and towels laughing together on an indoor pickleball court",
+        "min_height": 70,
+        "copy_width": 660,
+        "image_blur": 0,
+        "image_brightness": 90,
+        "scrim_strength": 70,
+        "focal_x": 55,
+        "focal_y": 35,
+        "accent_color": "#96FF00",
+        "text_color": "#ffffff"
+      }
+    },
+    "gear_benefits": {
+      "type": "pz-icon-row",
+      "blocks": {
+        "benefit-1": {
+          "type": "item",
+          "settings": {
+            "icon": "droplet",
+            "title": "Play Longer",
+            "subtitle": "Stay hydrated and perform at your best."
+          }
+        },
+        "benefit-2": {
+          "type": "item",
+          "settings": {
+            "icon": "bolt",
+            "title": "Better Performance",
+            "subtitle": "Clean energy and essential electrolytes."
+          }
+        },
+        "benefit-3": {
+          "type": "item",
+          "settings": {
+            "icon": "shield",
+            "title": "Premium Quality",
+            "subtitle": "Thoughtfully designed for pickleball players."
+          }
+        },
+        "benefit-4": {
+          "type": "item",
+          "settings": {
+            "icon": "people",
+            "title": "Player Approved",
+            "subtitle": "Trusted by the 5 Point Zero community."
+          }
+        }
+      },
+      "block_order": [
+        "benefit-1",
+        "benefit-2",
+        "benefit-3",
+        "benefit-4"
+      ],
+      "settings": {
+        "anchor_id": "pz-gear-benefits",
+        "stack_items": true,
+        "show_dividers": true,
+        "columns_mobile": 2,
+        "icon_size": 34,
+        "title_size": 13,
+        "sub_size": 13,
+        "padding": 40,
+        "icon_color": "#111111",
+        "text_color": "#141414",
+        "rule_color": "rgba(0,0,0,0.12)",
+        "background": "#F4F4F4"
+      }
+    },
+    "gear_bottle": {
+      "type": "pz-gear-product",
+      "blocks": {
+        "feature-1": {
+          "type": "feature",
+          "settings": {
+            "text": "Fast flow drinking spout for maximum hydration"
+          }
+        },
+        "feature-2": {
+          "type": "feature",
+          "settings": {
+            "text": "The ergonomic, hand-shaped grip makes it easy to handle on and off the court"
+          }
+        },
+        "feature-3": {
+          "type": "feature",
+          "settings": {
+            "text": "BPA-Free and Non-Toxic Plastic (BPA, or Bisphenol A, is a chemical found in most plastic water bottles that can be very harmful to human health)"
+          }
+        },
+        "feature-4": {
+          "type": "feature",
+          "settings": {
+            "text": "Leak-proof lid snaps closed for a waterproof seal and sanitary storage while not being used"
+          }
+        },
+        "feature-5": {
+          "type": "feature",
+          "settings": {
+            "text": "Sturdy and durable"
+          }
+        }
+      },
+      "block_order": [
+        "feature-1",
+        "feature-2",
+        "feature-3",
+        "feature-4",
+        "feature-5"
+      ],
+      "settings": {
+        "anchor_id": "pz-gear-bottle",
+        "product": "bpa-free-water-bottle",
+        "eyebrow": "Hydration",
+        "title": "",
+        "description": "<p>5 Point Zero Customers and Ambassadors love our water bottle! Stay hydrated. Stay energized. And share your enthusiasm for our pickleball lifestyle brand.</p>",
+        "price_note": "Discount calculated at checkout with Referral Code.",
+        "media_side": "left",
+        "media_width": 50,
+        "media_ratio": "4 / 3",
+        "media_fit": "cover",
+        "show_rating": true,
+        "rating": 5,
+        "review_count": 5,
+        "button_text": "Add to cart",
+        "sold_out_text": "Sold out",
+        "show_button_arrow": true,
+        "button_radius": 60,
+        "accent_color": "#96FF00",
+        "text_color": "#141414",
+        "media_background": "#F4F4F4",
+        "background": "#ffffff"
+      }
+    },
+    "gear_towel": {
+      "type": "pz-gear-product",
+      "blocks": {
+        "feature-1": {
+          "type": "feature",
+          "settings": {
+            "text": "Microfiber material absorbs sweat better than cotton"
+          }
+        },
+        "feature-2": {
+          "type": "feature",
+          "settings": {
+            "text": "Doesn’t absorb odors"
+          }
+        },
+        "feature-3": {
+          "type": "feature",
+          "settings": {
+            "text": "Logo is “debossed” into the fabric, so there is no embroidery to irritate your skin"
+          }
+        },
+        "feature-4": {
+          "type": "feature",
+          "settings": {
+            "text": "Soft, lightweight, large, and durable"
+          }
+        },
+        "feature-5": {
+          "type": "feature",
+          "settings": {
+            "text": "Bright green color and large “5 Point Zero” logo makes a statement"
+          }
+        },
+        "feature-6": {
+          "type": "feature",
+          "settings": {
+            "text": "Easy care machine washable"
+          }
+        }
+      },
+      "block_order": [
+        "feature-1",
+        "feature-2",
+        "feature-3",
+        "feature-4",
+        "feature-5",
+        "feature-6"
+      ],
+      "settings": {
+        "anchor_id": "pz-gear-towel",
+        "product": "super-absorbent-towel",
+        "eyebrow": "Recovery",
+        "title": "",
+        "description": "<p>The best way to dry off your face, your hands, and your paddle handle in between games. Our 5 Point Zero towel is super absorbent and fast drying.</p>",
+        "price_note": "Discount calculated at checkout with Referral Code.",
+        "media_side": "right",
+        "media_width": 50,
+        "media_ratio": "4 / 3",
+        "media_fit": "cover",
+        "show_rating": true,
+        "rating": 4,
+        "review_count": 4,
+        "button_text": "Add to cart",
+        "sold_out_text": "Sold out",
+        "show_button_arrow": true,
+        "button_radius": 60,
+        "accent_color": "#96FF00",
+        "text_color": "#141414",
+        "media_background": "#F4F4F4",
+        "background": "#ffffff"
+      }
+    },
+    "gear_cap": {
+      "type": "pz-gear-product",
+      "blocks": {
+        "feature-1": {
+          "type": "feature",
+          "settings": {
+            "text": "Made of high-quality, breathable fabric for comfort and durability"
+          }
+        },
+        "feature-2": {
+          "type": "feature",
+          "settings": {
+            "text": "Soft, flexible, and adjustable"
+          }
+        },
+        "feature-3": {
+          "type": "feature",
+          "settings": {
+            "text": "100% machine washable"
+          }
+        },
+        "feature-4": {
+          "type": "feature",
+          "settings": {
+            "text": "Moisture wicking mesh back keeps you cool, even when the game heats up"
+          }
+        },
+        "feature-5": {
+          "type": "feature",
+          "settings": {
+            "text": "Perfect for men, women, girls, and boys"
+          }
+        }
+      },
+      "block_order": [
+        "feature-1",
+        "feature-2",
+        "feature-3",
+        "feature-4",
+        "feature-5"
+      ],
+      "settings": {
+        "anchor_id": "pz-gear-cap",
+        "product": "mesh-baseball-cap",
+        "eyebrow": "Apparel",
+        "title": "",
+        "description": "<p>Whether you’re already a 5.0-level player or you just aspire to be one, this cap will make you look like a pro. Stay cool. Look cool.</p>",
+        "price_note": "Discount calculated at checkout with Referral Code.",
+        "media_side": "left",
+        "media_width": 50,
+        "media_ratio": "4 / 3",
+        "media_fit": "cover",
+        "show_rating": true,
+        "rating": 5,
+        "review_count": 3,
+        "button_text": "Add to cart",
+        "sold_out_text": "Sold out",
+        "show_button_arrow": true,
+        "button_radius": 60,
+        "accent_color": "#96FF00",
+        "text_color": "#141414",
+        "media_background": "#F4F4F4",
+        "background": "#ffffff"
+      }
+    },
+    "gear_cta": {
+      "type": "pz-hero-banner",
+      "blocks": {},
+      "block_order": [],
+      "settings": {
+        "anchor_id": "pz-gear-cta",
+        "eyebrow": "5 Point Zero Gear",
+        "heading": "Gear that keeps you playing.",
+        "subheading": "Hydration. Performance. Recovery. Style.",
+        "text_align": "center",
+        "cta_text": "Shop All Gear",
+        "cta_url": "/collections/all",
+        "button_radius": 60,
+        "image_filename": "pz-ws-bg-court.jpg",
+        "image_filename_sm": "pz-ws-bg-court-sm.jpg",
+        "image_width": 1800,
+        "image_height": 1028,
+        "image_alt": "",
+        "min_height": 45,
+        "copy_width": 760,
+        "image_blur": 0,
+        "image_brightness": 70,
+        "scrim_strength": 60,
+        "focal_x": 50,
+        "focal_y": 50,
+        "accent_color": "#96FF00",
+        "text_color": "#ffffff"
+      }
+    },
+    "gear_trust": {
+      "type": "pz-icon-row",
+      "blocks": {
+        "trust-1": {
+          "type": "item",
+          "settings": {
+            "icon": "truck",
+            "title": "Free Shipping",
+            "subtitle": "On orders $50+"
+          }
+        },
+        "trust-2": {
+          "type": "item",
+          "settings": {
+            "icon": "badge",
+            "title": "100% Money-Back",
+            "subtitle": "Guarantee"
+          }
+        },
+        "trust-3": {
+          "type": "item",
+          "settings": {
+            "icon": "people",
+            "title": "Trusted By Players",
+            "subtitle": "Join the 5 Point Zero community"
+          }
+        }
+      },
+      "block_order": [
+        "trust-1",
+        "trust-2",
+        "trust-3"
+      ],
+      "settings": {
+        "anchor_id": "pz-gear-trust",
+        "stack_items": false,
+        "show_dividers": false,
+        "columns_mobile": 1,
+        "icon_size": 28,
+        "title_size": 12,
+        "sub_size": 12,
+        "padding": 26,
+        "icon_color": "#111111",
+        "text_color": "#141414",
+        "rule_color": "rgba(0,0,0,0.12)",
+        "background": "#ffffff"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "gear_hero",
+    "gear_benefits",
+    "gear_bottle",
+    "gear_towel",
+    "gear_cap",
+    "gear_cta",
+    "gear_trust"
+  ]
+}

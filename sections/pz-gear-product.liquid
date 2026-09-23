@@ -1,0 +1,350 @@
+{% comment %}
+  PZ Gear Product — one product, presented as an editorial block.
+
+  Reads a real product, so price, availability and gallery come from the
+  store rather than being retyped into settings and drifting out of date.
+  Add to cart is the theme's own <product-form> custom element, which is
+  what routes the add into the cart drawer.
+
+  That element is particular about its contents: product-form.js reaches
+  for .loading__spinner and for a <span> inside the submit button without
+  null-checking either, so both must be present or the click throws and
+  nothing reaches the cart.
+{% endcomment %}
+{%- liquid
+  assign p = section.settings.product
+  assign v = p.selected_or_first_available_variant
+  assign form_id = 'pzgp-form-' | append: section.id
+  assign media_side = section.settings.media_side
+-%}
+{%- comment -%}
+  product-form.js is loaded by the product template, not globally, so a page
+  template has to bring it itself or <product-form> stays an inert element
+  and the button falls back to a full-page POST instead of the cart drawer.
+  The file guards its own definition, so several instances are safe.
+{%- endcomment -%}
+<script src="{{ 'product-form.js' | asset_url }}" defer="defer"></script>
+
+<section
+  id="{{ section.settings.anchor_id }}"
+  class="pzgp pzgp-{{ section.id }} pzgp--media-{{ media_side }}"
+>
+  {% style %}
+    .pzgp-{{ section.id }} {
+      --pzgp-accent: {{ section.settings.accent_color }};
+      --pzgp-ink: {{ section.settings.text_color }};
+      background: {{ section.settings.background }};
+      color: var(--pzgp-ink);
+      padding: 0 0 44px;
+      scroll-margin-top: 80px;
+    }
+    @media (min-width: 950px) {
+      .pzgp-{{ section.id }} { padding: 0; }
+    }
+    .pzgp-{{ section.id }} .pzgp-inner {
+      display: grid; grid-template-columns: 1fr; gap: 0; align-items: stretch;
+    }
+    @media (min-width: 950px) {
+      .pzgp-{{ section.id }} .pzgp-inner {
+        grid-template-columns: {{ section.settings.media_width }}fr {{ 100 | minus: section.settings.media_width }}fr;
+      }
+      .pzgp-{{ section.id }}.pzgp--media-right .pzgp-media { order: 2; }
+    }
+
+    /* Media ------------------------------------------------------------ */
+    .pzgp-{{ section.id }} .pzgp-media { min-width: 0; position: relative; }
+    .pzgp-{{ section.id }} .pzgp-stage {
+      position: relative; background: {{ section.settings.media_background }};
+      aspect-ratio: {{ section.settings.media_ratio }};
+      overflow: hidden;
+    }
+    .pzgp-{{ section.id }} .pzgp-slide {
+      position: absolute; inset: 0; opacity: 0; transition: opacity .35s ease;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .pzgp-{{ section.id }} .pzgp-slide.is-active { opacity: 1; }
+    .pzgp-{{ section.id }} .pzgp-slide img {
+      width: 100%; height: 100%; object-fit: {{ section.settings.media_fit }};
+      display: block;
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .pzgp-{{ section.id }} .pzgp-slide { transition: none; }
+    }
+
+    .pzgp-{{ section.id }} .pzgp-arrow {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      width: 40px; height: 40px; border-radius: 50%;
+      background: rgba(255,255,255,.92); color: #111;
+      border: none; cursor: pointer; z-index: 2;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,.18);
+    }
+    .pzgp-{{ section.id }} .pzgp-arrow:focus-visible { outline: 3px solid var(--pzgp-accent); outline-offset: 2px; }
+    .pzgp-{{ section.id }} .pzgp-arrow--prev { left: 14px; }
+    .pzgp-{{ section.id }} .pzgp-arrow--next { right: 14px; }
+    .pzgp-{{ section.id }} .pzgp-arrow svg { width: 17px; height: 17px; stroke: currentColor; fill: none; stroke-width: 2; }
+
+    .pzgp-{{ section.id }} .pzgp-thumbs {
+      display: flex; gap: 10px; padding: 12px 16px 0;
+      overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch;
+    }
+    .pzgp-{{ section.id }} .pzgp-thumbs::-webkit-scrollbar { display: none; }
+    .pzgp-{{ section.id }} .pzgp-thumb {
+      flex: none; width: 82px; aspect-ratio: 1; padding: 0; cursor: pointer;
+      border: 2px solid transparent; border-radius: 3px; overflow: hidden;
+      background: {{ section.settings.media_background }};
+    }
+    .pzgp-{{ section.id }} .pzgp-thumb.is-active { border-color: var(--pzgp-accent); }
+    .pzgp-{{ section.id }} .pzgp-thumb:focus-visible { outline: 3px solid var(--pzgp-accent); outline-offset: 2px; }
+    .pzgp-{{ section.id }} .pzgp-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+    /* Copy -------------------------------------------------------------- */
+    .pzgp-{{ section.id }} .pzgp-copy {
+      min-width: 0; padding: 32px 16px 0;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    @media (min-width: 950px) {
+      .pzgp-{{ section.id }} .pzgp-copy { padding: 56px clamp(28px, 4vw, 64px); }
+    }
+    .pzgp-{{ section.id }} .pzgp-eyebrow {
+      display: block; margin-bottom: 10px;
+      font-size: 11px; font-weight: 900; letter-spacing: .26em; text-transform: uppercase;
+      opacity: .5;
+    }
+    .pzgp-{{ section.id }} .pzgp-title {
+      font-size: clamp(26px, 3.3vw, 42px); font-weight: 900; margin: 0 0 12px;
+      text-transform: uppercase; letter-spacing: -0.025em; line-height: 1.02;
+    }
+    .pzgp-{{ section.id }} .pzgp-rating {
+      display: flex; align-items: center; gap: 9px; margin-bottom: 14px;
+      font-size: 13px; opacity: .72;
+    }
+    .pzgp-{{ section.id }} .pzgp-stars { display: inline-flex; gap: 2px; color: var(--pzgp-accent); }
+    .pzgp-{{ section.id }} .pzgp-stars svg { width: 15px; height: 15px; }
+    .pzgp-{{ section.id }} .pzgp-price {
+      font-size: clamp(22px, 2.3vw, 28px); font-weight: 900; margin: 0 0 4px; letter-spacing: -0.02em;
+    }
+    .pzgp-{{ section.id }} .pzgp-price-note { font-size: 13px; font-weight: 700; opacity: .72; margin: 0 0 20px; }
+    .pzgp-{{ section.id }} .pzgp-desc { font-size: 15px; line-height: 1.6; opacity: .8; margin: 20px 0 0; max-width: 56ch; }
+
+    /* Add to cart */
+    .pzgp-{{ section.id }} .product-form__error-message-wrapper { margin-bottom: 12px; font-size: 14px; color: #c0392b; }
+    .pzgp-{{ section.id }} .pzgp-atc {
+      width: 100%; border: none; cursor: pointer;
+      display: inline-flex; align-items: center; justify-content: center; gap: 12px;
+      padding: 19px 30px; border-radius: {{ section.settings.button_radius }}px;
+      background: var(--pzgp-accent); color: #000;
+      font-family: inherit; font-size: 15px; font-weight: 900;
+      letter-spacing: .14em; text-transform: uppercase;
+      transition: transform .18s ease, filter .18s ease;
+      position: relative;
+    }
+    .pzgp-{{ section.id }} .pzgp-atc:hover:not([aria-disabled="true"]):not(:disabled) {
+      transform: translateY(-2px); filter: brightness(1.08);
+    }
+    .pzgp-{{ section.id }} .pzgp-atc:focus-visible { outline: 3px solid var(--pzgp-ink); outline-offset: 3px; }
+    .pzgp-{{ section.id }} .pzgp-atc[aria-disabled="true"],
+    .pzgp-{{ section.id }} .pzgp-atc:disabled { opacity: .5; cursor: not-allowed; }
+    .pzgp-{{ section.id }} .pzgp-atc .loading__spinner { position: absolute; right: 18px; width: 18px; height: 18px; }
+    .pzgp-{{ section.id }} .pzgp-atc .loading__spinner.hidden { display: none; }
+    .pzgp-{{ section.id }} .pzgp-atc svg.pzgp-arrow-ico { width: 20px; height: 12px; stroke: currentColor; fill: none; stroke-width: 1.8; }
+    @media (prefers-reduced-motion: reduce) {
+      .pzgp-{{ section.id }} .pzgp-atc { transition: none; }
+      .pzgp-{{ section.id }} .pzgp-atc:hover { transform: none; }
+    }
+
+    /* Numbered features, two columns once there is room. */
+    .pzgp-{{ section.id }} .pzgp-features {
+      list-style: none; margin: 26px 0 0; padding: 0;
+      display: grid; grid-template-columns: 1fr; gap: 16px 32px;
+    }
+    @media (min-width: 620px) {
+      .pzgp-{{ section.id }} .pzgp-features { grid-template-columns: 1fr 1fr; }
+    }
+    .pzgp-{{ section.id }} .pzgp-feature { display: flex; gap: 12px; min-width: 0; }
+    .pzgp-{{ section.id }} .pzgp-feature-n {
+      flex: none; font-size: 13px; font-weight: 900; opacity: .32; letter-spacing: .04em;
+      padding-top: 1px;
+    }
+    .pzgp-{{ section.id }} .pzgp-feature-t { font-size: 14px; line-height: 1.5; opacity: .85; }
+  {% endstyle %}
+
+  <div class="pzgp-inner">
+    <div class="pzgp-media">
+      {%- if p != blank and p.images.size > 0 -%}
+        <div class="pzgp-stage" data-pzgp-stage>
+          {%- for img in p.images limit: 8 -%}
+            <div class="pzgp-slide{% if forloop.first %} is-active{% endif %}" data-i="{{ forloop.index0 }}">
+              {{ img | image_url: width: 1400 | image_tag:
+                 alt: img.alt | default: p.title,
+                 loading: 'lazy',
+                 sizes: '(min-width: 950px) 50vw, 100vw',
+                 widths: '400, 700, 1000, 1400' }}
+            </div>
+          {%- endfor -%}
+          {%- if p.images.size > 1 -%}
+            <button type="button" class="pzgp-arrow pzgp-arrow--prev" data-pzgp-prev aria-label="Previous image">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <button type="button" class="pzgp-arrow pzgp-arrow--next" data-pzgp-next aria-label="Next image">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          {%- endif -%}
+        </div>
+        {%- if p.images.size > 1 -%}
+          <div class="pzgp-thumbs" data-pzgp-thumbs>
+            {%- for img in p.images limit: 8 -%}
+              <button type="button" class="pzgp-thumb{% if forloop.first %} is-active{% endif %}" data-i="{{ forloop.index0 }}"
+                      aria-label="Show image {{ forloop.index }}">
+                {{ img | image_url: width: 200 | image_tag: alt: '', loading: 'lazy', widths: '100, 200' }}
+              </button>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      {%- endif -%}
+    </div>
+
+    <div class="pzgp-copy">
+      {% if section.settings.eyebrow != blank %}
+        <span class="pzgp-eyebrow">{{ section.settings.eyebrow }}</span>
+      {% endif %}
+
+      <h2 class="pzgp-title">{{ section.settings.title | default: p.title }}</h2>
+
+      {% if section.settings.show_rating and section.settings.review_count > 0 %}
+        <div class="pzgp-rating">
+          <span class="pzgp-stars" role="img"
+                aria-label="{{ section.settings.rating }} out of 5 stars">
+            {%- assign filled = section.settings.rating | round -%}
+            {%- for i in (1..5) -%}
+              <svg viewBox="0 0 24 24" aria-hidden="true"
+                   fill="{% if i <= filled %}currentColor{% else %}none{% endif %}"
+                   stroke="currentColor" stroke-width="1.5">
+                <path d="m12 3 2.7 5.6 6.1.8-4.4 4.3 1.1 6.1L12 17l-5.5 2.8 1.1-6.1L3.2 9.4l6.1-.8z"/>
+              </svg>
+            {%- endfor -%}
+          </span>
+          <span>{{ section.settings.review_count }} {% if section.settings.review_count == 1 %}review{% else %}reviews{% endif %}</span>
+        </div>
+      {% endif %}
+
+      {%- if p != blank -%}
+        <p class="pzgp-price">{{ v.price | money }}</p>
+        {% if section.settings.price_note != blank %}
+          <p class="pzgp-price-note">{{ section.settings.price_note }}</p>
+        {% endif %}
+
+        <product-form class="product-form" data-hide-errors="false" data-section-id="{{ section.id }}">
+          <div class="product-form__error-message-wrapper" role="alert" hidden>
+            <span class="product-form__error-message"></span>
+          </div>
+          {%- form 'product', p, id: form_id, class: 'form', novalidate: 'novalidate', data-type: 'add-to-cart-form' -%}
+            <input type="hidden" name="id" value="{{ v.id }}" class="product-variant-id"
+                   {% unless v.available %}disabled{% endunless %}>
+            <button type="submit" name="add" class="pzgp-atc"
+                    {% unless v.available %}disabled{% endunless %}
+                    aria-haspopup="dialog">
+              <span>{% if v.available %}{{ section.settings.button_text }}{% else %}{{ section.settings.sold_out_text }}{% endif %}</span>
+              {%- if v.available and section.settings.show_button_arrow -%}
+                <svg class="pzgp-arrow-ico" viewBox="0 0 24 12" aria-hidden="true">
+                  <path d="M0 6h21M16 1l5 5-5 5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              {%- endif -%}
+              {%- render 'loading-spinner' -%}
+            </button>
+          {%- endform -%}
+        </product-form>
+      {%- else -%}
+        <p class="pzgp-price-note">Choose a product in this section's settings.</p>
+      {%- endif -%}
+
+      {% if section.settings.description != blank %}
+        <div class="pzgp-desc">{{ section.settings.description }}</div>
+      {% endif %}
+
+      {% if section.blocks.size > 0 %}
+        <ul class="pzgp-features">
+          {% for block in section.blocks %}
+            {% if block.type == 'feature' and block.settings.text != blank %}
+              <li class="pzgp-feature" {{ block.shopify_attributes }}>
+                <span class="pzgp-feature-n" aria-hidden="true">{{ forloop.index | prepend: '0' | slice: -2, 2 }}</span>
+                <span class="pzgp-feature-t">{{ block.settings.text }}</span>
+              </li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      var root = document.getElementById({{ section.settings.anchor_id | json }});
+      if (!root || root.dataset.pzgpInit === '1') return;
+      root.dataset.pzgpInit = '1';
+      var slides = root.querySelectorAll('[data-pzgp-stage] .pzgp-slide');
+      if (slides.length < 2) return;
+      var thumbs = root.querySelectorAll('[data-pzgp-thumbs] .pzgp-thumb');
+      var i = 0;
+      function show(n) {
+        i = (n + slides.length) % slides.length;
+        slides.forEach(function (s, k) { s.classList.toggle('is-active', k === i); });
+        thumbs.forEach(function (t, k) {
+          t.classList.toggle('is-active', k === i);
+          t.setAttribute('aria-current', k === i ? 'true' : 'false');
+        });
+      }
+      var prev = root.querySelector('[data-pzgp-prev]');
+      var next = root.querySelector('[data-pzgp-next]');
+      if (prev) prev.addEventListener('click', function () { show(i - 1); });
+      if (next) next.addEventListener('click', function () { show(i + 1); });
+      thumbs.forEach(function (t) {
+        t.addEventListener('click', function () { show(parseInt(t.dataset.i, 10)); });
+      });
+    })();
+  </script>
+</section>
+
+{% schema %}
+{
+  "name": "PZ Gear Product",
+  "tag": "section",
+  "class": "pz-section",
+  "settings": [
+    { "type": "text", "id": "anchor_id", "label": "Anchor id", "info": "Must be unique on the page", "default": "pz-gear-item" },
+    { "type": "product", "id": "product", "label": "Product", "info": "Price, availability and gallery all come from this product" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Hydration" },
+    { "type": "text", "id": "title", "label": "Title override", "info": "Leave blank to use the product's own title" },
+    { "type": "richtext", "id": "description", "label": "Description" },
+    { "type": "text", "id": "price_note", "label": "Note under the price", "default": "Discount calculated at checkout with Referral Code." },
+    { "type": "select", "id": "media_side", "label": "Image side (desktop)", "options": [{"value":"left","label":"Left"},{"value":"right","label":"Right"}], "default": "left" },
+    { "type": "range", "id": "media_width", "label": "Image column width (%)", "min": 35, "max": 60, "step": 5, "default": 50 },
+    { "type": "text", "id": "media_ratio", "label": "Image area ratio", "info": "For example 4 / 3 or 1 / 1", "default": "4 / 3" },
+    { "type": "select", "id": "media_fit", "label": "Image fit", "options": [{"value":"cover","label":"Fill the area"},{"value":"contain","label":"Fit inside"}], "default": "cover" },
+    { "type": "header", "content": "Rating" },
+    { "type": "checkbox", "id": "show_rating", "label": "Show rating", "default": true },
+    { "type": "range", "id": "rating", "label": "Stars", "min": 1, "max": 5, "step": 1, "default": 5 },
+    { "type": "number", "id": "review_count", "label": "Review count", "info": "Set this from your real review app figures" },
+    { "type": "header", "content": "Add to cart" },
+    { "type": "text", "id": "button_text", "label": "Button text", "default": "Add to cart" },
+    { "type": "text", "id": "sold_out_text", "label": "Sold out text", "default": "Sold out" },
+    { "type": "checkbox", "id": "show_button_arrow", "label": "Show arrow on the button", "default": true },
+    { "type": "range", "id": "button_radius", "label": "Button radius (px)", "min": 0, "max": 60, "step": 2, "default": 60 },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "accent_color", "label": "Accent", "default": "#96FF00" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#141414" },
+    { "type": "color", "id": "media_background", "label": "Image area background", "default": "#F4F4F4" },
+    { "type": "color", "id": "background", "label": "Section background", "default": "#ffffff" }
+  ],
+  "blocks": [
+    {
+      "type": "feature",
+      "name": "Feature",
+      "settings": [
+        { "type": "textarea", "id": "text", "label": "Text" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "PZ Gear Product" }]
+}
+{% endschema %}

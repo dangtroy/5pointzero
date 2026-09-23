@@ -1,0 +1,143 @@
+{% comment %}
+  PZ Icon Row — a strip of icon + title + supporting line.
+
+  Deliberately generic: the same section serves the benefit strip near the
+  top of a page and the trust strip near the bottom, which differ only in
+  ground colour, item count and whether the items are divided.
+{% endcomment %}
+<section id="{{ section.settings.anchor_id }}" class="pzir pzir-{{ section.id }}">
+  {% style %}
+    .pzir-{{ section.id }} {
+      background: {{ section.settings.background }};
+      color: {{ section.settings.text_color }};
+      padding: 30px 16px;
+    }
+    @media (min-width: 750px) {
+      .pzir-{{ section.id }} { padding: {{ section.settings.padding }}px 32px; }
+    }
+    .pzir-{{ section.id }} .pzir-inner {
+      max-width: 1280px; margin: 0 auto;
+      display: grid; gap: 0;
+      grid-template-columns: repeat({{ section.settings.columns_mobile }}, 1fr);
+    }
+    @media (min-width: 750px) {
+      .pzir-{{ section.id }} .pzir-inner {
+        grid-template-columns: repeat({{ section.blocks.size }}, 1fr);
+      }
+    }
+    .pzir-{{ section.id }} .pzir-item {
+      min-width: 0;
+      display: flex; align-items: center; gap: 14px;
+      padding: 18px 16px;
+      text-align: left;
+    }
+    {% if section.settings.stack_items %}
+      .pzir-{{ section.id }} .pzir-item {
+        flex-direction: column; text-align: center; gap: 12px; padding: 22px 14px;
+      }
+    {% endif %}
+
+    /* Dividers are per-row so any number of items wraps cleanly: the first
+       cell of each row drops its left rule. */
+    {% if section.settings.show_dividers %}
+      .pzir-{{ section.id }} .pzir-item { border-left: 1px solid {{ section.settings.rule_color }}; }
+      .pzir-{{ section.id }} .pzir-item:nth-child({{ section.settings.columns_mobile }}n + 1) { border-left: none; }
+      @media (min-width: 750px) {
+        .pzir-{{ section.id }} .pzir-item:nth-child({{ section.settings.columns_mobile }}n + 1) {
+          border-left: 1px solid {{ section.settings.rule_color }};
+        }
+        .pzir-{{ section.id }} .pzir-item:first-child { border-left: none; }
+      }
+    {% endif %}
+
+    .pzir-{{ section.id }} .pzir-icon {
+      flex: none;
+      width: {{ section.settings.icon_size }}px; height: {{ section.settings.icon_size }}px;
+      color: {{ section.settings.icon_color }};
+    }
+    .pzir-{{ section.id }} .pzir-icon svg {
+      width: 100%; height: 100%; display: block;
+      stroke: currentColor; fill: none;
+      stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round;
+    }
+    .pzir-{{ section.id }} .pzir-text { min-width: 0; }
+    .pzir-{{ section.id }} .pzir-title {
+      font-size: {{ section.settings.title_size }}px; font-weight: 900;
+      text-transform: uppercase; letter-spacing: .08em; line-height: 1.2;
+      margin: 0 0 4px;
+    }
+    .pzir-{{ section.id }} .pzir-sub {
+      font-size: {{ section.settings.sub_size }}px; line-height: 1.45; opacity: .62; margin: 0;
+    }
+  {% endstyle %}
+
+  <div class="pzir-inner">
+    {% for block in section.blocks %}
+      {% if block.type == 'item' %}
+        <div class="pzir-item" {{ block.shopify_attributes }}>
+          <span class="pzir-icon" aria-hidden="true">
+            {% case block.settings.icon %}
+              {% when 'droplet' %}<svg viewBox="0 0 24 24"><path d="M12 2.7s6 6.4 6 10.5a6 6 0 0 1-12 0C6 9.1 12 2.7 12 2.7z"/></svg>
+              {% when 'bolt' %}<svg viewBox="0 0 24 24"><path d="M13 2 4.5 13.5H11L10 22l8.5-11.5H12z"/></svg>
+              {% when 'shield' %}<svg viewBox="0 0 24 24"><path d="M12 2.5 20 6v6c0 5-3.4 8.4-8 9.5-4.6-1.1-8-4.5-8-9.5V6z"/><path d="m9 12 2 2 4-4"/></svg>
+              {% when 'people' %}<svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M2.5 20a6.5 6.5 0 0 1 13 0"/><circle cx="17.5" cy="9.5" r="2.5"/><path d="M16 15.2A5.6 5.6 0 0 1 21.5 20"/></svg>
+              {% when 'truck' %}<svg viewBox="0 0 24 24"><path d="M2.5 6.5h11v9h-11z"/><path d="M13.5 10h4l3 3v2.5h-7z"/><circle cx="6.5" cy="17.5" r="1.8"/><circle cx="17" cy="17.5" r="1.8"/></svg>
+              {% when 'badge' %}<svg viewBox="0 0 24 24"><circle cx="12" cy="9.5" r="6"/><path d="m8.5 15-1 6.5 4.5-2.5 4.5 2.5-1-6.5"/></svg>
+              {% when 'star' %}<svg viewBox="0 0 24 24"><path d="m12 3 2.7 5.6 6.1.8-4.4 4.3 1.1 6.1L12 17l-5.5 2.8 1.1-6.1L3.2 9.4l6.1-.8z"/></svg>
+              {% when 'leaf' %}<svg viewBox="0 0 24 24"><path d="M20 4s-1 12-9 13c-4 .5-6.5-2-6.5-5.5C4.5 6 20 4 20 4z"/><path d="M4.5 20C7 14 12 9.5 17 7"/></svg>
+              {% else %}<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/></svg>
+            {% endcase %}
+          </span>
+          <span class="pzir-text">
+            {% if block.settings.title != blank %}
+              <span class="pzir-title">{{ block.settings.title }}</span>
+            {% endif %}
+            {% if block.settings.subtitle != blank %}
+              <p class="pzir-sub">{{ block.settings.subtitle }}</p>
+            {% endif %}
+          </span>
+        </div>
+      {% endif %}
+    {% endfor %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "PZ Icon Row",
+  "tag": "section",
+  "class": "pz-section",
+  "settings": [
+    { "type": "text", "id": "anchor_id", "label": "Anchor id", "default": "pz-icon-row" },
+    { "type": "checkbox", "id": "stack_items", "label": "Stack icon above text", "default": true },
+    { "type": "checkbox", "id": "show_dividers", "label": "Show dividers between items", "default": true },
+    { "type": "range", "id": "columns_mobile", "label": "Columns on mobile", "min": 1, "max": 3, "step": 1, "default": 2 },
+    { "type": "range", "id": "icon_size", "label": "Icon size (px)", "min": 18, "max": 56, "step": 2, "default": 34 },
+    { "type": "range", "id": "title_size", "label": "Title size (px)", "min": 10, "max": 18, "step": 1, "default": 13 },
+    { "type": "range", "id": "sub_size", "label": "Subtitle size (px)", "min": 10, "max": 18, "step": 1, "default": 13 },
+    { "type": "range", "id": "padding", "label": "Vertical padding (px)", "min": 16, "max": 90, "step": 2, "default": 40 },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "icon_color", "label": "Icon", "default": "#111111" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#141414" },
+    { "type": "color", "id": "rule_color", "label": "Divider", "default": "rgba(0,0,0,0.12)" },
+    { "type": "color", "id": "background", "label": "Background", "default": "#F4F4F4" }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Item",
+      "settings": [
+        { "type": "select", "id": "icon", "label": "Icon", "options": [
+          {"value":"droplet","label":"Droplet"},{"value":"bolt","label":"Bolt"},
+          {"value":"shield","label":"Shield"},{"value":"people","label":"People"},
+          {"value":"truck","label":"Truck"},{"value":"badge","label":"Badge"},
+          {"value":"star","label":"Star"},{"value":"leaf","label":"Leaf"}
+        ], "default": "droplet" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Play Longer" },
+        { "type": "textarea", "id": "subtitle", "label": "Subtitle" }
+      ]
+    }
+  ],
+  "presets": [{ "name": "PZ Icon Row" }]
+}
+{% endschema %}

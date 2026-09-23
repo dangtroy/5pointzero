@@ -9,7 +9,7 @@
       }
     },
     "pz_ws_hero": {
-      "type": "pz-wholesale-hero",
+      "type": "pz-hero-banner",
       "blocks": {
         "point-1": {
           "type": "point",
@@ -48,7 +48,9 @@
         "text_color": "#ffffff",
         "image_width": 1857,
         "image_height": 1214,
-        "copy_width": 660
+        "copy_width": 660,
+        "text_align": "left",
+        "subheading": ""
       }
     },
     "pz_ws_pitch": {
