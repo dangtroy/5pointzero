@@ -143,7 +143,11 @@
     {% assign spot = section.settings.product %}
     {% if spot != blank and spot.featured_image %}
       <a class="pz-benefits-pack" href="{{ spot.url }}">
-        {{ spot.featured_image | image_url: width: 600 | image_tag: alt: spot.title, loading: 'lazy', sizes: '200px', widths: '200, 400, 600' }}
+        {%- if section.settings.product_asset != blank -%}
+          <img src="{{ section.settings.product_asset | asset_url }}" alt="{{ spot.title | escape }}" loading="lazy" width="800" height="800">
+        {%- else -%}
+          {{ spot.featured_image | image_url: width: 600 | image_tag: alt: spot.title, loading: 'lazy', sizes: '200px', widths: '200, 400, 600' }}
+        {%- endif -%}
       </a>
     {% endif %}
     {% if section.settings.eyebrow != blank %}<span class="pz-benefits-eyebrow">{{ section.settings.eyebrow }}</span>{% endif %}
@@ -239,6 +243,7 @@
     { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "More than just flavored salt water." },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "info": "Small label above the heading" },
     { "type": "product", "id": "product", "label": "Product pack shot", "info": "Shows the product's main image above the heading" },
+    { "type": "text", "id": "product_asset", "label": "Pack cut-out asset", "info": "Optional transparent PNG in the theme assets, used instead of the product photo" },
     { "type": "text", "id": "label_text", "label": "Label button text", "info": "e.g. See PERFORM label. Hidden until a label image is set." },
     { "type": "image_picker", "id": "label_image", "label": "Label image" },
     { "type": "url", "id": "label_url", "label": "Label image URL", "info": "Used when no label image is picked" },

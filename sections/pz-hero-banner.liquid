@@ -131,7 +131,9 @@
 
     /* Product packs beside the copy. With two, they flank it (first on the
        left, second on the right); with one, it sits after the copy. */
-    .pzhb-{{ section.id }} .pzhb-inner--products {
+    /* .pzhb-inner twice in the selector so it outranks the centred
+       layout's flex rule (.pzhb-ID.pzhb--center .pzhb-inner). */
+    .pzhb-{{ section.id }} .pzhb-inner.pzhb-inner--products {
       display: grid; align-items: center; gap: 24px 40px;
       grid-template-columns: 1fr;
     }
@@ -148,7 +150,7 @@
     }
     @media (max-width: 749px) {
       .pzhb-{{ section.id }} .pzhb-packs-mobile {
-        display: flex; justify-content: center; gap: 16px; order: -1;
+        display: flex; justify-content: center; align-items: flex-end; gap: 16px; order: -1;
       }
       .pzhb-{{ section.id }} .pzhb-packs-mobile .pzhb-pack img { max-width: 150px; }
       .pzhb-{{ section.id }} .pzhb-pack--desktop { display: none; }
@@ -206,7 +208,13 @@
     {%- if section.settings.product_1 != blank and section.settings.product_1.featured_image -%}
       {%- assign p = section.settings.product_1 -%}
       <figure class="pzhb-pack">
-        <a href="{{ p.url }}">{{ p.featured_image | image_url: width: 800 | image_tag: alt: p.title, loading: 'lazy', sizes: '(min-width: 750px) 300px, 150px', widths: '300, 500, 800' }}</a>
+        <a href="{{ p.url }}">
+          {%- if section.settings.product_1_asset != blank -%}
+            <img src="{{ section.settings.product_1_asset | asset_url }}" alt="{{ p.title | escape }}" loading="lazy" width="800" height="800">
+          {%- else -%}
+            {{ p.featured_image | image_url: width: 800 | image_tag: alt: p.title, loading: 'lazy', sizes: '(min-width: 750px) 300px, 150px', widths: '300, 500, 800' }}
+          {%- endif -%}
+        </a>
         {%- if section.settings.product_1_label != blank -%}<figcaption>{{ section.settings.product_1_label }}</figcaption>{%- endif -%}
       </figure>
     {%- endif -%}
@@ -215,7 +223,13 @@
     {%- if section.settings.product_2 != blank and section.settings.product_2.featured_image -%}
       {%- assign p = section.settings.product_2 -%}
       <figure class="pzhb-pack">
-        <a href="{{ p.url }}">{{ p.featured_image | image_url: width: 800 | image_tag: alt: p.title, loading: 'lazy', sizes: '(min-width: 750px) 300px, 150px', widths: '300, 500, 800' }}</a>
+        <a href="{{ p.url }}">
+          {%- if section.settings.product_2_asset != blank -%}
+            <img src="{{ section.settings.product_2_asset | asset_url }}" alt="{{ p.title | escape }}" loading="lazy" width="800" height="800">
+          {%- else -%}
+            {{ p.featured_image | image_url: width: 800 | image_tag: alt: p.title, loading: 'lazy', sizes: '(min-width: 750px) 300px, 150px', widths: '300, 500, 800' }}
+          {%- endif -%}
+        </a>
         {%- if section.settings.product_2_label != blank -%}<figcaption>{{ section.settings.product_2_label }}</figcaption>{%- endif -%}
       </figure>
     {%- endif -%}
@@ -290,8 +304,10 @@
     { "type": "header", "content": "Product packs", "info": "Shows each product's main image (the bag) beside the copy. With two, they sit either side." },
     { "type": "product", "id": "product_1", "label": "Product 1" },
     { "type": "text", "id": "product_1_label", "label": "Product 1 caption" },
+    { "type": "text", "id": "product_1_asset", "label": "Product 1 cut-out asset", "info": "Optional transparent PNG in the theme assets, used instead of the product photo on dark backgrounds" },
     { "type": "product", "id": "product_2", "label": "Product 2" },
     { "type": "text", "id": "product_2_label", "label": "Product 2 caption" },
+    { "type": "text", "id": "product_2_asset", "label": "Product 2 cut-out asset", "info": "Optional transparent PNG in the theme assets, used instead of the product photo on dark backgrounds" },
     { "type": "range", "id": "product_image_width", "label": "Pack image max width (px)", "min": 160, "max": 420, "step": 10, "default": 300 },
     { "type": "header", "content": "Background image" },
     { "type": "image_picker", "id": "image", "label": "Image", "info": "Preferred \u2014 gives Shopify's responsive sizes. Falls back to the theme asset below." },

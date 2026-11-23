@@ -104,7 +104,11 @@
     </div>
 
     {% assign pack = section.settings.product %}
-    {% if section.settings.image %}
+    {% if section.settings.image_asset != blank %}
+      <div class="pz-byg-pack">
+        <img src="{{ section.settings.image_asset | asset_url }}" alt="{{ section.settings.image_alt | default: 'A bag of 5 Point Zero PERFORM with stick packs' | escape }}" loading="lazy" width="800" height="800">
+      </div>
+    {% elsif section.settings.image %}
       <div class="pz-byg-pack">
         {{ section.settings.image | image_url: width: 800 | image_tag: alt: section.settings.image_alt, loading: 'lazy', sizes: '(min-width: 900px) 360px, 200px', widths: '300, 500, 800' }}
       </div>
@@ -134,6 +138,7 @@
     { "type": "text", "id": "tags", "label": "Customer tags", "info": "Comma separated, added to everyone who signs up here", "default": "newsletter,before-you-go" },
     { "type": "header", "content": "Image" },
     { "type": "product", "id": "product", "label": "Product", "info": "Shows the product's main image (the bag)" },
+    { "type": "text", "id": "image_asset", "label": "Cut-out asset", "info": "Transparent PNG in the theme assets; used first when set" },
     { "type": "image_picker", "id": "image", "label": "Image override", "info": "Used instead of the product image when set" },
     { "type": "text", "id": "image_alt", "label": "Override image alt text" },
     { "type": "range", "id": "image_width", "label": "Image max width (px)", "min": 200, "max": 480, "step": 10, "default": 360 },

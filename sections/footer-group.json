@@ -144,7 +144,8 @@
     "pz_before_you_go": {
       "type": "pz-before-you-go",
       "settings": {
-        "product": "perform-pink-lemonade"
+        "product": "perform-pink-lemonade",
+        "image_asset": "pz-pack-perform.png"
       }
     }
   },
