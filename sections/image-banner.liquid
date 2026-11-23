@@ -120,12 +120,13 @@
       {%- for block in section.blocks -%}
         {%- case block.type -%}
           {%- when 'heading' -%}
-            <h2
+            {%- assign pz_heading_tag = block.settings.heading_tag | default: 'h2' -%}
+            <{{ pz_heading_tag }}
               class="banner__heading inline-richtext {{ block.settings.heading_size }}"
               {{ block.shopify_attributes }}
             >
               {{ block.settings.heading }}
-            </h2>
+            </{{ pz_heading_tag }}>
           {%- when 'text' -%}
             <div class="banner__text rte {{ block.settings.text_style }}" {{ block.shopify_attributes }}>
               <p>{{ block.settings.text }}</p>
@@ -372,6 +373,17 @@
           "id": "heading",
           "default": "t:sections.image-banner.blocks.heading.settings.heading.default",
           "label": "t:sections.image-banner.blocks.heading.settings.heading.label"
+        },
+        {
+          "type": "select",
+          "id": "heading_tag",
+          "options": [
+            { "value": "h1", "label": "Main page heading (H1)" },
+            { "value": "h2", "label": "Section heading (H2)" }
+          ],
+          "default": "h2",
+          "label": "Heading tag",
+          "info": "Use H1 once per page, on the first heading. It tells search engines what the page is about."
         },
         {
           "type": "select",

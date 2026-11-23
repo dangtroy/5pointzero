@@ -161,7 +161,8 @@
         <span class="pzhb-eyebrow">{{ section.settings.eyebrow }}</span>
       {% endif %}
       {% if section.settings.heading != blank %}
-        <h1 class="pzhb-heading">{{ section.settings.heading | newline_to_br }}</h1>
+        {%- assign pz_heading_tag = section.settings.heading_tag | default: 'h1' -%}
+        <{{ pz_heading_tag }} class="pzhb-heading">{{ section.settings.heading | newline_to_br }}</{{ pz_heading_tag }}>
       {% endif %}
       {% if section.blocks.size > 0 %}
         <ul class="pzhb-points">
@@ -192,7 +193,8 @@
   "settings": [
     { "type": "text", "id": "anchor_id", "label": "Anchor id", "default": "pz-wholesale-top" },
     { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Wholesale" },
-    { "type": "textarea", "id": "heading", "label": "Heading", "info": "Line breaks here are kept", "default": "The #1 brand of performance drinks for pickleball players!" },
+    { "type": "textarea", "id": "heading", "label": "Heading", "info": "Line breaks here are kept", "default": "Performance drinks made for pickleball players." },
+    { "type": "select", "id": "heading_tag", "label": "Heading tag", "info": "Use H1 once per page, on the first heading. Later banners on the same page should be H2.", "options": [{"value":"h1","label":"Main page heading (H1)"},{"value":"h2","label":"Section heading (H2)"}], "default": "h1" },
     { "type": "textarea", "id": "subheading", "label": "Subheading" },
     { "type": "select", "id": "text_align", "label": "Alignment", "options": [{"value":"left","label":"Left"},{"value":"center","label":"Centre"}], "default": "left" },
     { "type": "header", "content": "Call to action" },

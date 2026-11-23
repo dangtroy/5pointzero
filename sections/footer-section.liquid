@@ -1,0 +1,1629 @@
+<section class="pz-footer" id="pz-footer-{{ section.id }}">
+  
+  <!-- BENEFITS -->
+  <div class="pz-footer__benefits">
+    
+    <div class="pz-footer__benefit">
+      <div class="pz-footer__icon">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 19a15 15 0 0 1 27-8"/>
+          <path d="M36 11l1-8 7 5"/>
+          <rect x="14" y="20" width="20" height="13" rx="2"/>
+          <path d="M19 33v5h10v-5M24 24v5"/>
+        </svg>
+      </div>
+      <h3>{{ section.settings.benefit_1_title }}</h3>
+      <p>{{ section.settings.benefit_1_text }}</p>
+    </div>
+
+    <div class="pz-footer__benefit">
+      <div class="pz-footer__icon">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M24 4l4 4 6-1 2 6 6 2-1 6 4 4-4 4 1 6-6 2-2 6-6-1-4 4-4-4-6 1-2-6-6-2 1-6-4-4 4-4-1-6 6-2 2-6 6 1 4-4z"/>
+          <path d="M16 24l5 5 11-12"/>
+        </svg>
+      </div>
+      <h3>{{ section.settings.benefit_2_title }}</h3>
+      <p>{{ section.settings.benefit_2_text }}</p>
+    </div>
+
+    <div class="pz-footer__benefit">
+      <div class="pz-footer__icon">
+        <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M8 30c12-17 23-20 34-22-2 11-5 23-21 28"/>
+          <path d="M21 36c-2-9 0-16 8-23"/>
+        </svg>
+      </div>
+      <h3>{{ section.settings.benefit_3_title }}</h3>
+      <p>{{ section.settings.benefit_3_text }}</p>
+    </div>
+
+  </div>
+
+
+  <!-- NEWSLETTER / SIGNUP -->
+  <div class="pz-footer__newsletter">
+    <div class="pz-footer__newsletter-copy">
+      <span>{{ section.settings.newsletter_kicker }}</span>
+
+      <h2>
+        {{ section.settings.newsletter_heading }}
+      </h2>
+
+      <p>{{ section.settings.newsletter_text }}</p>
+    </div>
+
+    <div class="pz-footer__newsletter-form">
+      {% form 'customer', id: 'pz-footer-newsletter' %}
+
+        <input type="hidden" name="contact[tags]" value="newsletter">
+
+        <div class="pz-footer__input-wrap">
+          <input
+            type="email"
+            name="contact[email]"
+            value="{{ form.email }}"
+            placeholder="{{ section.settings.email_placeholder }}"
+            autocomplete="email"
+            required
+          >
+
+          <button type="submit" aria-label="Subscribe">
+            →
+          </button>
+        </div>
+
+        {% if form.posted_successfully? %}
+          <p class="pz-footer__success">
+            {{ section.settings.success_message }}
+          </p>
+        {% endif %}
+
+        {% if form.errors %}
+          <div class="pz-footer__error">
+            {{ form.errors | default_errors }}
+          </div>
+        {% endif %}
+
+      {% endform %}
+    </div>
+  </div>
+
+
+    <!-- MAIN FOOTER -->
+  <div class="pz-footer__main">
+
+    <!-- MOBILE NAVIGATION / DESKTOP NAVIGATION -->
+    <div class="pz-footer__nav">
+
+      <details class="pz-footer__nav-group" open>
+        <summary>
+          <span>SHOP</span>
+          <span class="pz-footer__accordion-icon">+</span>
+        </summary>
+
+        <div class="pz-footer__nav-content">
+          {% if section.settings.shop_menu != blank %}
+            <ul>
+              {% for link in section.settings.shop_menu.links %}
+                <li>
+                  <a href="{{ link.url }}">{{ link.title }}</a>
+                </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </div>
+      </details>
+
+
+      <details class="pz-footer__nav-group" open>
+        <summary>
+          <span>EXPLORE</span>
+          <span class="pz-footer__accordion-icon">+</span>
+        </summary>
+
+        <div class="pz-footer__nav-content">
+          {% if section.settings.explore_menu != blank %}
+            <ul>
+              {% for link in section.settings.explore_menu.links %}
+                <li>
+                  <a href="{{ link.url }}">{{ link.title }}</a>
+                </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </div>
+      </details>
+
+
+      <details class="pz-footer__nav-group" open>
+        <summary>
+          <span>HELP</span>
+          <span class="pz-footer__accordion-icon">+</span>
+        </summary>
+
+        <div class="pz-footer__nav-content">
+          {% if section.settings.help_menu != blank %}
+            <ul>
+              {% for link in section.settings.help_menu.links %}
+                <li>
+                  <a href="{{ link.url }}">{{ link.title }}</a>
+                </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        </div>
+      </details>
+
+    </div>
+
+
+    <!-- BRAND -->
+    <div class="pz-footer__brand">
+
+      {% if section.settings.logo != blank %}
+
+        <a href="{{ routes.root_url }}" class="pz-footer__logo">
+          {{ section.settings.logo | image_url: width: 600 | image_tag:
+            loading: 'lazy',
+            widths: '300, 450, 600',
+            alt: shop.name
+          }}
+        </a>
+
+      {% else %}
+
+        <a href="{{ routes.root_url }}" class="pz-footer__text-logo">
+          <span>5 point</span>
+          <strong>zero</strong>
+        </a>
+
+      {% endif %}
+
+      <div class="pz-footer__tagline">
+        {{ section.settings.tagline }}
+      </div>
+
+      <p class="pz-footer__description">
+        {{ section.settings.description }}
+      </p>
+
+      <div class="pz-footer__socials">
+
+        {% if section.settings.instagram != blank %}
+          <a href="{{ section.settings.instagram }}" target="_blank" rel="noopener" aria-label="Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+              <rect x="3" y="3" width="18" height="18" rx="5"/>
+              <circle cx="12" cy="12" r="4"/>
+              <circle cx="17.5" cy="6.5" r="1"/>
+            </svg>
+          </a>
+        {% endif %}
+
+        {% if section.settings.facebook != blank %}
+          <a href="{{ section.settings.facebook }}" target="_blank" rel="noopener" aria-label="Facebook">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M13.5 21v-8h2.7l.4-3h-3.1V8.1c0-.9.3-1.5 1.6-1.5h1.7V4c-.3 0-1.3-.1-2.4-.1-2.4 0-4.1 1.5-4.1 4.2V10H7.5v3h2.8v8h3.2z"/>
+            </svg>
+          </a>
+        {% endif %}
+
+        {% if section.settings.youtube != blank %}
+          <a href="{{ section.settings.youtube }}" target="_blank" rel="noopener" aria-label="YouTube">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M23 12s0-3.6-.5-5.2c-.3-1.2-1.2-2.1-2.4-2.4C18.5 4 12 4 12 4s-6.5 0-8.1.4C2.7 4.7 1.8 5.6 1.5 6.8 1 8.4 1 12 1 12s0 3.6.5 5.2c.3 1.2 1.2 2.1 2.4 2.4C5.5 20 12 20 12 20s6.5 0 8.1-.4c1.2-.3 2.1-1.2 2.4-2.4C23 15.6 23 12 23 12zM10 15.5v-7l6 3.5-6 3.5z"/>
+            </svg>
+          </a>
+        {% endif %}
+
+        {% if section.settings.tiktok != blank %}
+          <a href="{{ section.settings.tiktok }}" target="_blank" rel="noopener" aria-label="TikTok">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M15 3c.3 2.1 1.5 3.7 3.6 4.3.7.2 1.4.2 2 .2v3.2c-1.8 0-3.5-.5-5-1.4v6.4c0 3.8-2.7 6.3-6.2 6.3-3.2 0-5.5-2.4-5.5-5.3 0-3.4 2.8-5.8 6.3-5.8.3 0 .7 0 1 .1v3.2c-.3-.1-.6-.1-1-.1-1.5 0-3 1-3 2.6 0 1.3 1 2.3 2.3 2.3 1.5 0 2.9-.9 2.9-3.2V3H15z"/>
+            </svg>
+          </a>
+        {% endif %}
+
+      </div>
+
+    </div>
+
+  </div>
+
+  {% if section.settings.disclaimer != blank %}
+    <!-- DISCLAIMER -->
+    <div class="pz-footer__disclaimer">
+      <p>{{ section.settings.disclaimer }}</p>
+    </div>
+  {% endif %}
+</section>
+
+
+<style>
+
+#pz-footer-{{ section.id }} {
+
+  --pz-green: {{ section.settings.accent_color }};
+  --pz-bg: {{ section.settings.background_color }};
+
+  --pz-heading: {{ section.settings.heading_color }};
+  --pz-body: {{ section.settings.body_color }};
+  --pz-muted: {{ section.settings.muted_color }};
+  --pz-nav: {{ section.settings.nav_color }};
+  --pz-nav-heading: {{ section.settings.nav_heading_color }};
+
+  --pz-benefit-title-size: {{ section.settings.benefit_title_size }}px;
+  --pz-benefit-text-size: {{ section.settings.benefit_text_size }}px;
+
+  --pz-nav-heading-size: {{ section.settings.nav_heading_size }}px;
+  --pz-nav-text-size: {{ section.settings.nav_text_size }}px;
+
+  --pz-newsletter-heading-size: {{ section.settings.newsletter_heading_size }}px;
+  --pz-newsletter-body-size: {{ section.settings.newsletter_body_size }}px;
+
+  --pz-description-size: {{ section.settings.description_size }}px;
+
+  --pz-line: {{ section.settings.line_opacity | divided_by: 100.0 }};
+
+  background:
+    radial-gradient(
+      circle at 85% 20%,
+      rgba(139,255,0,.035),
+      transparent 30%
+    ),
+    var(--pz-bg);
+
+  color: var(--pz-body);
+  overflow: hidden;
+}
+
+
+/* GENERAL */
+
+#pz-footer-{{ section.id }} * {
+  box-sizing: border-box;
+}
+
+#pz-footer-{{ section.id }} a {
+  color: inherit;
+  text-decoration: none;
+}
+
+
+/* BENEFITS */
+
+#pz-footer-{{ section.id }} .pz-footer__benefits {
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  padding: 52px 5%;
+
+  border-bottom:
+    1px solid rgba(255,255,255,var(--pz-line));
+}
+
+#pz-footer-{{ section.id }} .pz-footer__benefit {
+
+  text-align: center;
+  padding: 0 7%;
+}
+
+#pz-footer-{{ section.id }} .pz-footer__benefit + .pz-footer__benefit {
+
+  border-left:
+    1px solid rgba(255,255,255,var(--pz-line));
+}
+
+#pz-footer-{{ section.id }} .pz-footer__icon {
+
+  width: 46px;
+  height: 46px;
+
+  margin: 0 auto 18px;
+
+  color: var(--pz-green);
+}
+
+#pz-footer-{{ section.id }} .pz-footer__icon svg {
+
+  width: 100%;
+  height: 100%;
+}
+
+
+#pz-footer-{{ section.id }} .pz-footer__benefit h3 {
+
+  margin: 0;
+
+  color: var(--pz-heading);
+
+  font-size: var(--pz-benefit-title-size);
+  line-height: 1.15;
+
+  font-weight: 800;
+
+  letter-spacing: -.02em;
+}
+
+#pz-footer-{{ section.id }} .pz-footer__benefit p {
+
+  margin: 9px auto 0;
+
+  max-width: 300px;
+
+  color: var(--pz-muted);
+
+  font-size: var(--pz-benefit-text-size);
+  line-height: 1.45;
+}
+
+
+/* NEWSLETTER */
+
+#pz-footer-{{ section.id }} .pz-footer__newsletter {
+
+  margin: 36px 5% 0;
+
+  padding: 34px 38px;
+
+  border:
+    1px solid rgba(139,255,0,.55);
+
+  border-radius: 16px;
+
+  display: grid;
+
+  grid-template-columns:
+    1.05fr .95fr;
+
+  gap: 50px;
+
+  align-items: center;
+
+  background:
+    linear-gradient(
+      110deg,
+      rgba(139,255,0,.055),
+      transparent 65%
+    );
+}
+
+#pz-footer-{{ section.id }} .pz-footer__newsletter-copy > span {
+
+  display: block;
+
+  margin-bottom: 8px;
+
+  color: var(--pz-muted);
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  letter-spacing: .3em;
+
+  text-transform: uppercase;
+}
+
+#pz-footer-{{ section.id }} .pz-footer__newsletter h2 {
+
+  margin: 0;
+
+  color: var(--pz-heading);
+
+  font-size:
+    var(--pz-newsletter-heading-size);
+
+  line-height: .95;
+
+  letter-spacing: -.04em;
+
+  font-weight: 900;
+
+  text-transform: uppercase;
+}
+
+#pz-footer-{{ section.id }} .pz-footer__newsletter p {
+
+  margin: 14px 0 0;
+
+  color: var(--pz-muted);
+
+  font-size:
+    var(--pz-newsletter-body-size);
+
+  line-height: 1.5;
+}
+
+#pz-footer-{{ section.id }} .pz-footer__input-wrap {
+
+  height: 58px;
+
+  display: flex;
+
+  align-items: center;
+
+  border: 1px solid #555;
+
+  border-radius: 100px;
+
+  overflow: hidden;
+
+  transition: border-color .2s ease;
+}
+
+#pz-footer-{{ section.id }} .pz-footer__input-wrap:focus-within {
+
+  border-color: var(--pz-green);
+}
+
+#pz-footer-{{ section.id }} .pz-footer__input-wrap input {
+
+  flex: 1;
+
+  min-width: 0;
+
+  height: 100%;
+
+  padding: 0 22px;
+
+  border: 0;
+
+  outline: 0;
+
+  background: transparent;
+
+  color: var(--pz-heading);
+
+  font: inherit;
+
+  font-size: 14px;
+}
+
+#pz-footer-{{ section.id }} .pz-footer__input-wrap input::placeholder {
+
+  color: var(--pz-muted);
+}
+
+#pz-footer-{{ section.id }} .pz-footer__input-wrap button {
+
+  flex: 0 0 46px;
+
+  width: 46px;
+  height: 46px;
+
+  margin-right: 6px;
+
+  border: 0;
+
+  border-radius: 50%;
+
+  background: var(--pz-green);
+
+  color: #050505;
+
+  cursor: pointer;
+
+  font-size: 28px;
+
+  line-height: 1;
+
+  transition:
+    transform .2s ease;
+}
+
+#pz-footer-{{ section.id }} .pz-footer__input-wrap button:hover {
+
+  transform: scale(1.06);
+}
+
+#pz-footer-{{ section.id }} .pz-footer__success {
+
+  color: var(--pz-green) !important;
+}
+
+
+/* MAIN */
+
+#pz-footer-{{ section.id }} .pz-footer__main {
+
+  display: grid;
+
+  grid-template-columns: 34% 66%;
+
+  padding: 62px 5%;
+
+  margin-top: 10px;
+
+  border-bottom:
+    1px solid rgba(255,255,255,var(--pz-line));
+}
+
+
+/* BRAND */
+
+#pz-footer-{{ section.id }} .pz-footer__brand {
+
+  padding-right: 60px;
+}
+
+#pz-footer-{{ section.id }} .pz-footer__logo {
+
+  display: block;
+
+  width: min(100%, 300px);
+}
+
+#pz-footer-{{ section.id }} .pz-footer__logo img {
+
+  width: 100%;
+  height: auto;
+
+  display: block;
+}
+
+#pz-footer-{{ section.id }} .pz-footer__text-logo {
+
+  display: inline-flex;
+
+  flex-direction: column;
+
+  font-size: 56px;
+
+  font-weight: 900;
+
+  line-height: .78;
+
+  letter-spacing: -5px;
+}
+
+#pz-footer-{{ section.id }} .pz-footer__text-logo span {
+
+  color: var(--pz-heading);
+}
+
+#pz-footer-{{ section.id }} .pz-footer__text-logo strong {
+
+  color: var(--pz-green);
+}
+
+#pz-footer-{{ section.id }} .pz-footer__tagline {
+
+  margin-top: 22px;
+
+  color: var(--pz-heading);
+
+  font-size: 11px;
+
+  font-weight: 700;
+
+  letter-spacing: .25em;
+
+  text-transform: uppercase;
+}
+
+#pz-footer-{{ section.id }} .pz-footer__description {
+
+  max-width: 300px;
+
+  margin: 14px 0 26px;
+
+  color: var(--pz-muted);
+
+  font-size: var(--pz-description-size);
+
+  line-height: 1.5;
+}
+
+
+/* SOCIAL */
+
+#pz-footer-{{ section.id }} .pz-footer__socials {
+
+  display: flex;
+
+  gap: 18px;
+}
+
+#pz-footer-{{ section.id }} .pz-footer__socials a {
+
+  width: 23px;
+  height: 23px;
+
+  color: var(--pz-body);
+
+  transition:
+    color .2s ease,
+    transform .2s ease;
+}
+
+#pz-footer-{{ section.id }} .pz-footer__socials a:hover {
+
+  color: var(--pz-green);
+
+  transform: translateY(-2px);
+}
+
+#pz-footer-{{ section.id }} .pz-footer__socials svg {
+
+  width: 100%;
+  height: 100%;
+}
+
+
+/* NAVIGATION */
+
+#pz-footer-{{ section.id }} .pz-footer__nav {
+
+  display: grid;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+}
+
+#pz-footer-{{ section.id }} .pz-footer__nav-column {
+
+  padding: 0 38px;
+
+  border-left:
+    1px solid rgba(255,255,255,var(--pz-line));
+}
+
+#pz-footer-{{ section.id }} .pz-footer__nav-column h3 {
+
+  display: inline-block;
+
+  margin: 0;
+
+  padding-bottom: 11px;
+
+  color: var(--pz-nav-heading);
+
+  font-size: var(--pz-nav-heading-size);
+
+  line-height: 1;
+
+  font-weight: 800;
+
+  letter-spacing: -.02em;
+
+  text-transform: uppercase;
+
+  border-bottom:
+    2px solid var(--pz-green);
+}
+
+#pz-footer-{{ section.id }} .pz-footer__nav-column ul {
+
+  list-style: none;
+
+  padding: 0;
+
+  margin: 23px 0 0;
+}
+
+#pz-footer-{{ section.id }} .pz-footer__nav-column li {
+
+  margin-bottom: 14px;
+}
+
+#pz-footer-{{ section.id }} .pz-footer__nav-column a {
+
+  display: block;
+
+  color: var(--pz-nav);
+
+  font-size: var(--pz-nav-text-size);
+
+  line-height: 1.35;
+
+  text-transform: uppercase;
+
+  transition:
+    color .2s ease,
+    transform .2s ease;
+}
+
+#pz-footer-{{ section.id }} .pz-footer__nav-column a:hover {
+
+  color: var(--pz-green);
+
+  transform: translateX(3px);
+}
+
+
+/* DISCLAIMER */
+
+#pz-footer-{{ section.id }} .pz-footer__disclaimer {
+
+  padding: 22px 5% 28px;
+
+  border-top:
+    1px solid rgba(255,255,255,var(--pz-line));
+}
+
+#pz-footer-{{ section.id }} .pz-footer__disclaimer p {
+
+  margin: 0 auto;
+
+  max-width: 980px;
+
+  text-align: center;
+
+  font-size: 12px;
+
+  line-height: 1.6;
+
+  color: var(--pz-muted);
+
+  opacity: .8;
+}
+
+
+/* BOTTOM */
+
+#pz-footer-{{ section.id }} .pz-footer__bottom {
+
+  min-height: 78px;
+
+  padding: 20px 5%;
+
+  display: grid;
+
+  grid-template-columns:
+    1fr auto 1fr;
+
+  gap: 25px;
+
+  align-items: center;
+
+  color: var(--pz-muted);
+
+  font-size: 10px;
+
+  text-transform: uppercase;
+}
+
+#pz-footer-{{ section.id }} .pz-footer__legal {
+
+  display: flex;
+
+  gap: 22px;
+
+  justify-content: center;
+
+  flex-wrap: wrap;
+}
+
+#pz-footer-{{ section.id }} .pz-footer__legal a {
+
+  transition:
+    color .2s ease;
+}
+
+#pz-footer-{{ section.id }} .pz-footer__legal a:hover {
+
+  color: var(--pz-heading);
+}
+
+#pz-footer-{{ section.id }} .pz-footer__slogan {
+
+  justify-self: end;
+
+  display: flex;
+
+  flex-direction: column;
+
+  text-align: right;
+
+  line-height: 1;
+
+  letter-spacing: .28em;
+
+  font-size: 9px;
+}
+
+#pz-footer-{{ section.id }} .pz-footer__slogan strong {
+
+  margin-top: 5px;
+
+  color: var(--pz-heading);
+
+  font-weight: 700;
+}
+
+
+/* MOBILE */
+
+@media screen and (max-width: 749px) {
+
+  /* BENEFITS */
+
+  #pz-footer-{{ section.id }} .pz-footer__benefits {
+
+    grid-template-columns: 1fr;
+
+    padding: 40px 22px;
+
+    gap: 30px;
+  }
+
+  #pz-footer-{{ section.id }} .pz-footer__benefit {
+
+    padding: 0;
+  }
+
+  #pz-footer-{{ section.id }} .pz-footer__benefit + .pz-footer__benefit {
+
+    padding-top: 30px;
+
+    border-left: 0;
+
+    border-top:
+      1px solid rgba(255,255,255,var(--pz-line));
+  }
+
+
+  /* NEWSLETTER */
+
+  #pz-footer-{{ section.id }} .pz-footer__newsletter {
+
+    margin: 24px 16px 0;
+
+    padding: 28px 20px;
+
+    grid-template-columns: 1fr;
+
+    gap: 22px;
+
+    border-radius: 14px;
+  }
+
+  #pz-footer-{{ section.id }} .pz-footer__newsletter h2 {
+
+    font-size:
+      {{ section.settings.newsletter_mobile_size }}px;
+
+    line-height: .95;
+  }
+
+  #pz-footer-{{ section.id }} .pz-footer__newsletter p {
+
+    font-size:
+      {{ section.settings.newsletter_mobile_body_size }}px;
+  }
+
+  #pz-footer-{{ section.id }} .pz-footer__input-wrap {
+
+    height: 54px;
+  }
+
+
+  /* MAIN */
+
+  #pz-footer-{{ section.id }} .pz-footer__main {
+
+    grid-template-columns: 1fr;
+
+    padding: 48px 22px 34px;
+
+    margin-top: 0;
+  }
+
+  #pz-footer-{{ section.id }} .pz-footer__brand {
+
+    padding-right: 0;
+
+    margin-bottom: 42px;
+  }
+
+  #pz-footer-{{ section.id }} .pz-footer__logo {
+
+    width: 240px;
+  }
+
+
+  /* MOBILE NAV */
+
+  #pz-footer-{{ section.id }} .pz-footer__nav {
+
+    grid-template-columns:
+      repeat(3, minmax(0, 1fr));
+
+    width: 100%;
+  }
+
+  #pz-footer-{{ section.id }} .pz-footer__nav-column {
+
+    padding: 0 10px;
+
+    border-left:
+      1px solid rgba(255,255,255,var(--pz-line));
+  }
+
+  #pz-footer-{{ section.id }} .pz-footer__nav-column:first-child {
+
+    padding-left: 0;
+
+    border-left: 0;
+  }
+
+  #pz-footer-{{ section.id }} .pz-footer__nav-column:last-child {
+
+    padding-right: 0;
+  }
+
+  #pz-footer-{{ section.id }} .pz-footer__nav-column h3 {
+
+    font-size:
+      {{ section.settings.nav_mobile_heading_size }}px;
+
+    padding-bottom: 8px;
+  }
+
+  #pz-footer-{{ section.id }} .pz-footer__nav-column ul {
+
+    margin-top: 17px;
+  }
+
+  #pz-footer-{{ section.id }} .pz-footer__nav-column li {
+
+    margin-bottom: 11px;
+  }
+
+  #pz-footer-{{ section.id }} .pz-footer__nav-column a {
+
+    font-size:
+      {{ section.settings.nav_mobile_text_size }}px;
+
+    line-height: 1.3;
+
+    word-break: normal;
+  }
+
+
+  /* BOTTOM */
+
+  #pz-footer-{{ section.id }} .pz-footer__bottom {
+
+    grid-template-columns: 1fr;
+
+    padding: 24px 22px;
+
+    gap: 17px;
+
+    text-align: center;
+  }
+
+  #pz-footer-{{ section.id }} .pz-footer__legal {
+
+    gap: 9px 16px;
+  }
+
+  #pz-footer-{{ section.id }} .pz-footer__slogan {
+
+    justify-self: center;
+
+    text-align: center;
+  }
+
+}
+
+
+/* EXTRA SMALL PHONES */
+
+@media screen and (max-width: 380px) {
+
+  #pz-footer-{{ section.id }} .pz-footer__nav-column {
+
+    padding: 0 7px;
+  }
+
+  #pz-footer-{{ section.id }} .pz-footer__nav-column h3 {
+
+    font-size: 12px;
+  }
+
+  #pz-footer-{{ section.id }} .pz-footer__nav-column a {
+
+    font-size: 10px;
+  }
+
+}
+/* =========================================================
+   MOBILE ACCORDION NAVIGATION
+   ========================================================= */
+
+#pz-footer-{{ section.id }} .pz-footer__nav-group {
+  margin: 0;
+  padding: 0;
+}
+
+#pz-footer-{{ section.id }} .pz-footer__nav-group summary {
+  list-style: none;
+  cursor: pointer;
+}
+
+#pz-footer-{{ section.id }} .pz-footer__nav-group summary::-webkit-details-marker {
+  display: none;
+}
+
+#pz-footer-{{ section.id }} .pz-footer__accordion-icon {
+  display: none;
+}
+
+
+/* DESKTOP */
+
+@media screen and (min-width: 750px) {
+
+  #pz-footer-{{ section.id }} .pz-footer__main {
+    display: grid;
+    grid-template-columns: 34% 66%;
+    align-items: start;
+  }
+
+  #pz-footer-{{ section.id }} .pz-footer__nav {
+    grid-column: 2;
+    grid-row: 1;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    order: 1;
+  }
+
+  #pz-footer-{{ section.id }} .pz-footer__brand {
+    grid-column: 1;
+    grid-row: 1;
+    order: 0;
+  }
+
+  #pz-footer-{{ section.id }} .pz-footer__nav-group {
+    padding: 0 38px;
+    border-left: 1px solid rgba(255,255,255,var(--pz-line));
+  }
+
+  #pz-footer-{{ section.id }} .pz-footer__nav-group summary {
+    display: inline-block;
+    padding-bottom: 11px;
+    color: var(--pz-nav-heading);
+    font-size: var(--pz-nav-heading-size);
+    line-height: 1;
+    font-weight: 800;
+    letter-spacing: -.02em;
+    text-transform: uppercase;
+    border-bottom: 2px solid var(--pz-green);
+  }
+
+  #pz-footer-{{ section.id }} .pz-footer__nav-content {
+    display: block;
+  }
+
+  #pz-footer-{{ section.id }} .pz-footer__nav-content ul {
+    list-style: none;
+    padding: 0;
+    margin: 23px 0 0;
+  }
+
+  #pz-footer-{{ section.id }} .pz-footer__nav-content li {
+    margin-bottom: 14px;
+  }
+
+  #pz-footer-{{ section.id }} .pz-footer__nav-content a {
+    display: block;
+    color: var(--pz-nav);
+    font-size: var(--pz-nav-text-size);
+    line-height: 1.35;
+    text-transform: uppercase;
+    transition: color .2s ease, transform .2s ease;
+  }
+
+  #pz-footer-{{ section.id }} .pz-footer__nav-content a:hover {
+    color: var(--pz-green);
+    transform: translateX(3px);
+  }
+
+}
+
+
+/* MOBILE */
+
+@media screen and (max-width: 749px) {
+
+  #pz-footer-{{ section.id }} .pz-footer__main {
+    display: flex;
+    flex-direction: column;
+    padding: 0 22px 34px;
+    margin-top: 0;
+  }
+
+
+  /* NAV FIRST */
+
+  #pz-footer-{{ section.id }} .pz-footer__nav {
+    order: 1;
+    display: block;
+    width: 100%;
+    margin: 0 0 0;
+    border-top: 1px solid rgba(255,255,255,var(--pz-line));
+  }
+
+  #pz-footer-{{ section.id }} .pz-footer__nav-group {
+    width: 100%;
+    border-bottom: 1px solid rgba(255,255,255,var(--pz-line));
+  }
+
+  #pz-footer-{{ section.id }} .pz-footer__nav-group summary {
+    min-height: 58px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    color: var(--pz-nav-heading);
+    font-size: {{ section.settings.nav_mobile_heading_size }}px;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -.01em;
+    text-transform: uppercase;
+  }
+
+  #pz-footer-{{ section.id }} .pz-footer__accordion-icon {
+    display: block;
+    color: var(--pz-green);
+    font-size: 24px;
+    font-weight: 300;
+    line-height: 1;
+    transition: transform .2s ease;
+  }
+
+  #pz-footer-{{ section.id }} .pz-footer__nav-group[open] .pz-footer__accordion-icon {
+    transform: rotate(45deg);
+  }
+
+  #pz-footer-{{ section.id }} .pz-footer__nav-content {
+    padding: 0 0 18px;
+  }
+
+  #pz-footer-{{ section.id }} .pz-footer__nav-content ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  #pz-footer-{{ section.id }} .pz-footer__nav-content li {
+    margin: 0;
+  }
+
+  #pz-footer-{{ section.id }} .pz-footer__nav-content a {
+    display: block;
+    padding: 9px 0;
+    color: var(--pz-nav);
+    font-size: {{ section.settings.nav_mobile_text_size }}px;
+    line-height: 1.3;
+    text-transform: uppercase;
+  }
+
+
+  /* BRAND SECOND */
+
+  #pz-footer-{{ section.id }} .pz-footer__brand {
+    order: 2;
+    padding: 45px 0 0;
+    margin: 0;
+  }
+
+  #pz-footer-{{ section.id }} .pz-footer__logo {
+    width: 240px;
+    max-width: 75%;
+  }
+
+  #pz-footer-{{ section.id }} .pz-footer__tagline {
+    margin-top: 20px;
+  }
+
+  #pz-footer-{{ section.id }} .pz-footer__description {
+    margin-bottom: 24px;
+  }
+
+}
+
+
+/* SMALL PHONES */
+
+@media screen and (max-width: 380px) {
+
+  #pz-footer-{{ section.id }} .pz-footer__nav-group summary {
+    font-size: 12px;
+  }
+
+  #pz-footer-{{ section.id }} .pz-footer__nav-content a {
+    font-size: 10px;
+  }
+
+}
+</style>
+
+
+{% schema %}
+{
+  "name": "5 Point Zero Footer",
+
+  "settings": [
+
+    {
+      "type": "header",
+      "content": "COLORS"
+    },
+
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent / neon green",
+      "default": "#8BFF00"
+    },
+
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background",
+      "default": "#050505"
+    },
+
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Main headings",
+      "default": "#FFFFFF"
+    },
+
+    {
+      "type": "color",
+      "id": "body_color",
+      "label": "Body text",
+      "default": "#FFFFFF"
+    },
+
+    {
+      "type": "color",
+      "id": "muted_color",
+      "label": "Muted text",
+      "default": "#A3A3A3"
+    },
+
+    {
+      "type": "color",
+      "id": "nav_color",
+      "label": "Navigation text",
+      "default": "#DDDDDD"
+    },
+
+    {
+      "type": "color",
+      "id": "nav_heading_color",
+      "label": "Navigation headings",
+      "default": "#8BFF00"
+    },
+
+    {
+      "type": "range",
+      "id": "line_opacity",
+      "label": "Divider opacity",
+      "min": 5,
+      "max": 50,
+      "step": 5,
+      "default": 15,
+      "unit": "%"
+    },
+
+
+    {
+      "type": "header",
+      "content": "LOGO & BRAND"
+    },
+
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Footer logo"
+    },
+
+    {
+      "type": "text",
+      "id": "tagline",
+      "label": "Tagline",
+      "default": "PERFORMANCE NUTRITION FOR THE COURT."
+    },
+
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Brand description",
+      "default": "Fuel better. Play longer. Perform at your peak."
+    },
+
+    {
+      "type": "range",
+      "id": "description_size",
+      "label": "Description size",
+      "min": 11,
+      "max": 20,
+      "step": 1,
+      "default": 15,
+      "unit": "px"
+    },
+
+
+    {
+      "type": "header",
+      "content": "BENEFITS"
+    },
+
+    {
+      "type": "text",
+      "id": "benefit_1_title",
+      "label": "Benefit 1 title",
+      "default": "100% MONEY-BACK GUARANTEE"
+    },
+
+    {
+      "type": "text",
+      "id": "benefit_1_text",
+      "label": "Benefit 1 text",
+      "default": "Try it risk-free."
+    },
+
+    {
+      "type": "text",
+      "id": "benefit_2_title",
+      "label": "Benefit 2 title",
+      "default": "QUALITY YOU CAN TRUST"
+    },
+
+    {
+      "type": "text",
+      "id": "benefit_2_text",
+      "label": "Benefit 2 text",
+      "default": "Tested for safety & performance."
+    },
+
+    {
+      "type": "text",
+      "id": "benefit_3_title",
+      "label": "Benefit 3 title",
+      "default": "TRANSPARENT INGREDIENTS"
+    },
+
+    {
+      "type": "text",
+      "id": "benefit_3_text",
+      "label": "Benefit 3 text",
+      "default": "Know exactly what's inside."
+    },
+
+    {
+      "type": "range",
+      "id": "benefit_title_size",
+      "label": "Benefit title size",
+      "min": 12,
+      "max": 26,
+      "step": 1,
+      "default": 18,
+      "unit": "px"
+    },
+
+    {
+      "type": "range",
+      "id": "benefit_text_size",
+      "label": "Benefit text size",
+      "min": 11,
+      "max": 18,
+      "step": 1,
+      "default": 15,
+      "unit": "px"
+    },
+
+
+    {
+      "type": "header",
+      "content": "NEWSLETTER"
+    },
+
+    {
+      "type": "text",
+      "id": "newsletter_kicker",
+      "label": "Newsletter kicker",
+      "default": "JOIN THE JOURNEY"
+    },
+
+    {
+      "type": "text",
+      "id": "newsletter_heading",
+      "label": "Newsletter heading",
+      "default": "LEVEL UP YOUR INBOX"
+    },
+
+    {
+      "type": "textarea",
+      "id": "newsletter_text",
+      "label": "Newsletter description",
+      "default": "Get pickleball tips, nutrition advice, and new product drops straight to your inbox."
+    },
+
+    {
+      "type": "text",
+      "id": "email_placeholder",
+      "label": "Email placeholder",
+      "default": "YOUR EMAIL ADDRESS"
+    },
+
+    {
+      "type": "text",
+      "id": "success_message",
+      "label": "Success message",
+      "default": "YOU'RE IN. WELCOME TO THE TEAM."
+    },
+
+    {
+      "type": "range",
+      "id": "newsletter_heading_size",
+      "label": "Newsletter heading size",
+      "min": 24,
+      "max": 60,
+      "step": 1,
+      "default": 44,
+      "unit": "px"
+    },
+
+    {
+      "type": "range",
+      "id": "newsletter_body_size",
+      "label": "Newsletter body size",
+      "min": 11,
+      "max": 20,
+      "step": 1,
+      "default": 14,
+      "unit": "px"
+    },
+
+    {
+      "type": "range",
+      "id": "newsletter_mobile_size",
+      "label": "Mobile newsletter heading",
+      "min": 22,
+      "max": 42,
+      "step": 1,
+      "default": 30,
+      "unit": "px"
+    },
+
+    {
+      "type": "range",
+      "id": "newsletter_mobile_body_size",
+      "label": "Mobile newsletter body",
+      "min": 11,
+      "max": 18,
+      "step": 1,
+      "default": 13,
+      "unit": "px"
+    },
+
+
+    {
+      "type": "header",
+      "content": "NAVIGATION"
+    },
+
+    {
+      "type": "link_list",
+      "id": "shop_menu",
+      "label": "Shop menu"
+    },
+
+    {
+      "type": "link_list",
+      "id": "explore_menu",
+      "label": "Explore menu"
+    },
+
+    {
+      "type": "link_list",
+      "id": "help_menu",
+      "label": "Help menu"
+    },
+
+    {
+      "type": "range",
+      "id": "nav_heading_size",
+      "label": "Navigation heading size",
+      "min": 12,
+      "max": 28,
+      "step": 1,
+      "default": 18,
+      "unit": "px"
+    },
+
+    {
+      "type": "range",
+      "id": "nav_text_size",
+      "label": "Navigation text size",
+      "min": 11,
+      "max": 20,
+      "step": 1,
+      "default": 15,
+      "unit": "px"
+    },
+
+    {
+      "type": "range",
+      "id": "nav_mobile_heading_size",
+      "label": "Mobile navigation heading",
+      "min": 10,
+      "max": 18,
+      "step": 1,
+      "default": 13,
+      "unit": "px"
+    },
+
+    {
+      "type": "range",
+      "id": "nav_mobile_text_size",
+      "label": "Mobile navigation text",
+      "min": 9,
+      "max": 16,
+      "step": 1,
+      "default": 12,
+      "unit": "px"
+    },
+
+
+    {
+      "type": "header",
+      "content": "SOCIAL"
+    },
+
+    {
+      "type": "url",
+      "id": "instagram",
+      "label": "Instagram"
+    },
+
+    {
+      "type": "url",
+      "id": "facebook",
+      "label": "Facebook"
+    },
+
+    {
+      "type": "url",
+      "id": "youtube",
+      "label": "YouTube"
+    },
+
+    {
+      "type": "url",
+      "id": "tiktok",
+      "label": "TikTok"
+    },
+
+    {
+      "type": "header",
+      "content": "DISCLAIMER"
+    },
+
+    {
+      "type": "textarea",
+      "id": "disclaimer",
+      "label": "Disclaimer",
+      "info": "Shown in small type at the very bottom of the footer. Leave blank to hide it.",
+      "default": "*These statements have not been evaluated by the Food and Drug Administration. This product is not intended to diagnose, treat, cure, or prevent any disease."
+    }
+
+  ],
+
+  "presets": [
+    {
+      "name": "5 Point Zero Footer"
+    }
+  ]
+}
+{% endschema %}

@@ -33,15 +33,15 @@
     overflow: hidden;
   }
 
-  #shopify-section-{{ section.id }} .promo-cards__eyebrow {
-    grid-area: eyebrow;
-    margin: 0;
-    font-size: var(--promo-card-eyebrow-size, 1rem);
-    font-weight: 600;
-    letter-spacing: 0.13rem;
-    text-transform: uppercase;
-  }
-
+#shopify-section-{{ section.id }} .promo-cards__eyebrow {
+  grid-area: eyebrow;
+  margin: 0;
+  font-size: var(--promo-card-eyebrow-size, 1rem);
+  font-weight: 600;
+  letter-spacing: 0.13rem;
+  text-transform: uppercase;
+  color: inherit;
+}
   #shopify-section-{{ section.id }} .promo-cards__image {
     grid-area: image;
     display: flex;
@@ -157,7 +157,7 @@
               {{ block.shopify_attributes }}
             >
               {%- if block.settings.eyebrow_text != blank -%}
-                <p class="promo-cards__eyebrow">{{ block.settings.eyebrow_text }}</p>
+                <h2 class="promo-cards__eyebrow">{{ block.settings.eyebrow_text }}</h2>
               {%- endif -%}
 
               {%- if block.settings.image != blank -%}
