@@ -19,7 +19,16 @@
 
    <div class="available">
       <div class="available_cover">
-        {% if section.settings.title != blank %}<h3>{{ section.settings.title }}</h3>{% endif %}
+        {%- assign pz_heading_tag = section.settings.heading_tag | default: 'h3' -%}
+        {%- if pz_heading_tag == 'h1' -%}
+          {%- comment -%} Same look the stylesheet gives the h3 version. {%- endcomment -%}
+          <style>
+            .available_cover h1{font-size:40px;font-style:normal;font-weight:700;line-height:120%;display:table;background-color:#96ff00;padding:10px 20px 5px;margin:0 auto 30px;text-align:center;color:#000}
+            @media screen and (max-width:798px){.available_cover h1{font-size:30px;margin-bottom:15px}}
+            @media screen and (max-width:750px){.available_cover h1{font-size:20px;margin-bottom:15px}}
+          </style>
+        {%- endif -%}
+        {% if section.settings.title != blank %}<{{ pz_heading_tag }}>{{ section.settings.title }}</{{ pz_heading_tag }}>{% endif %}
          {% if section.settings.subtitle != blank %}<span>{{ section.settings.subtitle }}</span>{% endif %}
         {%- if section.settings.button_label != blank -%}
                   <a
@@ -34,6 +43,9 @@
 <path d="M1.57617 5.39648C1.16196 5.39648 0.826172 5.73227 0.826172 6.14648C0.826172 6.5607 1.16196 6.89648 1.57617 6.89648V5.39648ZM52.1065 6.67681C52.3994 6.38392 52.3994 5.90905 52.1065 5.61615L47.3335 0.843184C47.0406 0.55029 46.5658 0.55029 46.2729 0.843184C45.98 1.13608 45.98 1.61095 46.2729 1.90384L50.5155 6.14648L46.2729 10.3891C45.98 10.682 45.98 11.1569 46.2729 11.4498C46.5658 11.7427 47.0406 11.7427 47.3335 11.4498L52.1065 6.67681ZM1.57617 6.89648H51.5762V5.39648H1.57617V6.89648Z" fill="black"/>
 </svg>
                   </a>
+                  {%- if page.handle == 'become-a-pro' and section.settings.button_link != blank -%}
+                    <a href="{{ section.settings.button_link }}" class="available__learn-more" style="display: block; margin-top: 10px; font-size: 12px; text-decoration: underline; text-underline-offset: 3px; text-align: center;">LEARN MORE</a>
+                  {%- endif -%}
                 {%- endif -%}
      </div>
   </div>
@@ -80,6 +92,17 @@
       "type": "inline_richtext",
       "id": "title",
       "label": "Title"
+    },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "options": [
+        { "value": "h1", "label": "Main page heading (H1)" },
+        { "value": "h3", "label": "Section heading (H3)" }
+      ],
+      "default": "h3",
+      "label": "Heading tag",
+      "info": "Use H1 once per page, on the first heading. It tells search engines what the page is about."
     },
     {
       "type": "inline_richtext",

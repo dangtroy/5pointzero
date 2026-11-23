@@ -9,11 +9,14 @@
       border-bottom: 1px solid {{ section.settings.border_color }};
     }
     .pz-anchor-nav-{{ section.id }} .pz-anchor-scroll {
-      max-width: 1280px; margin: 0 auto; padding: 0 24px;
-      display: flex; gap: 28px; overflow-x: auto; -webkit-overflow-scrolling: touch;
+      max-width: 1280px; margin: 0 auto; padding: 0 16px;
+      display: flex; gap: 20px; overflow-x: auto; -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
     }
     .pz-anchor-nav-{{ section.id }} .pz-anchor-scroll::-webkit-scrollbar { display: none; }
+    @media (min-width: 600px) {
+      .pz-anchor-nav-{{ section.id }} .pz-anchor-scroll { padding: 0 24px; gap: 28px; }
+    }
     .pz-anchor-nav-{{ section.id }} a {
       display: inline-block; padding: 14px 2px; white-space: nowrap;
       font-size: 14px; font-weight: 700; text-decoration: none;
@@ -93,7 +96,7 @@
   "tag": "section",
   "class": "pz-section",
   "settings": [
-    { "type": "color", "id": "accent_color", "label": "Accent color", "default": "#E8447C" },
+    { "type": "color", "id": "accent_color", "label": "Accent color", "default": "#96FF00" },
     { "type": "color", "id": "text_color", "label": "Text color", "default": "#141414" },
     { "type": "color", "id": "background", "label": "Background", "default": "#ffffff" },
     { "type": "color", "id": "border_color", "label": "Bottom border color", "default": "#ececec" }
@@ -112,10 +115,11 @@
     {
       "name": "PZ Anchor Nav",
       "blocks": [
-        { "type": "link", "settings": { "label": "How It Works", "target_id": "pz-how-it-works" } },
-        { "type": "link", "settings": { "label": "Ingredients", "target_id": "pz-ingredients" } },
         { "type": "link", "settings": { "label": "Benefits", "target_id": "pz-benefits" } },
+        { "type": "link", "settings": { "label": "Zero Artificial", "target_id": "pz-zero" } },
         { "type": "link", "settings": { "label": "Reviews", "target_id": "pz-reviews" } },
+        { "type": "link", "settings": { "label": "Compare", "target_id": "pz-compare" } },
+        { "type": "link", "settings": { "label": "Pros", "target_id": "pz-pros" } },
         { "type": "link", "settings": { "label": "FAQ", "target_id": "pz-faq" } }
       ]
     }

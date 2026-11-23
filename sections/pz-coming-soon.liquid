@@ -1,0 +1,239 @@
+{% comment %}
+  PZ Coming Soon - product photo beside a "coming soon" pitch and an
+  email waitlist. Built for a product template: the photo and the
+  heading fall back to the product's own, so it also works unconfigured.
+
+  The form is a Shopify customer form, so sign-ups land in Customers as
+  email subscribers carrying the tags set below.
+{% endcomment %}
+{%- liquid
+  assign pzcs_image = section.settings.image | default: product.featured_image
+  assign pzcs_heading = section.settings.heading | default: product.title
+  assign pzcs_alt = section.settings.image_alt | default: product.title
+  assign pzcs_form_id = 'pz-waitlist-' | append: section.id
+-%}
+<section id="{{ section.settings.anchor_id }}" class="pzcs pzcs-{{ section.id }}">
+  {% style %}
+    .pzcs-{{ section.id }} {
+      --pzcs-accent: {{ section.settings.accent_color }};
+      --pzcs-ink: {{ section.settings.text_color }};
+      background: {{ section.settings.background }};
+      color: var(--pzcs-ink);
+      padding: 40px 16px 56px;
+      scroll-margin-top: 80px;
+    }
+    @media (min-width: 750px) {
+      .pzcs-{{ section.id }} { padding: 72px 32px 88px; }
+    }
+    .pzcs-{{ section.id }} .pzcs-inner {
+      max-width: 1180px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr; gap: 32px; align-items: center;
+    }
+    @media (min-width: 950px) {
+      .pzcs-{{ section.id }} .pzcs-inner { grid-template-columns: 46fr 54fr; gap: 64px; }
+    }
+    .pzcs-{{ section.id }} .pzcs-media {
+      min-width: 0; margin: 0 auto; width: 100%; max-width: 340px;
+      aspect-ratio: 1 / 1;
+      border-radius: {{ section.settings.corner_radius }}px;
+      background: {{ section.settings.media_background }};
+      overflow: hidden;
+    }
+    @media (min-width: 950px) {
+      .pzcs-{{ section.id }} .pzcs-media { max-width: none; }
+    }
+    /* The pouch photo carries a wide transparent margin, so it is scaled
+       up inside the card instead of sitting small in the middle of it. */
+    .pzcs-{{ section.id }} .pzcs-media img {
+      display: block; width: 100%; height: 100%; object-fit: contain;
+      transform: scale({{ section.settings.image_scale | divided_by: 100.0 }});
+    }
+    .pzcs-{{ section.id }} .pzcs-copy { min-width: 0; }
+    .pzcs-{{ section.id }} .pzcs-badge {
+      display: inline-block; margin: 0 0 18px; padding: 7px 14px 6px;
+      border-radius: 60px;
+      background: var(--pzcs-accent); color: #000;
+      font-size: 12px; font-weight: 900; letter-spacing: .12em; text-transform: uppercase;
+      line-height: 1.2;
+    }
+    .pzcs-{{ section.id }} .pzcs-heading {
+      font-size: clamp(30px, 4.6vw, 58px); font-weight: 900; margin: 0 0 18px;
+      text-transform: uppercase; letter-spacing: -0.02em; line-height: 1.02;
+      color: var(--pzcs-ink);
+    }
+    .pzcs-{{ section.id }} .pzcs-sub {
+      font-size: clamp(15px, 1.4vw, 18px); line-height: 1.55; opacity: .84;
+      margin: 0 0 22px; max-width: 54ch;
+    }
+    .pzcs-{{ section.id }} .pzcs-points {
+      display: flex; flex-wrap: wrap; gap: 8px 22px; margin: 0 0 30px; padding: 0; list-style: none;
+    }
+    .pzcs-{{ section.id }} .pzcs-point {
+      font-size: clamp(17px, 2vw, 24px); font-weight: 900;
+      text-transform: uppercase; letter-spacing: -0.01em; line-height: 1.1;
+      color: var(--pzcs-accent);
+    }
+    .pzcs-{{ section.id }} .pzcs-form-title {
+      font-size: 13px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+      margin: 0 0 12px; color: var(--pzcs-ink);
+    }
+    .pzcs-{{ section.id }} .pzcs-fields {
+      display: flex; flex-wrap: wrap; gap: 10px; max-width: 560px;
+    }
+    .pzcs-{{ section.id }} .pzcs-input {
+      flex: 1 1 240px; min-width: 0; min-height: 56px;
+      padding: 0 20px;
+      border: 1px solid {{ section.settings.field_border }};
+      border-radius: 60px;
+      background: {{ section.settings.field_background }};
+      color: var(--pzcs-ink);
+      font-size: 16px; font-family: inherit;
+      -webkit-appearance: none; appearance: none;
+    }
+    .pzcs-{{ section.id }} .pzcs-input::placeholder { color: var(--pzcs-ink); opacity: .55; }
+    .pzcs-{{ section.id }} .pzcs-input:focus-visible {
+      outline: 2px solid var(--pzcs-accent); outline-offset: 2px;
+    }
+    .pzcs-{{ section.id }} .pzcs-btn {
+      flex: 0 0 auto; min-height: 56px;
+      background: var(--pzcs-accent) !important;
+      color: #000 !important;
+      border-color: var(--pzcs-accent) !important;
+      border-radius: 60px !important;
+      padding: 0 34px !important;
+      font-size: 17px !important;
+      font-weight: 900 !important;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      cursor: pointer;
+    }
+    .pzcs-{{ section.id }} .pzcs-btn:hover { filter: brightness(1.06); }
+    @media (max-width: 749px) {
+      .pzcs-{{ section.id }} .pzcs-btn { width: 100%; }
+    }
+    .pzcs-{{ section.id }} .pzcs-note {
+      font-size: 13px; line-height: 1.5; opacity: .68; margin: 12px 0 0; max-width: 54ch;
+    }
+    .pzcs-{{ section.id }} .pzcs-success {
+      margin: 0; padding: 18px 22px; max-width: 560px;
+      border: 1px solid var(--pzcs-accent); border-radius: 12px;
+      font-size: 17px; font-weight: 700; line-height: 1.4;
+      color: var(--pzcs-accent);
+    }
+    .pzcs-{{ section.id }} .pzcs-error {
+      margin: 12px 0 0; font-size: 14px; color: #ff8a8a;
+    }
+    .pzcs-{{ section.id }} .pzcs-error ul { margin: 0; padding: 0; list-style: none; }
+    .pzcs-{{ section.id }} .pzcs-alt {
+      display: inline-block; margin-top: 26px;
+      font-size: 15px; font-weight: 700; letter-spacing: .04em; text-transform: uppercase;
+      color: var(--pzcs-ink); text-decoration: underline; text-underline-offset: 4px;
+    }
+    .pzcs-{{ section.id }} .pzcs-alt:hover { color: var(--pzcs-accent); }
+  {% endstyle %}
+
+  <div class="pzcs-inner">
+    {% if pzcs_image %}
+      <div class="pzcs-media">
+        {{ pzcs_image | image_url: width: 1400 | image_tag:
+           alt: pzcs_alt, loading: 'eager', fetchpriority: 'high',
+           sizes: '(min-width: 950px) 44vw, 340px', widths: '400, 700, 1000, 1400' }}
+      </div>
+    {% endif %}
+
+    <div class="pzcs-copy">
+      {% if section.settings.badge != blank %}
+        <span class="pzcs-badge">{{ section.settings.badge }}</span>
+      {% endif %}
+      <h1 class="pzcs-heading">{{ pzcs_heading | newline_to_br }}</h1>
+      {% if section.settings.subheading != blank %}
+        <p class="pzcs-sub">{{ section.settings.subheading }}</p>
+      {% endif %}
+      {% if section.blocks.size > 0 %}
+        <ul class="pzcs-points">
+          {% for block in section.blocks %}
+            {% if block.settings.text != blank %}
+              <li class="pzcs-point" {{ block.shopify_attributes }}>{{ block.settings.text }}</li>
+            {% endif %}
+          {% endfor %}
+        </ul>
+      {% endif %}
+
+      {% form 'customer', id: pzcs_form_id, class: 'pzcs-form' %}
+        {% if form.posted_successfully? %}
+          <p class="pzcs-success" role="status">{{ section.settings.success_message }}</p>
+        {% else %}
+          {% if section.settings.form_title != blank %}
+            <p class="pzcs-form-title">{{ section.settings.form_title }}</p>
+          {% endif %}
+          <input type="hidden" name="contact[tags]" value="{{ section.settings.tags | escape }}">
+          <div class="pzcs-fields">
+            <label class="visually-hidden" for="{{ pzcs_form_id }}-email">Email address</label>
+            <input
+              class="pzcs-input"
+              id="{{ pzcs_form_id }}-email"
+              type="email"
+              name="contact[email]"
+              value="{{ form.email }}"
+              placeholder="{{ section.settings.email_placeholder | escape }}"
+              autocomplete="email"
+              autocapitalize="off"
+              required
+            >
+            <button type="submit" class="pzcs-btn button button--secondary">{{ section.settings.button_text }}</button>
+          </div>
+          {% if form.errors %}
+            <div class="pzcs-error" role="alert">{{ form.errors | default_errors }}</div>
+          {% endif %}
+          {% if section.settings.note != blank %}
+            <p class="pzcs-note">{{ section.settings.note }}</p>
+          {% endif %}
+        {% endif %}
+      {% endform %}
+
+      {% if section.settings.alt_text != blank and section.settings.alt_url != blank %}
+        <a class="pzcs-alt" href="{{ section.settings.alt_url }}">{{ section.settings.alt_text }}</a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "PZ Coming Soon",
+  "tag": "section",
+  "class": "pz-section",
+  "settings": [
+    { "type": "text", "id": "anchor_id", "label": "Anchor id", "default": "pz-coming-soon" },
+    { "type": "text", "id": "badge", "label": "Badge", "default": "Coming soon" },
+    { "type": "textarea", "id": "heading", "label": "Heading", "info": "Leave blank to use the product title" },
+    { "type": "textarea", "id": "subheading", "label": "Subheading" },
+    { "type": "header", "content": "Waitlist form" },
+    { "type": "text", "id": "form_title", "label": "Form title", "default": "Be first to know when it drops" },
+    { "type": "text", "id": "email_placeholder", "label": "Email placeholder", "default": "Your email address" },
+    { "type": "text", "id": "button_text", "label": "Button text", "default": "Notify me" },
+    { "type": "textarea", "id": "note", "label": "Note under the form", "default": "We'll email you when it launches and add you to our newsletter. Unsubscribe anytime." },
+    { "type": "text", "id": "success_message", "label": "Success message", "default": "You're on the list. We'll email you the moment it launches." },
+    { "type": "text", "id": "tags", "label": "Customer tags", "info": "Comma separated. Added to everyone who signs up, so the list can be filtered in Customers.", "default": "newsletter, waitlist" },
+    { "type": "header", "content": "Second link" },
+    { "type": "text", "id": "alt_text", "label": "Link text" },
+    { "type": "text", "id": "alt_url", "label": "Link URL" },
+    { "type": "header", "content": "Photo" },
+    { "type": "image_picker", "id": "image", "label": "Image", "info": "Leave empty to use the product's first photo" },
+    { "type": "text", "id": "image_alt", "label": "Image description" },
+    { "type": "range", "id": "image_scale", "label": "Photo zoom (%)", "min": 100, "max": 180, "step": 5, "default": 135 },
+    { "type": "range", "id": "corner_radius", "label": "Corner radius (px)", "min": 0, "max": 32, "step": 2, "default": 12 },
+    { "type": "color_background", "id": "media_background", "label": "Photo background", "default": "linear-gradient(160deg, #ffffff 0%, #e6e0f3 100%)" },
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "accent_color", "label": "Accent", "default": "#96FF00" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#ffffff" },
+    { "type": "color", "id": "field_background", "label": "Field background", "default": "#141416" },
+    { "type": "color", "id": "field_border", "label": "Field border", "default": "#3a3a3f" },
+    { "type": "color", "id": "background", "label": "Background", "default": "#0a0a0a" }
+  ],
+  "blocks": [
+    { "type": "point", "name": "Point", "settings": [{ "type": "text", "id": "text", "label": "Text" }] }
+  ],
+  "presets": [{ "name": "PZ Coming Soon" }]
+}
+{% endschema %}

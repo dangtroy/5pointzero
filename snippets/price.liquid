@@ -50,7 +50,6 @@
       {%- if compare_at_price > price and product.quantity_price_breaks_configured? %} volume-pricing--sale-badge{% endif -%}
       {%- if product.price_varies == false and product.compare_at_price_varies %} price--no-compare{% endif -%}
       {%- if show_badges %} price--show-badge{% endif -%}
-      {% if product.selected_or_first_available_variant.metafields.custom.price_discount.value != blank %}  price--on-sale {% endif %}
     "
   >
     <div class="price__container">
@@ -108,11 +107,7 @@
         {%- endunless -%}
         <span class="visually-hidden visually-hidden--inline">{{ 'products.product.price.sale_price' | t }}</span>
         <span class="price-item price-item--sale price-item--last">
-          {% if product.selected_or_first_available_variant.metafields.custom.price_discount.value != blank %}
-             {{- product.selected_or_first_available_variant.metafields.custom.price_discount.value | money_without_trailing_zeros -}}
-          {% else %}
-            {{ money_price }}
-          {% endif %}
+          {{ money_price }}
         </span>
       </div>
       <small class="unit-price caption{% if product.selected_or_first_available_variant.unit_price_measurement == nil %} hidden{% endif %}">
@@ -131,7 +126,34 @@
       </small>
     </div>
 
-    <span class="discount_pp">{{ product.selected_or_first_available_variant.metafields.custom.price_note.value }}</span> 
+    {%- comment -%}
+      The saving shown here is worked out from the real price and compare-at
+      price, so it always matches what the cart charges. The variant's
+      price_note metafield only supplies the extras after the first " + "
+      (free S&H, free bottle and so on).
+    {%- endcomment -%}
+    {%- liquid
+      assign pz_variant = product.selected_or_first_available_variant
+      assign pz_note = pz_variant.metafields.custom.price_note.value
+      assign pz_extras = ''
+      if pz_note != blank
+        assign pz_parts = pz_note | split: ' + '
+        for pz_part in pz_parts offset: 1
+          assign pz_extras = pz_extras | append: ' + ' | append: pz_part
+        endfor
+      endif
+      assign pz_save = 0
+      if pz_variant.compare_at_price > pz_variant.price
+        assign pz_save = pz_variant.compare_at_price | minus: pz_variant.price
+      endif
+    -%}
+    <span class="discount_pp">
+      {%- if pz_save > 0 -%}
+        YOU SAVE {{ pz_save | money_without_trailing_zeros }}{% if pz_extras != '' %}{{ pz_extras | upcase }}{% else %}!{% endif %}
+      {%- elsif pz_extras != '' -%}
+        {{ pz_extras | remove_first: ' + ' | upcase }}
+      {%- endif -%}
+    </span>
   </div>
 {% unless product.handle == 'sample-sleeve' %}
   <p class="pr_bottom_down">

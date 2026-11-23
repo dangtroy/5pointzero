@@ -1,0 +1,157 @@
+{% comment %}
+  PZ Story - a photo or video beside a block of copy.
+  The media side, colours and button are settings, so one section covers
+  mission, team and charity blocks on a light or dark ground.
+{% endcomment %}
+<section
+  id="{{ section.settings.anchor_id }}"
+  class="pz-story pz-story-{{ section.id }}{% if section.settings.media_side == 'right' %} pz-story--media-right{% endif %}"
+>
+  {% style %}
+    .pz-story-{{ section.id }} {
+      background: {{ section.settings.background }};
+      color: {{ section.settings.text_color }};
+      padding: 56px 16px;
+      scroll-margin-top: 80px;
+    }
+    @media (min-width: 750px) {
+      .pz-story-{{ section.id }} { padding: 88px 32px; }
+    }
+    .pz-story-{{ section.id }} .pz-story-inner {
+      max-width: 1180px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr; gap: 36px; align-items: center;
+    }
+    @media (min-width: 950px) {
+      .pz-story-{{ section.id }} .pz-story-inner {
+        grid-template-columns: {{ section.settings.media_width }}fr {{ 100 | minus: section.settings.media_width }}fr;
+        gap: 64px;
+      }
+      .pz-story-{{ section.id }}.pz-story--media-right .pz-story-inner {
+        grid-template-columns: {{ 100 | minus: section.settings.media_width }}fr {{ section.settings.media_width }}fr;
+      }
+      .pz-story-{{ section.id }}.pz-story--media-right .pz-story-media { order: 2; }
+    }
+    .pz-story-{{ section.id }} .pz-story-media { min-width: 0; }
+    .pz-story-{{ section.id }} .pz-story-media img,
+    .pz-story-{{ section.id }} .pz-story-media video {
+      display: block; width: 100%; height: auto;
+      border-radius: {{ section.settings.corner_radius }}px;
+    }
+    .pz-story-{{ section.id }} .pz-story-copy { min-width: 0; }
+    .pz-story-{{ section.id }} .pz-story-eyebrow {
+      display: block; margin: 0 0 14px;
+      font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+      color: {{ section.settings.accent_ink_color }};
+    }
+    .pz-story-{{ section.id }} h2 {
+      font-size: clamp(27px, 3.8vw, 46px); font-weight: 900; margin: 0 0 22px;
+      text-transform: uppercase; letter-spacing: -0.02em; line-height: 1.05;
+      color: {{ section.settings.heading_color }};
+    }
+    .pz-story-{{ section.id }} .pz-story-body {
+      font-size: clamp(15px, 1.4vw, 18px); line-height: 1.6;
+    }
+    .pz-story-{{ section.id }} .pz-story-body p { margin: 0 0 16px; opacity: .84; }
+    .pz-story-{{ section.id }} .pz-story-body p:last-child { margin-bottom: 0; }
+    .pz-story-{{ section.id }} .pz-story-body strong {
+      color: {{ section.settings.accent_ink_color }}; font-weight: 900;
+    }
+    .pz-story-{{ section.id }} .pz-story-body a { color: inherit; }
+    .pz-story-{{ section.id }} .pz-story-cta {
+      margin-top: 30px;
+      min-height: 44px;
+      text-decoration: none;
+      background: {{ section.settings.button_bg }} !important;
+      color: {{ section.settings.button_text }} !important;
+      border-color: {{ section.settings.button_bg }} !important;
+      border-radius: {{ section.settings.button_radius }}px !important;
+      padding-top: 20px !important; padding-bottom: 20px !important;
+      font-size: 17px !important;
+      font-weight: 900 !important;
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+    .pz-story-{{ section.id }} .pz-story-cta:hover { filter: brightness(1.15); }
+    @media (max-width: 749px) {
+      .pz-story-{{ section.id }} .pz-story-cta { width: 100%; }
+    }
+  {% endstyle %}
+
+  <div class="pz-story-inner">
+    {% if section.settings.video_url != blank or section.settings.image or section.settings.image_filename != blank %}
+      <div class="pz-story-media">
+        {% if section.settings.video_url != blank %}
+          <video
+            playsinline controls preload="metadata"
+            {% if section.settings.video_poster != blank %}poster="{{ section.settings.video_poster }}"{% endif %}
+            aria-label="{{ section.settings.image_alt | escape }}"
+          >
+            <source src="{{ section.settings.video_url }}" type="video/mp4">
+          </video>
+        {% elsif section.settings.image %}
+          {{ section.settings.image | image_url: width: 1600 | image_tag:
+             alt: section.settings.image_alt, loading: 'lazy',
+             sizes: '(min-width: 950px) 48vw, 100vw', widths: '500, 800, 1100, 1600' }}
+        {% else %}
+          <img
+            src="{{ section.settings.image_filename | asset_url }}"
+            alt="{{ section.settings.image_alt | escape }}"
+            loading="lazy" decoding="async">
+        {% endif %}
+      </div>
+    {% endif %}
+
+    <div class="pz-story-copy">
+      {% if section.settings.eyebrow != blank %}
+        <span class="pz-story-eyebrow">{{ section.settings.eyebrow }}</span>
+      {% endif %}
+      {% if section.settings.heading != blank %}
+        <h2>{{ section.settings.heading | newline_to_br }}</h2>
+      {% endif %}
+      {% if section.settings.body != blank %}
+        <div class="pz-story-body">{{ section.settings.body }}</div>
+      {% endif %}
+      {% if section.settings.cta_text != blank and section.settings.cta_url != blank %}
+        <a class="pz-story-cta button button--secondary" href="{{ section.settings.cta_url }}">
+          {{ section.settings.cta_text }}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "PZ Story",
+  "tag": "section",
+  "class": "pz-section",
+  "settings": [
+    { "type": "text", "id": "anchor_id", "label": "Anchor id", "default": "pz-story" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Our Story" },
+    { "type": "textarea", "id": "heading", "label": "Heading", "default": "Made by players, for players." },
+    { "type": "richtext", "id": "body", "label": "Body" },
+    { "type": "header", "content": "Call to action" },
+    { "type": "text", "id": "cta_text", "label": "Button text" },
+    { "type": "text", "id": "cta_url", "label": "Button link" },
+    { "type": "range", "id": "button_radius", "label": "Button radius (px)", "min": 0, "max": 60, "step": 2, "default": 60 },
+    { "type": "header", "content": "Media" },
+    { "type": "select", "id": "media_side", "label": "Media side", "default": "left",
+      "options": [{ "value": "left", "label": "Left" }, { "value": "right", "label": "Right" }] },
+    { "type": "range", "id": "media_width", "label": "Media column width (%)", "min": 35, "max": 60, "step": 5, "default": 50 },
+    { "type": "range", "id": "corner_radius", "label": "Corner radius (px)", "min": 0, "max": 24, "step": 2, "default": 4 },
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "text", "id": "image_filename", "label": "Bundled asset filename", "info": "Used when no image is picked" },
+    { "type": "text", "id": "image_alt", "label": "Image or video description" },
+    { "type": "text", "id": "video_url", "label": "Video URL (mp4)", "info": "When set, the video shows instead of the image" },
+    { "type": "text", "id": "video_poster", "label": "Video poster image URL" },
+    { "type": "header", "content": "Colours" },
+    { "type": "color", "id": "accent_ink_color", "label": "Eyebrow and bold text", "default": "#457300" },
+    { "type": "color", "id": "heading_color", "label": "Heading", "default": "#111111" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#141414" },
+    { "type": "color", "id": "button_bg", "label": "Button background", "default": "#111111" },
+    { "type": "color", "id": "button_text", "label": "Button text", "default": "#96FF00" },
+    { "type": "color", "id": "background", "label": "Background", "default": "#ffffff" }
+  ],
+  "presets": [{ "name": "PZ Story" }]
+}
+{% endschema %}

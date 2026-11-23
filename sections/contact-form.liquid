@@ -17,9 +17,11 @@
 <div class="color-{{ section.settings.color_scheme }} gradient" {% if section.settings.img_bg != blank %}style="background-image:url({{ section.settings.img_bg | img_url:"master" }});"{% endif %}>
   <div class="contact page-width page-width--narrow section-{{ section.id }}-padding">
     {%- if section.settings.heading != blank -%}
-      <h2 class="title title-wrapper--no-top-margin inline-richtext {{ section.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+      {%- assign pz_heading_tag = section.settings.heading_tag | default: 'h2' -%}
+      {%- if pz_heading_tag == 'h1' -%}<style>.contact h1{text-align:center;margin:0}</style>{%- endif -%}
+      <{{ pz_heading_tag }} class="title title-wrapper--no-top-margin inline-richtext {{ section.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
         {{ section.settings.heading }}
-      </h2>
+      </{{ pz_heading_tag }}>
     {%- else -%}
       <h2 class="visually-hidden">{{ 'templates.contact.form.title' | t }}</h2>
     {%- endif -%}
@@ -148,6 +150,17 @@
       "id": "heading",
       "default": "t:sections.contact-form.settings.title.default",
       "label": "t:sections.contact-form.settings.title.label"
+    },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "options": [
+        { "value": "h1", "label": "Main page heading (H1)" },
+        { "value": "h2", "label": "Section heading (H2)" }
+      ],
+      "default": "h2",
+      "label": "Heading tag",
+      "info": "Use H1 once per page, on the first heading. It tells search engines what the page is about."
     },
     {
       "type": "select",

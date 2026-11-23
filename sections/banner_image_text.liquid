@@ -29,15 +29,19 @@
          {% if section.settings.img != blank %} <img  src="{{ section.settings.img | img_url:"master" }}" class="{% if section.settings.img2 != blank %}desktop-image{% endif %}">{% endif %}
           {% if section.settings.img2 != blank %} <img  src="{{ section.settings.img2 | img_url:"master" }}" class="mobile-image">{% endif %}
         </div>
+     {%- if section.settings.heading_tag == 'h1' -%}
+       <style>.banner_text_item h1{padding-bottom:10px}@media screen and (max-width:750px){.banner_text_item h1{padding-bottom:3px}}</style>
+     {%- endif -%}
      <div class="banner_image_inner">
     <div class="page-width">
      
         <div class="banner_text">
           <div class="banner_text_item">
             {% render 'review_star' %}
-            {% if section.settings.headings != blank %} <h2 class="rich-text__heading rte inline-richtext {{ section.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
+            {%- assign pz_heading_tag = section.settings.heading_tag | default: 'h2' -%}
+            {% if section.settings.headings != blank %} <{{ pz_heading_tag }} class="rich-text__heading rte inline-richtext {{ section.settings.heading_size }}{% if settings.animations_reveal_on_scroll %} scroll-trigger animate--slide-in{% endif %}">
                 {{ section.settings.headings }}                         
-              </h2>{% endif %}
+              </{{ pz_heading_tag }}>{% endif %}
             {% if section.settings.content != blank %}<div class="content">{{ section.settings.content }}</div>{% endif %} 
             <div class="banner_btn">
                {%- if section.settings.button_label != blank -%}
@@ -88,6 +92,17 @@
       "id": "headings",
       "default": "Image with text",
       "label": "Heading"
+    },
+    {
+      "type": "select",
+      "id": "heading_tag",
+      "options": [
+        { "value": "h1", "label": "Main page heading (H1)" },
+        { "value": "h2", "label": "Section heading (H2)" }
+      ],
+      "default": "h2",
+      "label": "Heading tag",
+      "info": "Use H1 once per page, on the first heading. It tells search engines what the page is about."
     },
     {
       "type": "select",

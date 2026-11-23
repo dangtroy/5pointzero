@@ -1,0 +1,1409 @@
+{%- comment -%}
+  ============================================================
+  PERFORMANCE OFFER — Premium hero / offer section
+  Shopify Online Store 2.0 · Single file · No dependencies
+  ------------------------------------------------------------
+  · 55/45 split on desktop, purpose-built mobile layout
+  · Ajax add-to-cart with loading / success / sold-out states
+  · Dynamic variant picker driven by product JSON
+  · All colors via CSS custom properties (section settings)
+  · Blocks: Benefit · Included Item · Trust Badge · Certification
+  · Respects prefers-reduced-motion
+  ============================================================
+{%- endcomment -%}
+
+{%- liquid
+  assign product = section.settings.product
+  assign current_variant = product.selected_or_first_available_variant
+  assign sid = section.id
+
+  assign main_image = section.settings.main_image | default: product.featured_image
+-%}
+
+{%- comment -%} ---------- Inline icon set (kept in-section: no snippets required) ---------- {%- endcomment -%}
+{%- capture icon_droplet -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.7S5.5 10 5.5 14.5a6.5 6.5 0 0 0 13 0C18.5 10 12 2.7 12 2.7z"/></svg>{%- endcapture -%}
+{%- capture icon_bolt -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4.5 13.5H11L9.5 22 19 10h-6.5L13 2z"/></svg>{%- endcapture -%}
+{%- capture icon_runner -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="16" cy="4.5" r="2"/><path d="M13 8.5 9 11l1.5 4L7 20M13 8.5l3.5 2 3-1M13 8.5 11 15l4 2 .5 4"/></svg>{%- endcapture -%}
+{%- capture icon_target -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2" fill="currentColor"/></svg>{%- endcapture -%}
+{%- capture icon_refresh -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 12a8 8 0 1 1-2.3-5.6M20 3v4h-4"/></svg>{%- endcapture -%}
+{%- capture icon_bag -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 13H6L5 8z"/><path d="M8.5 8V6a3.5 3.5 0 0 1 7 0v2"/></svg>{%- endcapture -%}
+{%- capture icon_bottle -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10 2h4M10.5 2v3.5L8.5 9v11a2 2 0 0 0 2 2h3a2 2 0 0 0 2-2V9l-2-3.5V2"/><path d="M8.5 13h7"/></svg>{%- endcapture -%}
+{%- capture icon_truck -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 6h11v10H2zM13 9h4l3 3v4h-7"/><circle cx="6.5" cy="17.5" r="1.8"/><circle cx="16.5" cy="17.5" r="1.8"/></svg>{%- endcapture -%}
+{%- capture icon_tag -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3h8l10 10-8 8L3 11V3z"/><circle cx="8" cy="8" r="1.4" fill="currentColor"/></svg>{%- endcapture -%}
+{%- capture icon_lock -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4.5" y="10.5" width="15" height="10" rx="2"/><path d="M8 10.5V7.5a4 4 0 0 1 8 0v3"/></svg>{%- endcapture -%}
+{%- capture icon_shield -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2.5 4.5 5.5v6c0 5 3.5 8.5 7.5 10 4-1.5 7.5-5 7.5-10v-6L12 2.5z"/><path d="m9 12 2 2 4-4"/></svg>{%- endcapture -%}
+{%- capture icon_star -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 2.8 2.9 5.9 6.5.9-4.7 4.6 1.1 6.5L12 17.6l-5.8 3.1 1.1-6.5L2.6 9.6l6.5-.9L12 2.8z"/></svg>{%- endcapture -%}
+{%- capture icon_leaf -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 21c0-9 4-15 14-16 1 10-4 15-11 15"/><path d="M5 21c2-5 5-8 9-10"/></svg>{%- endcapture -%}
+{%- capture icon_heart -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20.5S3.5 15 3.5 8.9A4.7 4.7 0 0 1 12 6.2a4.7 4.7 0 0 1 8.5 2.7C20.5 15 12 20.5 12 20.5z"/></svg>{%- endcapture -%}
+{%- capture icon_check -%}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7"/></svg>{%- endcapture -%}
+
+{%- style -%}
+  /* ---------- Section-scoped design tokens ---------- */
+  #po-{{ sid }} {
+    --po-bg:            {{ section.settings.color_bg }};
+    --po-text:          {{ section.settings.color_text }};
+    --po-text-subtle:   {{ section.settings.color_text | color_modify: 'alpha', 0.62 }};
+    --po-heading:       {{ section.settings.color_heading }};
+    --po-accent:        {{ section.settings.color_accent }};
+    --po-border:        {{ section.settings.color_border }};
+    --po-card:          {{ section.settings.color_card }};
+    --po-btn-bg:        {{ section.settings.color_btn_bg }};
+    --po-btn-text:      {{ section.settings.color_btn_text }};
+    --po-glow:          {{ section.settings.color_glow }};
+    --po-radius:        {{ section.settings.radius }}px;
+    --po-radius-sm:     {{ section.settings.radius | divided_by: 2 }}px;
+    --po-container:     {{ section.settings.container_width }}px;
+    --po-pad-top:       {{ section.settings.padding_top }}px;
+    --po-pad-bottom:    {{ section.settings.padding_bottom }}px;
+    --po-gap:           {{ section.settings.column_gap }}px;
+    --po-image-scale:   {{ section.settings.image_width }}%;
+  }
+{%- endstyle -%}
+
+<section
+  id="po-{{ sid }}"
+  class="po"
+  data-section-id="{{ sid }}"
+  aria-label="{{ section.settings.heading | default: 'Featured offer' | escape }}"
+>
+  <div class="po__container">
+
+    {%- comment -%} ================= LEFT · PRODUCT MEDIA ================= {%- endcomment -%}
+    <div class="po__media po-fade" data-po-fade>
+      <div class="po__media-stage">
+        <span class="po__glow" aria-hidden="true"></span>
+
+        {%- if section.settings.secondary_image -%}
+          <div class="po__img po__img--secondary" aria-hidden="true">
+            {{ section.settings.secondary_image
+              | image_url: width: 1200
+              | image_tag: loading: 'lazy', widths: '400, 800, 1200', sizes: '(min-width: 990px) 45vw, 70vw', alt: '' }}
+          </div>
+        {%- endif -%}
+
+        <div class="po__img po__img--main{% if section.settings.enable_float %} po__img--float{% endif %}">
+          {%- if main_image -%}
+            {{ main_image
+              | image_url: width: 1600
+              | image_tag: loading: 'lazy', widths: '400, 700, 1000, 1400, 1600', sizes: '(min-width: 990px) 50vw, 78vw', alt: main_image.alt | default: product.title | escape }}
+          {%- else -%}
+            {{ 'product-1' | placeholder_svg_tag: 'po__placeholder' }}
+          {%- endif -%}
+        </div>
+
+        {%- if section.settings.bottle_image -%}
+          <div class="po__img po__img--bottle" aria-hidden="true">
+            {{ section.settings.bottle_image
+              | image_url: width: 700
+              | image_tag: loading: 'lazy', widths: '300, 500, 700', sizes: '20vw', alt: '' }}
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.accessory_image -%}
+          <div class="po__img po__img--accessory" aria-hidden="true">
+            {{ section.settings.accessory_image
+              | image_url: width: 500
+              | image_tag: loading: 'lazy', widths: '250, 500', sizes: '15vw', alt: '' }}
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.show_badge and section.settings.badge_text != blank -%}
+          <div class="po__badge" role="note">
+            <span class="po__badge-text">{{ section.settings.badge_text | escape }}</span>
+            {%- if section.settings.badge_subtext != blank -%}
+              <span class="po__badge-subtext">{{ section.settings.badge_subtext | escape }}</span>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
+    </div>
+
+    {%- comment -%} ================= RIGHT · OFFER CONTENT ================= {%- endcomment -%}
+    <div class="po__content">
+
+      {%- comment -%} — Header — {%- endcomment -%}
+      <header class="po__header po-fade" data-po-fade>
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="po__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 class="po__heading">{{ section.settings.heading | escape }}</h2>
+        {%- endif -%}
+        {%- if section.settings.subheading != blank -%}
+          <p class="po__subheading">{{ section.settings.subheading | escape }}</p>
+        {%- endif -%}
+      </header>
+
+      <hr class="po__divider po__divider--top" aria-hidden="true">
+
+      {%- comment -%} — Price row — {%- endcomment -%}
+      {%- if product != blank -%}
+        <div class="po__price-row po-fade" data-po-fade>
+          <span class="po__price" data-po-price>{{ current_variant.price | money }}</span>
+          <span
+            class="po__compare{% unless current_variant.compare_at_price > current_variant.price %} is-hidden{% endunless %}"
+            data-po-compare
+          >
+            <s>{{ current_variant.compare_at_price | money }}</s>
+          </span>
+          <span
+            class="po__save{% unless current_variant.compare_at_price > current_variant.price %} is-hidden{% endunless %}"
+            data-po-save
+          >
+            {%- if current_variant.compare_at_price > current_variant.price -%}
+              Save {{ current_variant.compare_at_price | minus: current_variant.price | money_without_trailing_zeros }}
+            {%- endif -%}
+          </span>
+        </div>
+      {%- endif -%}
+
+      {%- comment -%} — Benefit icon cards — {%- endcomment -%}
+      {%- assign benefit_blocks = section.blocks | where: 'type', 'benefit' -%}
+      {%- if benefit_blocks.size > 0 -%}
+        <ul class="po__benefits po-fade" data-po-fade role="list">
+          {%- for block in benefit_blocks -%}
+            <li class="po__benefit" {{ block.shopify_attributes }}>
+              <span class="po__benefit-icon" aria-hidden="true">
+                {%- case block.settings.icon -%}
+                  {%- when 'droplet' -%}{{ icon_droplet }}
+                  {%- when 'bolt' -%}{{ icon_bolt }}
+                  {%- when 'runner' -%}{{ icon_runner }}
+                  {%- when 'target' -%}{{ icon_target }}
+                  {%- when 'refresh' -%}{{ icon_refresh }}
+                  {%- when 'leaf' -%}{{ icon_leaf }}
+                  {%- when 'heart' -%}{{ icon_heart }}
+                  {%- when 'star' -%}{{ icon_star }}
+                  {%- when 'shield' -%}{{ icon_shield }}
+                  {%- else -%}{{ icon_check }}
+                {%- endcase -%}
+              </span>
+              <span class="po__benefit-title">{{ block.settings.title | escape }}</span>
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+
+      {%- comment -%} — What's included cards — {%- endcomment -%}
+      {%- assign included_blocks = section.blocks | where: 'type', 'included' -%}
+      {%- if included_blocks.size > 0 -%}
+        <div class="po__included po-fade" data-po-fade>
+          {%- if section.settings.included_heading != blank -%}
+            <p class="po__included-heading">{{ section.settings.included_heading | escape }}</p>
+          {%- endif -%}
+          <ul class="po__included-grid" role="list">
+            {%- for block in included_blocks -%}
+              <li class="po__included-card" {{ block.shopify_attributes }}>
+                <span class="po__included-icon" aria-hidden="true">
+                  {%- case block.settings.icon -%}
+                    {%- when 'bag' -%}{{ icon_bag }}
+                    {%- when 'bottle' -%}{{ icon_bottle }}
+                    {%- when 'truck' -%}{{ icon_truck }}
+                    {%- when 'tag' -%}{{ icon_tag }}
+                    {%- when 'star' -%}{{ icon_star }}
+                    {%- else -%}{{ icon_check }}
+                  {%- endcase -%}
+                </span>
+                <span class="po__included-value">{{ block.settings.value | escape }}</span>
+                <span class="po__included-label">{{ block.settings.label | escape }}</span>
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      {%- endif -%}
+
+      {%- comment -%} — Certification pills — {%- endcomment -%}
+      {%- assign cert_blocks = section.blocks | where: 'type', 'certification' -%}
+      {%- if cert_blocks.size > 0 -%}
+        <ul class="po__certs po-fade" data-po-fade role="list">
+          {%- for block in cert_blocks -%}
+            <li class="po__cert" {{ block.shopify_attributes }}>{{ block.settings.text | escape }}</li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+
+      {%- comment -%} — Buy area: variant picker + ajax form — {%- endcomment -%}
+      {%- if product != blank -%}
+        <div class="po__buy po-fade" data-po-fade>
+          {%- unless product.has_only_default_variant -%}
+            <div class="po__variants" data-po-variants>
+              {%- for option in product.options_with_values -%}
+                <div class="po__variant-field">
+                  <label class="po__variant-label" for="po-{{ sid }}-option-{{ forloop.index0 }}">
+                    {{- option.name | escape -}}
+                  </label>
+                  <div class="po__select-wrap">
+                    <select
+                      id="po-{{ sid }}-option-{{ forloop.index0 }}"
+                      class="po__select"
+                      data-po-option-index="{{ forloop.index0 }}"
+                    >
+                      {%- for value in option.values -%}
+                        <option
+                          value="{{ value | escape }}"
+                          {% if option.selected_value == value %}selected{% endif %}
+                        >{{ value | escape }}</option>
+                      {%- endfor -%}
+                    </select>
+                    <svg class="po__select-caret" viewBox="0 0 16 16" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 6l4 4 4-4"/></svg>
+                  </div>
+                </div>
+              {%- endfor -%}
+            </div>
+          {%- endunless -%}
+
+          <form
+            method="post"
+            action="{{ routes.cart_add_url }}"
+            accept-charset="UTF-8"
+            enctype="multipart/form-data"
+            class="po__form"
+            data-po-form
+            novalidate
+          >
+            <input type="hidden" name="id" value="{{ current_variant.id }}" data-po-variant-id>
+
+            <button
+              type="submit"
+              class="po__atc po__atc--{{ section.settings.button_style }}"
+              data-po-atc
+              {% unless current_variant.available %}disabled{% endunless %}
+            >
+              <span class="po__atc-label" data-po-atc-label>
+                {%- if current_variant.available -%}
+                  {{ section.settings.button_label | default: 'Add to Cart' | escape }}
+                {%- else -%}
+                  Sold Out
+                {%- endif -%}
+              </span>
+              <span class="po__atc-arrow" aria-hidden="true">
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </span>
+              <span class="po__atc-spinner" aria-hidden="true"></span>
+            </button>
+
+            <p class="po__form-error" data-po-error role="alert" hidden></p>
+          </form>
+        </div>
+      {%- else -%}
+        <p class="po__no-product">Select a product in the section settings.</p>
+      {%- endif -%}
+
+      {%- comment -%} — Trust row — {%- endcomment -%}
+      {%- assign trust_blocks = section.blocks | where: 'type', 'trust' -%}
+      {%- if trust_blocks.size > 0 -%}
+        <ul class="po__trust po-fade" data-po-fade role="list">
+          {%- for block in trust_blocks -%}
+            <li class="po__trust-item" {{ block.shopify_attributes }}>
+              <span class="po__trust-icon" aria-hidden="true">
+                {%- case block.settings.icon -%}
+                  {%- when 'lock' -%}{{ icon_lock }}
+                  {%- when 'shield' -%}{{ icon_shield }}
+                  {%- when 'truck' -%}{{ icon_truck }}
+                  {%- when 'star' -%}{{ icon_star }}
+                  {%- else -%}{{ icon_check }}
+                {%- endcase -%}
+              </span>
+              <span>{{ block.settings.text | escape }}</span>
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+
+    </div>
+  </div>
+
+  {%- comment -%} Variant data for the JS (kept off the DOM render path) {%- endcomment -%}
+  {%- if product != blank -%}
+    <script type="application/json" data-po-product-json>
+      {
+        "variants": [
+          {%- for variant in product.variants -%}
+            {
+              "id": {{ variant.id }},
+              "available": {{ variant.available | json }},
+              "price": {{ variant.price | money | json }},
+              {%- if variant.compare_at_price > variant.price -%}
+                "compare_at_price": {{ variant.compare_at_price | money | json }},
+                "savings": {{ variant.compare_at_price | minus: variant.price | money | json }},
+              {%- else -%}
+                "compare_at_price": null,
+                "savings": null,
+              {%- endif -%}
+              "options": {{ variant.options | json }}
+            }{% unless forloop.last %},{% endunless %}
+          {%- endfor -%}
+        ]
+      }
+    </script>
+  {%- endif -%}
+</section>
+
+{%- comment -%} ============================================================
+  STYLES
+============================================================ {%- endcomment -%}
+<style>
+  /* ---------- Base / layout ---------- */
+  .po {
+    background: var(--po-bg);
+    color: var(--po-text);
+    padding: var(--po-pad-top) 2rem var(--po-pad-bottom);
+    overflow: hidden;
+  }
+  .po__container {
+    max-width: var(--po-container);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 55fr 45fr;
+    align-items: center;
+    gap: var(--po-gap);
+  }
+
+  /* ---------- Media column ---------- */
+  .po__media-stage {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(2rem, 4vw, 4rem);
+  }
+  .po__glow {
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 85%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: radial-gradient(circle, var(--po-glow) 0%, transparent 68%);
+    opacity: 0.5;
+    filter: blur(40px);
+    pointer-events: none;
+  }
+  .po__img img,
+  .po__placeholder {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .po__img--main {
+    position: relative;
+    z-index: 2;
+    width: var(--po-image-scale);
+  }
+  .po__img--secondary {
+    position: absolute;
+    z-index: 1;
+    width: calc(var(--po-image-scale) * 0.9);
+    transform: translate(10%, -4%) scale(0.92);
+    opacity: 0.55;
+    pointer-events: none;
+  }
+  .po__img--bottle {
+    position: absolute;
+    z-index: 3;
+    left: 0;
+    bottom: 6%;
+    width: 32%;
+    pointer-events: none;
+  }
+  .po__img--accessory {
+    position: absolute;
+    z-index: 3;
+    right: 2%;
+    bottom: 4%;
+    width: 24%;
+    pointer-events: none;
+  }
+
+  /* Floating promo badge — small pill, not a giant circle */
+  .po__badge {
+    position: absolute;
+    z-index: 4;
+    top: 6%;
+    left: 4%;
+    display: inline-flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    padding: 0.6rem 1.1rem;
+    background: var(--po-accent);
+    color: var(--po-bg);
+    border-radius: 999px;
+    box-shadow: 0 8px 30px rgb(0 0 0 / 0.25);
+  }
+  .po__badge-text {
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    line-height: 1.2;
+  }
+  .po__badge-subtext {
+    font-size: 0.68rem;
+    font-weight: 500;
+    opacity: 0.8;
+    line-height: 1.2;
+  }
+
+  /* ---------- Content column ---------- */
+  .po__content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+    text-align: {{ section.settings.desktop_alignment }};
+    max-width: 620px;
+    {% if section.settings.desktop_alignment == 'center' %}margin-inline: auto;{% endif %}
+  }
+
+  .po__eyebrow {
+    margin: 0 0 0.75rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--po-accent);
+  }
+  .po__heading {
+    margin: 0;
+    font-size: clamp(2.2rem, 4vw, 3.6rem);
+    line-height: 1.02;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: -0.01em;
+    color: var(--po-heading);
+  }
+  .po__subheading {
+    margin: 0.75rem 0 0;
+    font-size: clamp(1.05rem, 1.4vw, 1.3rem);
+    font-weight: 500;
+    color: var(--po-text-subtle);
+  }
+  .po__divider {
+    border: 0;
+    border-top: 1px solid var(--po-border);
+    margin: 0;
+  }
+
+  /* ---------- Price row ---------- */
+  .po__price-row {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.9rem;
+    {% if section.settings.desktop_alignment == 'center' %}justify-content: center;{% endif %}
+  }
+  .po__price {
+    font-size: clamp(2rem, 3vw, 2.75rem);
+    font-weight: 800;
+    color: var(--po-accent);
+    line-height: 1;
+  }
+  .po__compare {
+    font-size: 1.15rem;
+    color: var(--po-text-subtle);
+  }
+  .po__save {
+    padding: 0.35rem 0.8rem;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    border: 1px solid var(--po-accent);
+    border-radius: 999px;
+    color: var(--po-accent);
+  }
+  .is-hidden { display: none !important; }
+
+  /* ---------- Benefit icon cards ---------- */
+  .po__benefits {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .po__benefit {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 1.1rem 0.5rem;
+    background: var(--po-card);
+    border: 1px solid var(--po-border);
+    border-radius: var(--po-radius-sm);
+    transition: transform 0.25s ease, border-color 0.25s ease;
+  }
+  .po__benefit:hover {
+    transform: translateY(-3px);
+    border-color: var(--po-accent);
+  }
+  .po__benefit-icon,
+  .po__included-icon {
+    display: inline-flex;
+    color: var(--po-accent);
+  }
+  .po__benefit-icon svg,
+  .po__included-icon svg { width: 26px; height: 26px; }
+  .po__benefit-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    text-align: center;
+  }
+
+  /* ---------- What's included ---------- */
+  .po__included-heading {
+    margin: 0 0 0.75rem;
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--po-accent);
+  }
+  .po__included-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 0.75rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .po__included-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 1.25rem 0.75rem;
+    background: var(--po-card);
+    border: 1px solid var(--po-border);
+    border-radius: var(--po-radius-sm);
+    transition: transform 0.25s ease, border-color 0.25s ease;
+  }
+  .po__included-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--po-accent);
+  }
+  .po__included-value {
+    font-size: 1.35rem;
+    font-weight: 800;
+    color: var(--po-accent);
+    line-height: 1;
+  }
+  .po__included-label {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--po-text-subtle);
+    text-align: center;
+  }
+
+  /* ---------- Certification pills ---------- */
+  .po__certs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    {% if section.settings.desktop_alignment == 'center' %}justify-content: center;{% endif %}
+  }
+  .po__cert {
+    padding: 0.45rem 0.95rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    border: 1px solid var(--po-border);
+    border-radius: 999px;
+    color: var(--po-text-subtle);
+    transition: border-color 0.25s ease, color 0.25s ease;
+  }
+  .po__cert:hover {
+    border-color: var(--po-accent);
+    color: var(--po-text);
+  }
+
+  /* ---------- Variant picker ---------- */
+  .po__variants {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+  .po__variant-field { flex: 1 1 160px; }
+  .po__variant-label {
+    display: block;
+    margin-bottom: 0.35rem;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--po-text-subtle);
+  }
+  .po__select-wrap { position: relative; }
+  .po__select {
+    width: 100%;
+    padding: 0.85rem 2.5rem 0.85rem 1rem;
+    font: inherit;
+    font-size: 0.9rem;
+    color: var(--po-text);
+    background: var(--po-card);
+    border: 1px solid var(--po-border);
+    border-radius: var(--po-radius-sm);
+    appearance: none;
+    cursor: pointer;
+  }
+  .po__select:focus-visible {
+    outline: 2px solid var(--po-accent);
+    outline-offset: 2px;
+  }
+  .po__select-caret {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: var(--po-text-subtle);
+  }
+
+  /* ---------- Add to cart ---------- */
+  .po__form { margin: 0; }
+  .po__atc {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    width: 100%;
+    min-height: 56px;
+    padding: 1rem 2rem;
+    font: inherit;
+    font-size: 1rem;
+    font-weight: 800;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-radius: var(--po-radius);
+    cursor: pointer;
+    transition: transform 0.2s ease, opacity 0.2s ease, box-shadow 0.2s ease;
+  }
+  .po__atc--solid {
+    background: var(--po-btn-bg);
+    color: var(--po-btn-text);
+    border: 1px solid var(--po-btn-bg);
+  }
+  .po__atc--outline {
+    background: transparent;
+    color: var(--po-btn-bg);
+    border: 2px solid var(--po-btn-bg);
+  }
+  .po__atc:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 30px rgb(0 0 0 / 0.2);
+  }
+  .po__atc:focus-visible {
+    outline: 2px solid var(--po-accent);
+    outline-offset: 3px;
+  }
+  .po__atc:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+  .po__atc-arrow { display: inline-flex; transition: transform 0.2s ease; }
+  .po__atc:hover:not(:disabled) .po__atc-arrow { transform: translateX(4px); }
+
+  /* Loading / success states */
+  .po__atc-spinner {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    opacity: 0;
+    animation: po-spin 0.7s linear infinite paused;
+  }
+  .po__atc.is-loading .po__atc-label,
+  .po__atc.is-loading .po__atc-arrow { visibility: hidden; }
+  .po__atc.is-loading .po__atc-spinner { opacity: 1; animation-play-state: running; }
+  .po__atc.is-success .po__atc-arrow { display: none; }
+  @keyframes po-spin { to { transform: rotate(360deg); } }
+
+  .po__form-error {
+    margin: 0.75rem 0 0;
+    font-size: 0.85rem;
+    color: #e5484d;
+  }
+  .po__no-product {
+    padding: 1rem;
+    border: 1px dashed var(--po-border);
+    border-radius: var(--po-radius-sm);
+    font-size: 0.9rem;
+    color: var(--po-text-subtle);
+  }
+
+  /* ---------- Trust row ---------- */
+  .po__trust {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem 1.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    justify-content: center;
+  }
+  .po__trust-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--po-text-subtle);
+  }
+  .po__trust-icon { display: inline-flex; color: var(--po-text-subtle); }
+  .po__trust-icon svg { width: 15px; height: 15px; }
+
+  /* ---------- Animations ---------- */
+  .po-fade {
+    opacity: 0;
+    transform: translateY(14px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  .po-fade.is-in {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  .po__img--float { animation: po-float 6s ease-in-out infinite; }
+  @keyframes po-float {
+    0%, 100% { transform: translateY(0); }
+    50%      { transform: translateY(-10px); }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .po-fade { opacity: 1; transform: none; transition: none; }
+    .po__img--float { animation: none; }
+    .po__atc,
+    .po__atc-arrow,
+    .po__benefit,
+    .po__included-card { transition: none; }
+  }
+
+  /* ============================================================
+     DESKTOP content order:
+     header → divider → price → benefits → certs → included
+     (DOM is authored in mobile order; flex `order` re-arranges here)
+  ============================================================ */
+  @media (min-width: 990px) {
+    .po__header       { order: 1; }
+    .po__divider--top { order: 2; }
+    .po__price-row    { order: 3; }
+    .po__benefits     { order: 4; }
+    .po__certs        { order: 5; }
+    .po__included     { order: 6; }
+    .po__buy          { order: 7; }
+    .po__trust        { order: 8; }
+  }
+
+  /* ============================================================
+     MOBILE — purpose-built layout, not stacked desktop
+     Order: product → heading → price → benefits → included
+            → certs → ATC → trust
+  ============================================================ */
+  @media (max-width: 989px) {
+    .po { padding-inline: 1.25rem; }
+    .po__container {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+    .po__media-stage { padding: 1rem 0; }
+    .po__img--main {
+      width: {{ section.settings.mobile_image_width }}%;
+      margin-inline: auto;
+    }
+    .po__img--secondary { width: 64%; }
+    .po__badge { top: 2%; left: 2%; padding: 0.5rem 0.9rem; }
+
+    .po__content {
+      gap: 1.25rem;
+      max-width: none;
+      text-align: {{ section.settings.mobile_alignment }};
+    }
+    {% if section.settings.mobile_alignment == 'center' %}
+    .po__price-row,
+    .po__certs { justify-content: center; }
+    {% else %}
+    .po__price-row,
+    .po__certs { justify-content: flex-start; }
+    {% endif %}
+
+    /* Mobile content order (flex order on the content column) */
+    .po__header            { order: 1; }
+    .po__divider--top      { order: 2; }
+    .po__price-row         { order: 3; }
+    .po__benefits          { order: 4; }
+    .po__included          { order: 5; }
+    .po__certs             { order: 6; }
+    .po__buy               { order: 7; }
+    .po__trust             { order: 8; }
+
+    .po__heading { font-size: clamp(1.9rem, 8vw, 2.6rem); }
+
+    /* 2-column card grids on mobile */
+    .po__benefits      { grid-template-columns: repeat(2, 1fr); }
+    .po__included-grid { grid-template-columns: repeat(2, 1fr); }
+
+    .po__atc { width: 100%; min-height: 56px; }
+    .po__trust { gap: 0.5rem 1.1rem; }
+  }
+</style>
+
+{%- comment -%} ============================================================
+  JAVASCRIPT — vanilla, scoped per section instance
+============================================================ {%- endcomment -%}
+<script>
+  (function () {
+    'use strict';
+
+    function initPerformanceOffer(section) {
+      if (!section || section.dataset.poInit === 'true') return;
+      section.dataset.poInit = 'true';
+
+      /* ---------- Scroll-in fade animation ---------- */
+      var fadeEls = section.querySelectorAll('[data-po-fade]');
+      var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (reduceMotion || !('IntersectionObserver' in window)) {
+        fadeEls.forEach(function (el) { el.classList.add('is-in'); });
+      } else {
+        var observer = new IntersectionObserver(function (entries) {
+          entries.forEach(function (entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-in');
+              observer.unobserve(entry.target);
+            }
+          });
+        }, { threshold: 0.15, rootMargin: '0px 0px -5% 0px' });
+        fadeEls.forEach(function (el) { observer.observe(el); });
+      }
+
+      /* ---------- Product / variant logic ---------- */
+      var jsonEl = section.querySelector('[data-po-product-json]');
+      var form = section.querySelector('[data-po-form]');
+      if (!jsonEl || !form) return;
+
+      var data;
+      try { data = JSON.parse(jsonEl.textContent); } catch (e) { return; }
+
+      var variants = data.variants || [];
+      var variantInput = form.querySelector('[data-po-variant-id]');
+      var atcBtn = form.querySelector('[data-po-atc]');
+      var atcLabel = form.querySelector('[data-po-atc-label]');
+      var errorEl = form.querySelector('[data-po-error]');
+      var priceEl = section.querySelector('[data-po-price]');
+      var compareEl = section.querySelector('[data-po-compare]');
+      var saveEl = section.querySelector('[data-po-save]');
+      var selects = section.querySelectorAll('[data-po-option-index]');
+      var defaultLabel = atcLabel ? atcLabel.textContent.trim() : 'Add to Cart';
+      if (defaultLabel === 'Sold Out') defaultLabel = {{ section.settings.button_label | default: 'Add to Cart' | json }};
+
+      function currentSelectedOptions() {
+        var opts = [];
+        selects.forEach(function (sel) {
+          opts[parseInt(sel.dataset.poOptionIndex, 10)] = sel.value;
+        });
+        return opts;
+      }
+
+      function findVariant() {
+        if (!selects.length) return variants[0] || null;
+        var selected = currentSelectedOptions();
+        return variants.find(function (v) {
+          return v.options.every(function (opt, i) { return opt === selected[i]; });
+        }) || null;
+      }
+
+      function updateUI(variant) {
+        if (!variant) {
+          atcBtn.disabled = true;
+          atcLabel.textContent = 'Unavailable';
+          return;
+        }
+        variantInput.value = variant.id;
+
+        if (priceEl) priceEl.textContent = variant.price;
+
+        var hasCompare = !!variant.compare_at_price;
+        if (compareEl) {
+          compareEl.classList.toggle('is-hidden', !hasCompare);
+          if (hasCompare) compareEl.innerHTML = '<s>' + variant.compare_at_price + '</s>';
+        }
+        if (saveEl) {
+          saveEl.classList.toggle('is-hidden', !hasCompare);
+          if (hasCompare) saveEl.textContent = 'Save ' + variant.savings;
+        }
+
+        atcBtn.disabled = !variant.available;
+        atcBtn.classList.remove('is-success');
+        atcLabel.textContent = variant.available ? defaultLabel : 'Sold Out';
+      }
+
+      selects.forEach(function (sel) {
+        sel.addEventListener('change', function () { updateUI(findVariant()); });
+      });
+
+      /* ---------- Ajax add to cart ---------- */
+      var successTimer = null;
+
+      form.addEventListener('submit', function (event) {
+        event.preventDefault();
+        if (atcBtn.disabled || atcBtn.classList.contains('is-loading')) return;
+
+        errorEl.hidden = true;
+        atcBtn.classList.add('is-loading');
+        atcBtn.setAttribute('aria-busy', 'true');
+
+        fetch(window.Shopify && window.Shopify.routes
+            ? window.Shopify.routes.root + 'cart/add.js'
+            : '/cart/add.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+          body: JSON.stringify({ items: [{ id: parseInt(variantInput.value, 10), quantity: 1 }] })
+        })
+          .then(function (response) {
+            return response.json().then(function (body) {
+              if (!response.ok) throw new Error(body.description || body.message || 'Could not add to cart.');
+              return body;
+            });
+          })
+          .then(function () {
+            /* Success state */
+            atcBtn.classList.remove('is-loading');
+            atcBtn.removeAttribute('aria-busy');
+            atcBtn.classList.add('is-success');
+            atcLabel.textContent = 'Added ✓';
+
+            /* Let themes with cart drawers / counters react */
+            document.dispatchEvent(new CustomEvent('cart:updated', { bubbles: true }));
+
+            clearTimeout(successTimer);
+            successTimer = setTimeout(function () {
+              atcBtn.classList.remove('is-success');
+              atcLabel.textContent = defaultLabel;
+            }, 2500);
+          })
+          .catch(function (error) {
+            atcBtn.classList.remove('is-loading');
+            atcBtn.removeAttribute('aria-busy');
+            errorEl.textContent = error.message;
+            errorEl.hidden = false;
+          });
+      });
+    }
+
+    /* Init now + re-init inside the theme editor */
+    function boot() {
+      document.querySelectorAll('.po[data-section-id]').forEach(initPerformanceOffer);
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', boot);
+    } else {
+      boot();
+    }
+    document.addEventListener('shopify:section:load', function (event) {
+      var el = event.target.querySelector('.po[data-section-id]');
+      if (el) { el.dataset.poInit = 'false'; initPerformanceOffer(el); }
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Performance Offer",
+  "tag": "section",
+  "class": "section-performance-offer",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Product"
+    },
+    {
+      "type": "product",
+      "id": "product",
+      "label": "Product"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Eyebrow",
+      "default": "Starter Pack"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Performance Hydration"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Made for peak performance."
+    },
+    {
+      "type": "text",
+      "id": "included_heading",
+      "label": "Included heading",
+      "default": "Includes"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Add to Cart"
+    },
+    {
+      "type": "header",
+      "content": "Images"
+    },
+    {
+      "type": "image_picker",
+      "id": "main_image",
+      "label": "Main product image",
+      "info": "Falls back to the product's featured image."
+    },
+    {
+      "type": "image_picker",
+      "id": "secondary_image",
+      "label": "Secondary image (layered behind)"
+    },
+    {
+      "type": "image_picker",
+      "id": "bottle_image",
+      "label": "Bottle image (front left)"
+    },
+    {
+      "type": "image_picker",
+      "id": "accessory_image",
+      "label": "Accessory image (front right)"
+    },
+    {
+      "type": "range",
+      "id": "image_width",
+      "label": "Product image width (desktop)",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 85
+    },
+    {
+      "type": "range",
+      "id": "mobile_image_width",
+      "label": "Product image width (mobile)",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 75
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_float",
+      "label": "Enable subtle image float",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Floating badge"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_badge",
+      "label": "Show badge",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "badge_text",
+      "label": "Badge text",
+      "default": "Free Bottle Included"
+    },
+    {
+      "type": "text",
+      "id": "badge_subtext",
+      "label": "Badge subtext",
+      "default": "+$39 Value"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "color_bg",
+      "label": "Background",
+      "default": "#0a0a0a"
+    },
+    {
+      "type": "color",
+      "id": "color_text",
+      "label": "Text",
+      "default": "#f5f5f5"
+    },
+    {
+      "type": "color",
+      "id": "color_heading",
+      "label": "Heading",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "color_accent",
+      "label": "Accent",
+      "default": "#b6f000"
+    },
+    {
+      "type": "color",
+      "id": "color_border",
+      "label": "Borders",
+      "default": "#2a2a2a"
+    },
+    {
+      "type": "color",
+      "id": "color_card",
+      "label": "Cards",
+      "default": "#141414"
+    },
+    {
+      "type": "color",
+      "id": "color_btn_bg",
+      "label": "Button background",
+      "default": "#b6f000"
+    },
+    {
+      "type": "color",
+      "id": "color_btn_text",
+      "label": "Button text",
+      "default": "#0a0a0a"
+    },
+    {
+      "type": "color",
+      "id": "color_glow",
+      "label": "Product glow",
+      "default": "#b6f000"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "container_width",
+      "label": "Container max width",
+      "min": 1000,
+      "max": 1800,
+      "step": 50,
+      "unit": "px",
+      "default": 1500
+    },
+    {
+      "type": "range",
+      "id": "column_gap",
+      "label": "Column gap",
+      "min": 20,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 64
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 96
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 160,
+      "step": 4,
+      "unit": "px",
+      "default": 96
+    },
+    {
+      "type": "range",
+      "id": "radius",
+      "label": "Corner radius",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 12
+    },
+    {
+      "type": "select",
+      "id": "desktop_alignment",
+      "label": "Desktop content alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "mobile_alignment",
+      "label": "Mobile content alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button style",
+      "options": [
+        { "value": "solid", "label": "Solid" },
+        { "value": "outline", "label": "Outline" }
+      ],
+      "default": "solid"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "benefit",
+      "name": "Benefit",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "droplet", "label": "Droplet" },
+            { "value": "bolt", "label": "Bolt" },
+            { "value": "runner", "label": "Runner" },
+            { "value": "target", "label": "Target" },
+            { "value": "refresh", "label": "Refresh" },
+            { "value": "leaf", "label": "Leaf" },
+            { "value": "heart", "label": "Heart" },
+            { "value": "star", "label": "Star" },
+            { "value": "shield", "label": "Shield" },
+            { "value": "check", "label": "Check" }
+          ],
+          "default": "droplet"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Hydration"
+        }
+      ]
+    },
+    {
+      "type": "included",
+      "name": "Included Item",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "bag", "label": "Bag" },
+            { "value": "bottle", "label": "Bottle" },
+            { "value": "truck", "label": "Truck" },
+            { "value": "tag", "label": "Tag" },
+            { "value": "star", "label": "Star" },
+            { "value": "check", "label": "Check" }
+          ],
+          "default": "bag"
+        },
+        {
+          "type": "text",
+          "id": "value",
+          "label": "Value",
+          "default": "2x"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Bags"
+        }
+      ]
+    },
+    {
+      "type": "trust",
+      "name": "Trust Badge",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icon",
+          "options": [
+            { "value": "lock", "label": "Lock" },
+            { "value": "shield", "label": "Shield" },
+            { "value": "truck", "label": "Truck" },
+            { "value": "star", "label": "Star" },
+            { "value": "check", "label": "Check" }
+          ],
+          "default": "lock"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Secure Checkout"
+        }
+      ]
+    },
+    {
+      "type": "certification",
+      "name": "Certification Badge",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Non-GMO"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Performance Offer",
+      "blocks": [
+        { "type": "benefit", "settings": { "icon": "droplet", "title": "Hydration" } },
+        { "type": "benefit", "settings": { "icon": "bolt", "title": "Energy" } },
+        { "type": "benefit", "settings": { "icon": "runner", "title": "Endurance" } },
+        { "type": "benefit", "settings": { "icon": "target", "title": "Focus" } },
+        { "type": "included", "settings": { "icon": "bag", "value": "2x", "label": "Bags" } },
+        { "type": "included", "settings": { "icon": "bottle", "value": "1x", "label": "Bottle" } },
+        { "type": "included", "settings": { "icon": "truck", "value": "Free", "label": "Shipping" } },
+        { "type": "included", "settings": { "icon": "tag", "value": "$39", "label": "Savings" } },
+        { "type": "certification", "settings": { "text": "Zero Sugar" } },
+        { "type": "certification", "settings": { "text": "Zero Artificial Colors" } },
+        { "type": "certification", "settings": { "text": "Zero Artificial Flavors" } },
+        { "type": "certification", "settings": { "text": "Gluten Free" } },
+        { "type": "certification", "settings": { "text": "Non-GMO" } },
+        { "type": "trust", "settings": { "icon": "lock", "text": "Secure Checkout" } },
+        { "type": "trust", "settings": { "icon": "shield", "text": "30-Day Guarantee" } },
+        { "type": "trust", "settings": { "icon": "truck", "text": "Fast Shipping" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
