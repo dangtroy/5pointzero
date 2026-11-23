@@ -1,7 +1,7 @@
 {% comment %}
   PZ FAQ — accordion, mirrors AG1's FAQ list / the existing faqs_GMgTWi section.
 {% endcomment %}
-<section id="{{ section.settings.anchor_id }}" class="pz-faq pz-faq-{{ section.id }}">
+<section id="{{ section.settings.anchor_id }}" class="pz-faq pz-faq-{{ section.id }} pz-faq--{{ section.settings.layout | default: 'stacked' }}">
   {% style %}
     .pz-faq-{{ section.id }} {
       background: {{ section.settings.background }};
@@ -35,10 +35,48 @@
     .pz-faq-{{ section.id }} summary .pz-faq-icon::after { width: 2px; height: 12px; transition: transform .15s ease; }
     .pz-faq-{{ section.id }} details[open] summary .pz-faq-icon::after { transform: translate(-50%, -50%) rotate(90deg) scaleY(0); }
     .pz-faq-{{ section.id }} .pz-faq-answer { padding-top: 12px; font-size: 14px; line-height: 1.6; opacity: .8; }
+
+    /* Split layout: big statement heading on the left, questions on the
+       right, each with a round +/× control. Stacks on phones. */
+    .pz-faq-{{ section.id }}.pz-faq--split .pz-faq-inner { max-width: 1180px; }
+    .pz-faq-{{ section.id }}.pz-faq--split h2 {
+      text-align: left; text-transform: uppercase; font-weight: 900;
+      font-size: clamp(40px, 6.4vw, 88px); line-height: .95; letter-spacing: -0.02em; margin: 0 0 16px;
+    }
+    .pz-faq-{{ section.id }}.pz-faq--split .pz-faq-sub { text-align: left; margin: 0 0 28px; }
+    .pz-faq-{{ section.id }}.pz-faq--split details { padding: 22px 0; }
+    .pz-faq-{{ section.id }}.pz-faq--split details:first-child { border-top: 1px solid {{ section.settings.border_color }}; }
+    .pz-faq-{{ section.id }}.pz-faq--split summary { font-size: clamp(17px, 1.7vw, 22px); font-weight: 700; }
+    .pz-faq-{{ section.id }}.pz-faq--split summary .pz-faq-icon {
+      width: 40px; height: 40px; border-radius: 50%;
+      border: 1px solid {{ section.settings.border_color }};
+    }
+    .pz-faq-{{ section.id }}.pz-faq--split details[open] summary .pz-faq-icon {
+      transform: rotate(45deg);
+    }
+    .pz-faq-{{ section.id }}.pz-faq--split details[open] summary .pz-faq-icon::after {
+      transform: translate(-50%, -50%);
+    }
+    .pz-faq-{{ section.id }}.pz-faq--split summary .pz-faq-icon { transition: transform .15s ease; }
+    .pz-faq-{{ section.id }}.pz-faq--split .pz-faq-answer { font-size: 16px; max-width: 62ch; }
+    @media (min-width: 900px) {
+      .pz-faq-{{ section.id }}.pz-faq--split { padding: 96px 32px; }
+      .pz-faq-{{ section.id }}.pz-faq--split .pz-faq-inner {
+        display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); gap: 64px; align-items: start;
+      }
+      .pz-faq-{{ section.id }}.pz-faq--split .pz-faq-intro { position: sticky; top: 120px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .pz-faq-{{ section.id }} summary .pz-faq-icon,
+      .pz-faq-{{ section.id }} summary .pz-faq-icon::after { transition: none; }
+    }
   {% endstyle %}
   <div class="pz-faq-inner">
-    {% if section.settings.heading != blank %}<h2>{{ section.settings.heading }}</h2>{% endif %}
-    {% if section.settings.subheading != blank %}<p class="pz-faq-sub">{{ section.settings.subheading }}</p>{% endif %}
+    <div class="pz-faq-intro">
+      {% if section.settings.heading != blank %}<h2>{{ section.settings.heading | newline_to_br }}</h2>{% endif %}
+      {% if section.settings.subheading != blank %}<p class="pz-faq-sub">{{ section.settings.subheading }}</p>{% endif %}
+    </div>
+    <div class="pz-faq-list">
     {% for block in section.blocks %}
       {% if block.type == 'faq' %}
         <details {{ block.shopify_attributes }}>
@@ -50,6 +88,7 @@
         </details>
       {% endif %}
     {% endfor %}
+    </div>
   </div>
 </section>
 
@@ -60,8 +99,9 @@
   "class": "pz-section",
   "settings": [
     { "type": "text", "id": "anchor_id", "label": "Anchor id", "default": "pz-faq" },
-    { "type": "text", "id": "heading", "label": "Heading", "default": "Frequently Asked Questions" },
+    { "type": "textarea", "id": "heading", "label": "Heading", "info": "Line breaks here are kept", "default": "Frequently Asked Questions" },
     { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "We're here to help you make an informed decision." },
+    { "type": "select", "id": "layout", "label": "Layout", "options": [{"value":"stacked","label":"Centered"},{"value":"split","label":"Split: heading left, questions right"}], "default": "stacked" },
     { "type": "header", "content": "Colors" },
     { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#141414" },
     { "type": "color", "id": "text_color", "label": "Body text color", "default": "#141414" },

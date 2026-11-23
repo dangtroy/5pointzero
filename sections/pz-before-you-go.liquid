@@ -1,0 +1,148 @@
+{% comment %}
+  PZ Before You Go: a last-chance email signup that sits just above the
+  footer. It carries the same offer as the pop-up so visitors who closed the
+  pop-up still see it, instead of a plain newsletter line buried in the footer.
+
+  The form is Shopify's customer form, so signups land in Customers with
+  email marketing consent and the tags below. Delivering the offer itself
+  (a discount code) is up to whatever automation sends the pop-up's code.
+{% endcomment %}
+<section id="pz-before-you-go" class="pz-byg pz-byg-{{ section.id }}">
+  {% style %}
+    .pz-byg-{{ section.id }} {
+      background: {{ section.settings.background }};
+      color: {{ section.settings.text_color }};
+      padding: 56px 16px;
+    }
+    @media (min-width: 750px) {
+      .pz-byg-{{ section.id }} { padding: 72px 32px; }
+    }
+    .pz-byg-{{ section.id }} .pz-byg-inner {
+      max-width: 1180px; margin: 0 auto;
+      display: grid; gap: 32px; align-items: center;
+      grid-template-columns: 1fr;
+    }
+    @media (min-width: 900px) {
+      .pz-byg-{{ section.id }} .pz-byg-inner { grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 56px; }
+    }
+    .pz-byg-{{ section.id }} .pz-byg-kicker {
+      display: block; margin: 0 0 10px;
+      font-size: clamp(18px, 2vw, 24px); font-weight: 900; font-style: italic;
+      color: {{ section.settings.accent_color }};
+    }
+    .pz-byg-{{ section.id }} h2 {
+      margin: 0 0 12px; color: {{ section.settings.text_color }};
+      font-size: clamp(28px, 4.2vw, 52px); font-weight: 900; line-height: 1;
+      text-transform: uppercase; letter-spacing: -0.02em;
+    }
+    .pz-byg-{{ section.id }} h2 .pz-byg-save { color: {{ section.settings.accent_color }}; }
+    .pz-byg-{{ section.id }} .pz-byg-text { margin: 0 0 8px; font-size: 16px; line-height: 1.5; opacity: .85; max-width: 52ch; }
+    .pz-byg-{{ section.id }} .pz-byg-offer {
+      display: inline-block; margin: 6px 0 24px; padding: 6px 12px; border-radius: 6px;
+      background: {{ section.settings.accent_color }}; color: #000;
+      font-size: 13px; font-weight: 900; letter-spacing: .1em; text-transform: uppercase;
+    }
+    .pz-byg-{{ section.id }} .pz-byg-form { display: flex; flex-wrap: wrap; gap: 12px; max-width: 560px; }
+    .pz-byg-{{ section.id }} .pz-byg-form label {
+      position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+    }
+    .pz-byg-{{ section.id }} .pz-byg-form input[type="email"] {
+      flex: 1 1 260px; min-height: 52px; padding: 0 20px; box-sizing: border-box;
+      border: 2px solid rgba(255,255,255,.25); border-radius: 60px;
+      background: rgba(255,255,255,.06); color: inherit; font: inherit; font-size: 16px;
+    }
+    .pz-byg-{{ section.id }} .pz-byg-form input[type="email"]:focus-visible {
+      outline: 2px solid {{ section.settings.accent_color }}; outline-offset: 2px;
+    }
+    .pz-byg-{{ section.id }} .pz-byg-form button {
+      flex: 0 0 auto; min-height: 52px; padding: 0 30px; cursor: pointer;
+      border: 0; border-radius: 60px;
+      background: {{ section.settings.accent_color }}; color: #000;
+      font: inherit; font-size: 16px; font-weight: 900; letter-spacing: .06em; text-transform: uppercase;
+    }
+    .pz-byg-{{ section.id }} .pz-byg-form button:hover { filter: brightness(1.06); }
+    @media (max-width: 599px) {
+      .pz-byg-{{ section.id }} .pz-byg-form button { width: 100%; }
+    }
+    .pz-byg-{{ section.id }} .pz-byg-msg { width: 100%; margin: 4px 0 0; font-size: 14px; }
+    .pz-byg-{{ section.id }} .pz-byg-fine { margin: 14px 0 0; font-size: 12px; opacity: .6; }
+    .pz-byg-{{ section.id }} .pz-byg-pack { text-align: center; }
+    .pz-byg-{{ section.id }} .pz-byg-pack img {
+      display: inline-block; width: 100%; height: auto; max-width: {{ section.settings.image_width }}px;
+      filter: drop-shadow(0 20px 34px rgba(0,0,0,.6));
+    }
+    @media (max-width: 899px) {
+      .pz-byg-{{ section.id }} .pz-byg-pack { order: -1; }
+      .pz-byg-{{ section.id }} .pz-byg-pack img { max-width: 200px; }
+    }
+  {% endstyle %}
+
+  <div class="pz-byg-inner">
+    <div class="pz-byg-copy">
+      {% if section.settings.kicker != blank %}<span class="pz-byg-kicker">{{ section.settings.kicker }}</span>{% endif %}
+      <h2>
+        {{ section.settings.heading }}
+        {% if section.settings.heading_accent != blank %}<span class="pz-byg-save">{{ section.settings.heading_accent }}</span>{% endif %}
+      </h2>
+      {% if section.settings.text != blank %}<p class="pz-byg-text">{{ section.settings.text }}</p>{% endif %}
+      {% if section.settings.offer_badge != blank %}<span class="pz-byg-offer">{{ section.settings.offer_badge }}</span>{% endif %}
+
+      {% form 'customer', id: 'pz-byg-form', class: 'pz-byg-form' %}
+        <input type="hidden" name="contact[tags]" value="{{ section.settings.tags | escape }}">
+        <label for="pz-byg-email-{{ section.id }}">Email</label>
+        <input id="pz-byg-email-{{ section.id }}" type="email" name="contact[email]"
+          value="{{ form.email }}" placeholder="{{ section.settings.placeholder | escape }}"
+          autocomplete="email" autocapitalize="off" spellcheck="false" required>
+        <button type="submit">{{ section.settings.button_text }}</button>
+        {% if form.posted_successfully? %}
+          <p class="pz-byg-msg" role="status">{{ section.settings.success_message }}</p>
+        {% elsif form.errors %}
+          <p class="pz-byg-msg" role="alert">{{ form.errors | default_errors }}</p>
+        {% endif %}
+      {% endform %}
+      {% if section.settings.fine_print != blank %}<p class="pz-byg-fine">{{ section.settings.fine_print }}</p>{% endif %}
+    </div>
+
+    {% assign pack = section.settings.product %}
+    {% if section.settings.image %}
+      <div class="pz-byg-pack">
+        {{ section.settings.image | image_url: width: 800 | image_tag: alt: section.settings.image_alt, loading: 'lazy', sizes: '(min-width: 900px) 360px, 200px', widths: '300, 500, 800' }}
+      </div>
+    {% elsif pack != blank and pack.featured_image %}
+      <div class="pz-byg-pack">
+        {{ pack.featured_image | image_url: width: 800 | image_tag: alt: pack.title, loading: 'lazy', sizes: '(min-width: 900px) 360px, 200px', widths: '300, 500, 800' }}
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "PZ Before You Go",
+  "tag": "section",
+  "class": "pz-section",
+  "settings": [
+    { "type": "text", "id": "kicker", "label": "Kicker", "default": "Wait! Before you go…" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Want access to exclusive deals?" },
+    { "type": "text", "id": "heading_accent", "label": "Heading accent word", "info": "Shown in the accent color after the heading", "default": "Save." },
+    { "type": "textarea", "id": "text", "label": "Text", "default": "Sign up to receive access to our latest updates and best offers." },
+    { "type": "text", "id": "offer_badge", "label": "Offer badge", "default": "Special offer!" },
+    { "type": "text", "id": "placeholder", "label": "Email placeholder", "default": "Enter your email" },
+    { "type": "text", "id": "button_text", "label": "Button text", "default": "Sign me up" },
+    { "type": "text", "id": "success_message", "label": "Success message", "default": "You're in! Check your inbox for your offer." },
+    { "type": "text", "id": "fine_print", "label": "Fine print", "default": "Unsubscribe anytime." },
+    { "type": "text", "id": "tags", "label": "Customer tags", "info": "Comma separated, added to everyone who signs up here", "default": "newsletter,before-you-go" },
+    { "type": "header", "content": "Image" },
+    { "type": "product", "id": "product", "label": "Product", "info": "Shows the product's main image (the bag)" },
+    { "type": "image_picker", "id": "image", "label": "Image override", "info": "Used instead of the product image when set" },
+    { "type": "text", "id": "image_alt", "label": "Override image alt text" },
+    { "type": "range", "id": "image_width", "label": "Image max width (px)", "min": 200, "max": 480, "step": 10, "default": 360 },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "accent_color", "label": "Accent", "default": "#96FF00" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#ffffff" },
+    { "type": "color", "id": "background", "label": "Background", "default": "#111111" }
+  ],
+  "enabled_on": { "groups": ["footer"] },
+  "presets": [{ "name": "PZ Before You Go" }]
+}
+{% endschema %}

@@ -100,9 +100,53 @@
     .pz-benefits-{{ section.id }} .pz-benefit-desc {
       font-size: 14px; opacity: .7; line-height: 1.5;
     }
+
+    /* Optional product spotlight head: pack shot + eyebrow + tagline. */
+    .pz-benefits-{{ section.id }} .pz-benefits-pack img {
+      display: block; width: 100%; height: auto; max-width: 200px; margin: 0 auto 20px;
+      filter: drop-shadow(0 14px 24px rgba(0,0,0,.18));
+    }
+    .pz-benefits-{{ section.id }} .pz-benefits-eyebrow {
+      display: inline-block; margin: 0 0 12px;
+      font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+      color: {{ section.settings.accent_on_light_color }};
+    }
+    .pz-benefits-{{ section.id }} .pz-benefits-foot {
+      text-align: center; margin-top: 36px; padding: 0 16px;
+    }
+    .pz-benefits-{{ section.id }} .pz-benefits-label-btn {
+      appearance: none; cursor: pointer; font: inherit;
+      display: inline-flex; align-items: center; justify-content: center; min-height: 48px;
+      padding: 14px 30px; border-radius: 60px;
+      border: 2px solid {{ section.settings.heading_color }};
+      background: transparent; color: {{ section.settings.heading_color }};
+      font-weight: 900; font-size: 15px; letter-spacing: .06em; text-transform: uppercase;
+      text-decoration: none;
+    }
+    .pz-benefits-{{ section.id }} .pz-benefits-label-btn:hover {
+      background: {{ section.settings.heading_color }}; color: {{ section.settings.background }};
+    }
+    .pz-benefits-{{ section.id }} dialog.pz-label-dialog {
+      border: 0; border-radius: 14px; padding: 16px; max-width: min(92vw, 720px);
+      background: #fff;
+    }
+    .pz-benefits-{{ section.id }} dialog.pz-label-dialog::backdrop { background: rgba(0,0,0,.7); }
+    .pz-benefits-{{ section.id }} .pz-label-dialog img { display: block; width: 100%; height: auto; }
+    .pz-benefits-{{ section.id }} .pz-label-close {
+      display: block; margin: 0 0 10px auto; min-height: 44px; min-width: 44px;
+      border: 0; background: #111; color: #fff; border-radius: 22px; padding: 0 16px;
+      font-weight: 700; cursor: pointer;
+    }
   {% endstyle %}
 
   <div class="pz-benefits-head">
+    {% assign spot = section.settings.product %}
+    {% if spot != blank and spot.featured_image %}
+      <a class="pz-benefits-pack" href="{{ spot.url }}">
+        {{ spot.featured_image | image_url: width: 600 | image_tag: alt: spot.title, loading: 'lazy', sizes: '200px', widths: '200, 400, 600' }}
+      </a>
+    {% endif %}
+    {% if section.settings.eyebrow != blank %}<span class="pz-benefits-eyebrow">{{ section.settings.eyebrow }}</span>{% endif %}
     {% if section.settings.heading != blank %}<h2>{{ section.settings.heading }}</h2>{% endif %}
     {% if section.settings.subheading != blank %}<p class="pz-benefits-sub">{{ section.settings.subheading }}</p>{% endif %}
   </div>
@@ -134,6 +178,16 @@
                 <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M24 4 7 11v13c0 11 7.4 18.9 17 21 9.6-2.1 17-10 17-21V11L24 4Z"/><path d="M17 24l5 5 9-10"/></svg>
               {% when 'no-cramp' %}
                 <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M24 4 7 11v13c0 11 7.4 18.9 17 21 9.6-2.1 17-10 17-21V11L24 4Z"/><path d="M17 24l5 5 9-10"/></svg>
+              {% when 'snowflake' %}
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M24 4v40M6.7 14l34.6 20M6.7 34l34.6-20"/><path d="M19 7l5 5 5-5M19 41l5-5 5 5M8 21l7-2-2-7M40 27l-7 2 2 7M8 27l7 2-2 7M40 21l-7-2 2-7"/></svg>
+              {% when 'muscle' %}
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 18v12M12 13v22M36 13v22M42 18v12M12 24h24"/></svg>
+              {% when 'joint' %}
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M17 4v14M31 4v14M17 30v14M31 30v14"/><path d="M14 18h20a4 4 0 0 1 0 8H14a4 4 0 0 1 0-8Z"/><path d="M14 22c0 4.5 4.5 8 10 8s10-3.5 10-8"/></svg>
+              {% when 'bone' %}
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 30 30 14a5 5 0 1 1 6.5-6.5A5 5 0 1 1 40.5 14 5 5 0 0 1 34 18L18 34a5 5 0 1 1-6.5 6.5A5 5 0 1 1 7.5 34 5 5 0 0 1 14 30Z"/></svg>
+              {% when 'cell' %}
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="24" cy="24" r="19"/><circle cx="21" cy="22" r="7"/><circle cx="34" cy="32" r="2.5"/><circle cx="33" cy="14" r="1.8"/><circle cx="14" cy="34" r="1.8"/></svg>
               {% when 'image' %}
                 {% if block.settings.custom_icon %}
                   {{ block.settings.custom_icon | image_url: width: 160 | image_tag: alt: block.settings.title }}
@@ -149,6 +203,29 @@
       {% endif %}
     {% endfor %}
   </div>
+
+  {%- liquid
+    assign label_src = blank
+    if section.settings.label_image
+      assign label_src = section.settings.label_image | image_url: width: 1400
+    elsif section.settings.label_url != blank
+      assign label_src = section.settings.label_url
+    endif
+  -%}
+  {% if section.settings.label_text != blank and label_src != blank %}
+    <div class="pz-benefits-foot">
+      <button type="button" class="pz-benefits-label-btn"
+        onclick="document.getElementById('pz-label-{{ section.id }}').showModal()">
+        {{ section.settings.label_text }}
+      </button>
+      <noscript><a class="pz-benefits-label-btn" href="{{ label_src }}">{{ section.settings.label_text }}</a></noscript>
+    </div>
+    <dialog class="pz-label-dialog" id="pz-label-{{ section.id }}" aria-label="{{ section.settings.label_text | escape }}"
+      onclick="if (event.target === this) this.close()">
+      <form method="dialog"><button class="pz-label-close" type="submit">Close</button></form>
+      <img src="{{ label_src }}" alt="{{ section.settings.heading | append: ' Supplement Facts label' | escape }}" loading="lazy" width="1400" height="1400">
+    </dialog>
+  {% endif %}
 </section>
 
 {% schema %}
@@ -160,6 +237,11 @@
     { "type": "text", "id": "anchor_id", "label": "Anchor id", "default": "pz-benefits" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "5 Benefits. One Powerful Formula." },
     { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "More than just flavored salt water." },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "info": "Small label above the heading" },
+    { "type": "product", "id": "product", "label": "Product pack shot", "info": "Shows the product's main image above the heading" },
+    { "type": "text", "id": "label_text", "label": "Label button text", "info": "e.g. See PERFORM label. Hidden until a label image is set." },
+    { "type": "image_picker", "id": "label_image", "label": "Label image" },
+    { "type": "url", "id": "label_url", "label": "Label image URL", "info": "Used when no label image is picked" },
     { "type": "checkbox", "id": "show_index", "label": "Show 01-05 counters", "default": true },
     { "type": "range", "id": "icon_size", "label": "Icon size (px)", "min": 28, "max": 88, "step": 2, "default": 52 },
     { "type": "header", "content": "Colors" },
@@ -187,6 +269,11 @@
             { "value": "pulse", "label": "Pulse (endurance)" },
             { "value": "target", "label": "Target (focus)" },
             { "value": "shield", "label": "Shield (protection)" },
+            { "value": "snowflake", "label": "Snowflake (anti-inflammatory)" },
+            { "value": "muscle", "label": "Dumbbell (muscle repair)" },
+            { "value": "joint", "label": "Joint (joint support)" },
+            { "value": "bone", "label": "Bone (bone support)" },
+            { "value": "cell", "label": "Cell (cellular recovery)" },
             { "value": "image", "label": "Custom image" }
           ],
           "default": "droplet"

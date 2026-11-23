@@ -123,10 +123,57 @@
       letter-spacing: .06em;
     }
     .pzhb-{{ section.id }} .pzhb-cta:hover { filter: brightness(1.06); }
+    .pzhb-{{ section.id }} .pzhb-ctas { display: flex; flex-wrap: wrap; gap: 12px 16px; }
+    .pzhb-{{ section.id }}.pzhb--center .pzhb-ctas { justify-content: center; }
     @media (max-width: 749px) {
       .pzhb-{{ section.id }} .pzhb-cta { width: 100%; }
     }
+
+    /* Product packs beside the copy. With two, they flank it (first on the
+       left, second on the right); with one, it sits after the copy. */
+    .pzhb-{{ section.id }} .pzhb-inner--products {
+      display: grid; align-items: center; gap: 24px 40px;
+      grid-template-columns: 1fr;
+    }
+    .pzhb-{{ section.id }} .pzhb-pack { margin: 0; text-align: center; }
+    .pzhb-{{ section.id }} .pzhb-pack a { display: inline-block; }
+    .pzhb-{{ section.id }} .pzhb-pack img {
+      display: block; width: 100%; height: auto;
+      max-width: {{ section.settings.product_image_width }}px; margin: 0 auto;
+      filter: drop-shadow(0 18px 30px rgba(0,0,0,.55));
+    }
+    .pzhb-{{ section.id }} .pzhb-pack figcaption {
+      margin-top: 10px; font-size: 12px; font-weight: 700;
+      letter-spacing: .12em; text-transform: uppercase; color: var(--pzw-accent);
+    }
+    @media (max-width: 749px) {
+      .pzhb-{{ section.id }} .pzhb-packs-mobile {
+        display: flex; justify-content: center; gap: 16px; order: -1;
+      }
+      .pzhb-{{ section.id }} .pzhb-packs-mobile .pzhb-pack img { max-width: 150px; }
+      .pzhb-{{ section.id }} .pzhb-pack--desktop { display: none; }
+    }
+    @media (min-width: 750px) {
+      .pzhb-{{ section.id }} .pzhb-packs-mobile { display: none; }
+      .pzhb-{{ section.id }} .pzhb-inner--products.pzhb-inner--two {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr) minmax(0, 1fr);
+      }
+      .pzhb-{{ section.id }} .pzhb-inner--products.pzhb-inner--one {
+        grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+      }
+      .pzhb-{{ section.id }}.pzhb--center .pzhb-inner--products { justify-items: center; }
+    }
   {% endstyle %}
+
+  {%- liquid
+    assign pack_count = 0
+    if section.settings.product_1 != blank and section.settings.product_1.featured_image
+      assign pack_count = pack_count | plus: 1
+    endif
+    if section.settings.product_2 != blank and section.settings.product_2.featured_image
+      assign pack_count = pack_count | plus: 1
+    endif
+  -%}
 
   {%- liquid
     assign use_picker = false
@@ -155,7 +202,30 @@
     </div>
   {% endif %}
 
-  <div class="pzhb-inner">
+  {%- capture pack_1 -%}
+    {%- if section.settings.product_1 != blank and section.settings.product_1.featured_image -%}
+      {%- assign p = section.settings.product_1 -%}
+      <figure class="pzhb-pack">
+        <a href="{{ p.url }}">{{ p.featured_image | image_url: width: 800 | image_tag: alt: p.title, loading: 'lazy', sizes: '(min-width: 750px) 300px, 150px', widths: '300, 500, 800' }}</a>
+        {%- if section.settings.product_1_label != blank -%}<figcaption>{{ section.settings.product_1_label }}</figcaption>{%- endif -%}
+      </figure>
+    {%- endif -%}
+  {%- endcapture -%}
+  {%- capture pack_2 -%}
+    {%- if section.settings.product_2 != blank and section.settings.product_2.featured_image -%}
+      {%- assign p = section.settings.product_2 -%}
+      <figure class="pzhb-pack">
+        <a href="{{ p.url }}">{{ p.featured_image | image_url: width: 800 | image_tag: alt: p.title, loading: 'lazy', sizes: '(min-width: 750px) 300px, 150px', widths: '300, 500, 800' }}</a>
+        {%- if section.settings.product_2_label != blank -%}<figcaption>{{ section.settings.product_2_label }}</figcaption>{%- endif -%}
+      </figure>
+    {%- endif -%}
+  {%- endcapture -%}
+
+  <div class="pzhb-inner{% if pack_count > 0 %} pzhb-inner--products{% if pack_count == 2 %} pzhb-inner--two{% else %} pzhb-inner--one{% endif %}{% endif %}">
+    {% if pack_count > 0 %}
+      <div class="pzhb-packs-mobile">{{ pack_1 }}{{ pack_2 }}</div>
+      {% if pack_count == 2 %}<div class="pzhb-pack--desktop">{{ pack_1 }}</div>{% endif %}
+    {% endif %}
     <div class="pzhb-copy">
       {% if section.settings.eyebrow != blank %}
         <span class="pzhb-eyebrow">{{ section.settings.eyebrow }}</span>
@@ -174,14 +244,28 @@
         </ul>
       {% endif %}
       {% if section.settings.subheading != blank %}
-        <p class="pzhb-sub">{{ section.settings.subheading }}</p>
+        <p class="pzhb-sub">{{ section.settings.subheading | newline_to_br }}</p>
       {% endif %}
-      {% if section.settings.cta_text != blank %}
-        <a class="pzhb-cta button button--secondary" href="{{ section.settings.cta_url | default: '#pz-wholesale-application' }}">
-          {{ section.settings.cta_text }}
-        </a>
+      {% if section.settings.cta_text != blank or section.settings.cta2_text != blank %}
+        <div class="pzhb-ctas">
+          {% if section.settings.cta_text != blank %}
+            <a class="pzhb-cta button button--secondary" href="{{ section.settings.cta_url | default: '#pz-wholesale-application' }}">
+              {{ section.settings.cta_text }}
+            </a>
+          {% endif %}
+          {% if section.settings.cta2_text != blank %}
+            <a class="pzhb-cta button button--secondary" href="{{ section.settings.cta2_url | default: '#' }}">
+              {{ section.settings.cta2_text }}
+            </a>
+          {% endif %}
+        </div>
       {% endif %}
     </div>
+    {% if pack_count == 2 %}
+      <div class="pzhb-pack--desktop">{{ pack_2 }}</div>
+    {% elsif pack_count == 1 %}
+      <div class="pzhb-pack--desktop">{{ pack_1 }}{{ pack_2 }}</div>
+    {% endif %}
   </div>
 </section>
 
@@ -200,7 +284,15 @@
     { "type": "header", "content": "Call to action" },
     { "type": "text", "id": "cta_text", "label": "Button text", "default": "Start Application" },
     { "type": "text", "id": "cta_url", "label": "Button link", "info": "Defaults to the application form on this page", "default": "#pz-wholesale-application" },
+    { "type": "text", "id": "cta2_text", "label": "Second button text", "info": "Optional, e.g. Shop RECOVER" },
+    { "type": "url", "id": "cta2_url", "label": "Second button link" },
     { "type": "range", "id": "button_radius", "label": "Button radius (px)", "min": 0, "max": 60, "step": 2, "default": 60 },
+    { "type": "header", "content": "Product packs", "info": "Shows each product's main image (the bag) beside the copy. With two, they sit either side." },
+    { "type": "product", "id": "product_1", "label": "Product 1" },
+    { "type": "text", "id": "product_1_label", "label": "Product 1 caption" },
+    { "type": "product", "id": "product_2", "label": "Product 2" },
+    { "type": "text", "id": "product_2_label", "label": "Product 2 caption" },
+    { "type": "range", "id": "product_image_width", "label": "Pack image max width (px)", "min": 160, "max": 420, "step": 10, "default": 300 },
     { "type": "header", "content": "Background image" },
     { "type": "image_picker", "id": "image", "label": "Image", "info": "Preferred \u2014 gives Shopify's responsive sizes. Falls back to the theme asset below." },
     { "type": "text", "id": "image_filename", "label": "Fallback image asset", "info": "Filename in the theme's assets folder" },
